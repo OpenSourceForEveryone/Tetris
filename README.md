@@ -1,2 +1,2 @@
 # Tetris
-Tetris Mini App Template for 
+Tetris Mini App Template for Teams
