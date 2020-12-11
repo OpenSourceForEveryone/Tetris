@@ -1,0 +1,55 @@
+{
+    "tag": "tetris-teams-app",
+    "id": "com.microsoft.dev.tetris.abhinandan",
+    "name": "Tetris tournament",
+    "description": "Play the Game of a Tetris",
+    "showLoadingIndicator": true,
+    "developer": {
+        "name": "Microsoft",
+        "websiteUrl": "https://www.microsoft.com/",
+        "privacyUrl": "https://www.microsoft.com/privacy",
+        "termsOfUseUrl": "https://www.microsoft.com/app-tos"
+    },
+    "icon": "images/appIcon.png",
+    "actionModel": "actionModel.json",
+    "version": "1.0.10",
+    "views": {
+        "CardView": {
+            "sourceLocation": "cardView.json"
+        },
+        "LaunchView": {
+            "sourceLocation": "CreateView.html",
+            "header": "Create new tournament"
+        },
+        "UpdateView": 
+        {
+            "sourceLocation": "UpdateView.html",
+            "header": "Play Tetris"
+        },
+        "SummaryView": {
+			"sourceLocation": "SummaryView.html",
+			"header": "Summary View"
+		}
+    },
+    "localizationInfo": {
+        "defaultLocale": "en-us",
+        "localeFiles": {
+            "en-us": "strings/strings.json"
+        }
+    },
+    "msTeamsProps": {
+        "name": {
+            "short": "Tetris Tournament",
+            "full": "Tetris Tournament"
+        },
+        "description": {
+            "short": "Play the Game of a Tetris",
+            "full": "Play the Game of a Tetris in a chat or channel.​ Find the app in '…' under the message compose box​. Launch the game and you're good to go."
+        },
+        "icons": {
+            "color": "images/appIcon.png",
+            "outline": "images/outline.png"
+        },
+        "accentColor": "#4464ee"
+    }
+}
