@@ -1,2 +1,2 @@
-# Tetris
-Tetris Mini App Template for Teams
+# Mini Game Template
+# 2048

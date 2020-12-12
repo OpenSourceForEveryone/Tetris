@@ -21,16 +21,18 @@ const TetrisBoard: React.FC<TetrisBoardProps> = (props) => {
   })
 
   return (
-    <div className="tetris-board">
-      {/* Game info */}
-      <div className="tetris-board__info">
-        <p className="tetris-board__text">Score: {props.score}</p>
-        {props.gameOver && <CongratulationView gameScore={props.score} shouldShowAlert="false" />}
-      </div>
-
-      {/* Game board */}
-      <div className="tetris-board__board">{rows}</div>
-    </div>
+    <>
+      {props.gameOver ?
+        <CongratulationView gameScore={props.score} shouldShowAlert="false" />
+        :
+        <div className="tetris-board body-container">
+          <div className="tetris-board__info">
+            <p className="tetris-board__text">Score: {props.score}</p>
+          </div>
+          <div className="tetris-board__board">{rows}</div>
+        </div>
+      }
+    </>
   )
 }
 

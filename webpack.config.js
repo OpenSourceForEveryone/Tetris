@@ -124,10 +124,6 @@ module.exports = (env) => {
             {
                 from: 'assets',
                 to: path.resolve(__dirname, 'output')
-            },
-            {
-                from: 'src/components/Game/Tetris/JavaScript',
-                to: path.resolve(__dirname, 'output')
             }
         ]
     };

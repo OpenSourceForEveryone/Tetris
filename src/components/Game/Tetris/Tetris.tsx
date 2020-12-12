@@ -14,6 +14,7 @@ const KeyMap = {
     DOWN: 40,
     LEFT: 37,
     RIGHT: 39,
+    SPACE: 32
 }
 
 // Define props for Tetris component state
@@ -131,6 +132,8 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
 
     handleKeyDown = (ev) => 
     {
+        console.log("Key code" + ev.keyCode);
+        
         switch (ev.keyCode) {
             case KeyMap.UP:
                 this.handleBoardUpdate('rotate');
@@ -144,12 +147,15 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
             case KeyMap.RIGHT:
                 this.handleBoardUpdate('right');
                 break;
+            case KeyMap.SPACE:
+                this.handlePauseClick();
         }
     };
 
     private initialX = null;
     private initialY = null;
     startTouch = (event) => {
+        this.handleBoardUpdate('rotate');
         this.initialX = event.touches[0].clientX;
         this.initialY = event.touches[0].clientY;
       };
@@ -180,7 +186,7 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
           // sliding vertically
           if (diffY > 0) {
             // swiped up
-            this.handleBoardUpdate('rotate');
+           // Do nothing
            
           } else {
             // swiped down
@@ -528,7 +534,6 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
                     rotate={this.state.tileRotate}
                 />
                 <div className="tetris__game-controls">
-                    <button className="btn" onClick={this.handleNewGameClick}>New Game</button>
                     <button className="btn" onClick={this.handlePauseClick}>{this.state.isPaused ? 'Resume' : 'Pause'}</button>
                 </div>
             </div>
