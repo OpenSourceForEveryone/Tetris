@@ -32,7 +32,7 @@ export default class InstructionView extends React.Component<any, any> {
     render() {
         if(UxUtils.renderingForMobile()){
 
-            this.boardHeight = 24;
+            this.boardHeight = 20;
             this.boardWidth = 12;
         }
         else

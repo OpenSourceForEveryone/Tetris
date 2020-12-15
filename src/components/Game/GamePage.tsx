@@ -75,7 +75,7 @@ export default class GamePage extends React.Component<any, any> {
     private getGamePage(): JSX.Element {
         if(UxUtils.renderingForMobile()){
 
-            this.boardHeight = 24;
+            this.boardHeight = 20;
             this.boardWidth = 12;
         }
         else

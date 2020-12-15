@@ -19,7 +19,7 @@ html {
 
 .tetris-board {
     display: flex;
-    justify-content:center;
+    justify-content: center;
 }
 
 .tetris-board__info {
@@ -58,42 +58,70 @@ html {
 
 [class*=col-] {
     padding: 12px;
-    border: 1px solid #464775;
+    border: 1px solid rgba(88, 90, 150, 0.4);
     .desktop-web & {
-        @media (max-height: 578px) { 
+        @media (max-height: 578px) {
             padding: 10px;
         }
-        @media (max-height: 498px) { 
+        @media (max-height: 498px) {
             padding: 8px;
         }
-        @media (max-height: 420px) { 
+        @media (max-height: 420px) {
             padding: 6px;
         }
         @media screen and (max-width: 480px) {
             padding: 10px;
         }
     }
-    .desktop & {
-        @media (max-height: 578px) { 
-            padding: 10px;
+    .client-android & {
+        @media screen and (max-height: 420px) {
+            padding: 7px;
         }
-        @media (max-height: 498px) { 
+        @media screen and (max-height: 498px) {
             padding: 8px;
         }
-        @media (max-height: 420px) { 
-            padding: 6px;
+        @media screen and (max-height: 578px) {
+            padding: 9px;
         }
-        @media screen and (max-width: 480px) {
+        @media screen and (max-height: 680px) {
             padding: 10px;
+        }
+        @media screen and (max-height: 740px) {
+            padding: 12px;
+        }
+        @media screen and (max-height: 720px) {
+            padding: 11px;
+        }
+    }
+    .client-ios & {
+        @media screen and (max-height: 420px) {
+            padding: 9px;
+        }
+        @media screen and (max-height: 498px) {
+            padding: 10px;
+        }
+        @media screen and (max-height: 578px) {
+            padding: 11px;
+        }
+        @media screen and (max-height: 680px) {
+            padding: 12px;
+        }
+        @media screen and (max-height: 740px) {
+            padding: 14px;
+        }
+        @media screen and (max-height: 720px) {
+            padding: 13px;
         }
     }
 }
+
 
 /* Default (empty) board column */
 
 .col-0 {
     background-color: #6264a7;
 }
+
 
 /* Colors for tiles */
 
@@ -149,6 +177,36 @@ html {
     border: 0;
     cursor: pointer;
     transition: background-color .25s ease-in;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+}
+
+.tetris__block-controls .btn:first-child,
+.tetris__game-controls .btn:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.tetris__block-controls .btn:not(:first-child),
+.tetris__game-controls .btn:not(:first-child) {
+    border-left: 1px solid #2980b9;
+}
+
+.tetris__block-controls .btn:last-child,
+.tetris__game-controls .btn:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.tetris-header-box {
+    margin-bottom: 4px;
+    height: 24px;
+}
+
+.tetris-header-box span {
+    float: right;
 }
 
 .btn:hover {
