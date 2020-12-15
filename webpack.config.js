@@ -79,15 +79,6 @@ module.exports = (env) => {
                         presets: ['@babel/preset-env']
                     }
                 }
-            },
-            {
-                test: /\.html?$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]'
-                    }
-                }]
             }]
         }
     };

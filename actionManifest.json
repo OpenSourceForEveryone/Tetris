@@ -1,8 +1,9 @@
 {
-    "tag": "tetris-teams-app",
-    "id": "com.microsoft.dev.tetris.abhinandan",
-    "name": "Tetris tournament",
-    "description": "Play the Game of a Tetris",
+    "schemaVersion": 1,
+    "tag": "Tetris-teams-app",
+    "id": "com.microsoft.dev.tetris.abhinandan1",
+    "name": "Tetris Tournament",
+    "description": "Host a tournament of Tetris game",
     "showLoadingIndicator": true,
     "developer": {
         "name": "Microsoft",
@@ -12,7 +13,7 @@
     },
     "icon": "images/appIcon.png",
     "actionModel": "actionModel.json",
-    "version": "1.0.10",
+    "version": "1.0.3",
     "views": {
         "CardView": {
             "sourceLocation": "cardView.json"
@@ -43,8 +44,8 @@
             "full": "Tetris Tournament"
         },
         "description": {
-            "short": "Play the Game of a Tetris",
-            "full": "Play the Game of a Tetris in a chat or channel.​ Find the app in '…' under the message compose box​. Launch the game and you're good to go."
+            "short": "Host a tournament of Tetris game",
+            "full": "Host a tournament of Tetris in a chat or channel. Find the app in '…' under the message compose box. Provide title to your tournament and post it in your chat or channel. Have fun with your team!"
         },
         "icons": {
             "color": "images/appIcon.png",

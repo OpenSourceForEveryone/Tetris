@@ -3,38 +3,39 @@
 
 import * as React from "react";
 import { observer } from "mobx-react";
-import getStore from "../../store/UpdationStore";
+import getStore from "./../../store/UpdationStore";
 import "./game.scss";
 import { Localizer } from "../../utils/Localizer";
 import { ErrorView } from "../ErrorView";
-import { ProgressState } from "../../utils/SharedEnum";
+import { ProgressState } from "./../../utils/SharedEnum";
 import { ActionSdkHelper } from "../../helper/ActionSdkHelper";
 import InstructionView from "./InstructionView";
 import { UxUtils } from "../../utils/UxUtils";
 import { Flex } from "@fluentui/react-northstar";
-import CongratulationView from "./CongrtulationView";
 import Tetris from "./Tetris/Tetris";
+import CongratulationView from "./CongrtulationView";
 
 /**
- * 
+ *
  * @observer decorator on the component this is what tells MobX to rerender the component whenever the data it relies on changes.
  */
-
 @observer
 export default class GamePage extends React.Component<any, any> {
+    private boardWidth: number;
+    private boardHeight: number;
+
     render() {
 
         let progressStatus = getStore().progressState;
-        
+
         if (progressStatus.actionInstance == ProgressState.InProgress ||
-            progressStatus.currentContext == ProgressState.InProgress || 
+            progressStatus.currentContext == ProgressState.InProgress ||
             progressStatus.currentUserDataInstance == ProgressState.InProgress ||
             progressStatus.localizationInstance == ProgressState.InProgress ||
             progressStatus.settingInstance == ProgressState.InProgress) {
             return <div />;
-        }
-        else if (progressStatus.actionInstance == ProgressState.Failed || 
-            progressStatus.currentContext == ProgressState.Failed || 
+        } else if (progressStatus.actionInstance == ProgressState.Failed ||
+            progressStatus.currentContext == ProgressState.Failed ||
             progressStatus.currentUserDataInstance == ProgressState.Failed ||
             progressStatus.localizationInstance == ProgressState.Failed ||
             progressStatus.settingInstance == ProgressState.Failed) {
@@ -45,29 +46,44 @@ export default class GamePage extends React.Component<any, any> {
                     buttonTitle={Localizer.getString("Close")}
                 />
             );
-        }
-        else
-        {
+        } else {
             ActionSdkHelper.hideLoadingIndicator();
             if (getStore().shouldPlayerPlay) {
                 if (UxUtils.shouldShowInstructionPage()) {
                     return this.getInstructionPage();
-                }
-                else {
+                } else {
                     return this.getGamePage();
                 }
-            }
-            else {
+            } else {
                 return this.getCongratulationPage();
             }
         }
     }
+
+    getInstructionContent(): string {
+        if (UxUtils.renderingForMobile()) {
+            return Localizer.getString("HowToPlayForMobile");
+        } else {
+            return Localizer.getString("HowToPlayForDesktop");
+        }
+    }
+
     /**
      * Method to return the view based on the game settings
     **/
-   
+
     private getGamePage(): JSX.Element {
-        return <Tetris boardWidth="14" boardHeight="20" />
+        if(UxUtils.renderingForMobile()){
+
+            this.boardHeight = 24;
+            this.boardWidth = 12;
+        }
+        else
+        {
+            this.boardHeight = 20;
+            this.boardWidth = 14;
+        }
+        return   <Tetris boardWidth={this.boardWidth} boardHeight={this.boardHeight} tabIndex={0} />;
     }
     private getInstructionPage(): JSX.Element {
         return (<InstructionView
@@ -88,18 +104,5 @@ export default class GamePage extends React.Component<any, any> {
                 <CongratulationView gameScore={getStore().playerPrevScore} shouldShowAlert="true" />
             </Flex>
         );
-    }
-
-    getInstructionContent(): string {
-        if (UxUtils.renderingForMobile()) {
-            return Localizer.getString("HowToPlayForMobile");
-        }
-        else {
-            return Localizer.getString("HowToPlayForDesktop");
-        }
-    }
-    
-    delay(ms: number) {
-        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

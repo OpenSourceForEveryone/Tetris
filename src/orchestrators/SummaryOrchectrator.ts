@@ -1,15 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { toJS } from "mobx";
-import { Logger } from "./../utils/Logger";
-import { Constants } from "../utils/Constants";
 import { Localizer } from "../utils/Localizer";
 import {
     initialize,
     setProgressStatus,
     setContext,
-    fetchLocalization,
     fetchUserDetails,
     fetchMyScore,
     fetchLeaderBoard,
@@ -25,11 +21,9 @@ import getStore from "../store/SummaryStore";
 import * as actionSDK from "@microsoft/m365-action-sdk";
 import { ActionSdkHelper } from "../helper/ActionSdkHelper";
 
-
 /**
  * Summary view orchestrators to fetch data for current action, perform any action on that data and dispatch further actions to modify stores
  */
-
 
 orchestrator(initialize, async () => {
     let currentContext = getStore().progressStatus.currentContext;
@@ -46,7 +40,7 @@ orchestrator(initialize, async () => {
             setProgressStatus({ localizationInstance: ProgressState.InProgress });
             let response = await Localizer.initialize();
 
-            if(actionInstance.success && response){
+            if(actionInstance.success && response) {
                 setProgressStatus({ localizationInstance: ProgressState.Completed });
                 setActionInstance(actionInstance.action);
                 setProgressStatus({ actionInstance: ProgressState.Completed });
@@ -60,29 +54,24 @@ orchestrator(initialize, async () => {
 
                 setProgressStatus({ myScoreDataInstance: ProgressState.InProgress });
                 let myDataRows = await ActionSdkHelper.getActionDataRows(actionContext.context.actionId, actionContext.context.userId);
-                if(myDataRows.success){
+                if(myDataRows.success) {
                     fetchMyScore(myDataRows.dataRows);
                     setProgressStatus({ myScoreDataInstance: ProgressState.Completed });
-                }
-                else
-                {
+                } else {
                     setProgressStatus({ myScoreDataInstance: ProgressState.Failed });
                 }
 
-                setProgressStatus({ leaderboardDatAInstance: ProgressState.InProgress });
+                setProgressStatus({ leaderboardDataAInstance: ProgressState.InProgress });
                 let leaderBoardDataRows = await ActionSdkHelper.getActionDataRows(actionContext.context.actionId);
-                if(leaderBoardDataRows.success){
+                if(leaderBoardDataRows.success) {
                     fetchLeaderBoard(leaderBoardDataRows.dataRows);
-                    setProgressStatus({ leaderboardDatAInstance: ProgressState.Completed });
-                }else
-                {
-                    setProgressStatus({ leaderboardDatAInstance: ProgressState.Failed });
+                    setProgressStatus({ leaderboardDataAInstance: ProgressState.Completed });
+                } else {
+                    setProgressStatus({ leaderboardDataAInstance: ProgressState.Failed });
                 }
                 setLeaderboardVisibilityFlag();
                 setProgressStatus({ currentContext: ProgressState.Completed });
-            }
-            else
-            {
+            } else {
                 setProgressStatus({ actionInstance: ProgressState.Failed });
                 setProgressStatus({ localizationInstance: ProgressState.Failed });
             }
@@ -91,4 +80,3 @@ orchestrator(initialize, async () => {
         }
     }
 });
-

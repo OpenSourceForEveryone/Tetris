@@ -7,7 +7,7 @@ import { DateTimePickerView } from "../DateTime";
 import { Flex, Text, Checkbox } from "@fluentui/react-northstar";
 import { Localizer } from "../../utils/Localizer";
 import { InputBox } from "../InputBox";
-import getStore, { Page } from "./../../store/CreationStore";
+import getStore from "./../../store/CreationStore";
 import { Constants } from "../../utils/Constants";
 import {
     updateTitle, shouldValidateUI, updateSettings
@@ -44,7 +44,7 @@ export interface ISettingsComponentStrings {
 @observer
 export class Settings extends React.PureComponent<ISettingsComponentProps> {
     private settingProps: ISettingsComponentProps;
-    private checklistTitleRef: HTMLElement;
+    private inputTitleRef: HTMLElement;
     constructor(props: ISettingsComponentProps) {
         super(props);
         this.state = {
@@ -60,8 +60,8 @@ export class Settings extends React.PureComponent<ISettingsComponentProps> {
     }
     componentDidUpdate() {
         // If user presses send/create button without filling title, focus should land on title edit field.
-        if (getStore().showBlankTitleError && this.checklistTitleRef) {
-            this.checklistTitleRef.focus();
+        if (this.inputTitleRef) {
+            this.inputTitleRef.focus();
         }
     }
     render() {
@@ -90,7 +90,6 @@ export class Settings extends React.PureComponent<ISettingsComponentProps> {
                 {this.renderGameTitleSection()}
                 {this.renderDueBySection()}
                 {this.renderAdditionalSettingsSection()}
-                {this.validateGameTitle(this.settingProps.shouldShowGametitleAlert)}
             </Flex>
         );
     }
@@ -102,8 +101,9 @@ export class Settings extends React.PureComponent<ISettingsComponentProps> {
                     fluid
                     maxLength={Constants.GAME_TITLE_MAX_LENGTH}
                     input={{
-                        className: "item-content title-box in-t"
+                        className: this.settingProps.shouldShowGametitleAlert ? "item-content title-box in-t invalid-title invalid-error" : "item-content title-box in-t"
                     }}
+                    showError={this.settingProps.shouldShowGametitleAlert} errorText={Localizer.getString("GameTitleErrorAlert")}
                     placeholder={Localizer.getString("TitlePlaceHoler")}
                     aria-placeholder={Localizer.getString("TitlePlaceHoler")}
                     value={getStore().title}
@@ -120,7 +120,6 @@ export class Settings extends React.PureComponent<ISettingsComponentProps> {
      **/
     private renderDueBySection() {
         // handling mobile view differently
-        let className = this.props.renderForMobile ? "due-by-pickers-container date-time-equal" : "settings-indentation";
         return (
             <Flex role="group" aria-label={this.getString("dueBy")} column gap="gap.smaller">
                 <label className="settings-item-title">{Localizer.getString("EndDate")}</label>
@@ -138,29 +137,8 @@ export class Settings extends React.PureComponent<ISettingsComponentProps> {
             </Flex>
         );
     }
-
-    validateGameTitle(showError: boolean) {
-        if (showError) {
-            return (
-                <Flex column>
-                    <Flex className="settings-item-margin"
-                        role="group"
-                        aria-label="additionlsettings"
-                        column gap="gap.smaller" style={{ padding: "32px 0px 0px 0px" }}>
-                        <Text content={Localizer.getString("GameTitleErrorAlert")} className="alert-danger" />
-                    </Flex>
-                </Flex>
-            );
-        }
-        else {
-            return (
-                <div>
-                </div>
-            );
-        }
-    }
     /**
-     * Rendering result visiblity 
+     * Rendering result visiblity
      */
     private renderAdditionalSettingsSection() {
 
@@ -181,7 +159,7 @@ export class Settings extends React.PureComponent<ISettingsComponentProps> {
 
     private renderAllowMultiplePlaySettingSection() {
         return (
-            <Flex styles={{ padding: '8px 16px 0px 0px' }} className="adjust-checkbox checkbox-gap">
+            <Flex styles={{ padding: "8px 16px 0px 0px" }} className="adjust-checkbox checkbox-gap">
                 <Checkbox labelPosition="start" styles={{ padding: "2px 12px 0px 0px" }}
                  className="checklist-checkbox"
                  aria-describedby = {Localizer.getString("AllowMultipleTimePlay")}
@@ -190,7 +168,7 @@ export class Settings extends React.PureComponent<ISettingsComponentProps> {
                         () => {
                             this.settingProps.isMultiResponseAllowed = !this.settingProps.isMultiResponseAllowed;
                                 //this.props.onChange(this.settingProps);
-                                updateSettings(this.settingProps);
+                            updateSettings(this.settingProps);
                         }
                     }
                      />
@@ -204,7 +182,7 @@ export class Settings extends React.PureComponent<ISettingsComponentProps> {
 
     private renderLeaderBoardVisibilitySettingSection() {
         return (
-            <Flex styles={{ padding: '8px 16px 0px 0px' }} className="adjust-checkbox checkbox-gap">
+            <Flex styles={{ padding: "8px 16px 0px 0px" }} className="adjust-checkbox checkbox-gap">
                 <Checkbox labelPosition="start" styles={{ padding: "2px 12px 0px 0px" }}
                     className="checklist-checkbox"
                     aria-describedby = {Localizer.getString("LeaderBoardSetting")}
@@ -216,7 +194,6 @@ export class Settings extends React.PureComponent<ISettingsComponentProps> {
                             updateSettings(this.settingProps);
                         }
                     }
-                    
                 />
                 <Flex column>
                     <Text content={Localizer.getString("LeaderBoardSetting")} className="setting-header" />

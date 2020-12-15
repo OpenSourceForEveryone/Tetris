@@ -1,17 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+import { ButtonProps } from "@fluentui/react-northstar";
 import * as React from "react";
 import { Constants } from "./Constants";
-import * as NodeCache from 'node-cache';
-import { ActionSdkHelper } from "../helper/ActionSdkHelper";
-import InstructionView from "../components/Game/InstructionView";
+import { Localizer } from "./Localizer";
 
 export class UxUtils {
-    public static instructionCache: NodeCache;
-    static initialize() {
-        this.instructionCache = new NodeCache({ stdTTL: 60 * 60 * 24 * 7, checkperiod: 0.2 });
-    }
+
     public static getTabKeyProps() {
         return {
             tabIndex: 0,
@@ -120,13 +116,9 @@ export class UxUtils {
         return backColor;
     }
 
+    // get key for local storage
     public static getKey() {
-        return "2048GameInstructionPageShow"
-    }
-
-    public static async getKeyValue() {
-        const userId = (await ActionSdkHelper.getCurrentUser()).userId;
-        return userId
+        return Constants.INSTRUCTION_PAGE_LOCALSTORAGE;
     }
 
     public static shouldShowInstructionPage() {
@@ -134,8 +126,7 @@ export class UxUtils {
         let localStorage = window.localStorage;
         if (localStorage.getItem(key) === key) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -146,7 +137,7 @@ export class UxUtils {
             const key = this.getKey();
             localStorage.setItem(key, key);
         } else {
-            this.removeLocaStorge()
+            this.removeLocaStorge();
         }
     }
 
@@ -154,7 +145,19 @@ export class UxUtils {
         let localStorage = window.localStorage;
         const key = this.getKey();
         localStorage.removeItem(key);
-        console.log(localStorage.removeItem(key));
-        console.log("removing ");
     }
+
+    public static getDialogButtonProps(dialogDescription: string, buttonLabel: string): ButtonProps {
+        let buttonProps: ButtonProps = {
+            "content": buttonLabel
+        };
+
+        if (UxUtils.renderingForMobile()) {
+            Object.assign(buttonProps, {
+                "aria-label": Localizer.getString("DialogTalkback", dialogDescription, buttonLabel),
+            });
+        }
+        return buttonProps;
+    }
+
 }

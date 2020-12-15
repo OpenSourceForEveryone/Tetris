@@ -8,29 +8,31 @@ import { Utils } from "../utils/Utils";
 import "./../orchestrators/SummaryOrchectrator";
 import "./../mutator/SummaryMutator";
 
-
 export enum ViewType {
     Main
 }
 
 export interface MyGameScore {
-    score: string,
-    timeStamp: string
+    score: string;
+    timeStamp: string;
 }
 
 export interface LeaderBoard {
-    playerId: string,
-    playerName: string,
-    score: string
+    playerId: string;
+    playerName: string;
+    score: string;
 }
 
 export interface SummaryProgressStatus {
     actionInstance: ProgressState;
     currentContext: ProgressState;
     settingInstance: ProgressState;
-    leaderboardDatAInstance: ProgressState;
+    leaderboardDataAInstance: ProgressState;
     myScoreDataInstance: ProgressState;
     localizationInstance: ProgressState;
+    closeActionInstance: ProgressState;
+    deleteActionInstance: ProgressState;
+    updateActionInstance: ProgressState;
 }
 
 interface IGameSummaryStore {
@@ -39,9 +41,9 @@ interface IGameSummaryStore {
     actionSummary: actionSDK.ActionDataRowsSummary;
     dueDate: number;
     title: string;
-    scoreBoard: MyGameScore[],
-    leaderBoard: LeaderBoard[],
-    isGameExpired: boolean,
+    scoreBoard: MyGameScore[];
+    leaderBoard: LeaderBoard[];
+    isGameExpired: boolean;
     currentView: ViewType;
     continuationToken: string;
     actionInstanceRows: actionSDK.ActionDataRow[];
@@ -50,13 +52,13 @@ interface IGameSummaryStore {
     nonResponders: actionSDK.SubscriptionMember[];
     memberCount: number;
     showMoreOptionsList: boolean;
-    isPollCloseAlertOpen: boolean;
-    isChangeExpiryAlertOpen: boolean;
-    isDeletePollAlertOpen: boolean;
     progressStatus: SummaryProgressStatus;
     isActionDeleted: boolean;
     local: string;
     isLeaderBoardVisible: boolean;
+    isGameCloseBoxOpen: boolean;
+    isChangeExpiryBoxOpen: boolean;
+    isDeleteSurveyBoxOpen: boolean;
 
 }
 
@@ -74,9 +76,6 @@ const store: IGameSummaryStore = {
     continuationToken: null,
     showMoreOptionsList: false,
     isGameExpired: false,
-    isPollCloseAlertOpen: false,
-    isChangeExpiryAlertOpen: false,
-    isDeletePollAlertOpen: false,
     userProfile: {},
     nonResponders: null,
     memberCount: null,
@@ -84,13 +83,19 @@ const store: IGameSummaryStore = {
         actionInstance: ProgressState.NotStarted,
         currentContext: ProgressState.NotStarted,
         settingInstance: ProgressState.NotStarted,
-        leaderboardDatAInstance: ProgressState.NotStarted,
+        leaderboardDataAInstance: ProgressState.NotStarted,
         myScoreDataInstance: ProgressState.NotStarted,
-        localizationInstance: ProgressState.NotStarted 
+        localizationInstance: ProgressState.NotStarted,
+        closeActionInstance:ProgressState.NotStarted,
+        deleteActionInstance: ProgressState.NotStarted,
+        updateActionInstance: ProgressState.NotStarted,
     },
     isActionDeleted: false,
     local: "en-us",
-    isLeaderBoardVisible: false
+    isLeaderBoardVisible: false,
+    isGameCloseBoxOpen: false,
+    isChangeExpiryBoxOpen: false,
+    isDeleteSurveyBoxOpen: false
 };
 
 export default createStore<IGameSummaryStore>("summaryStore", store);

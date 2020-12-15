@@ -1,14 +1,15 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import { Avatar, Card, Flex, Text, Checkbox, FlexItem, Button } from '@fluentui/react-northstar';
+import { Avatar, Card, Flex, Text, Checkbox, FlexItem, Button } from "@fluentui/react-northstar";
 import "./game.scss";
-import { UxUtils } from "../../utils/UxUtils"
-import Game from "./2048/Game";
-import { Constants } from "../../utils/Constants";
+import { UxUtils } from "../../utils/UxUtils";
 import Tetris from "./Tetris/Tetris";
+import { Constants } from "../../utils/Constants";
 
 @observer
 export default class InstructionView extends React.Component<any, any> {
+    private boardWidth: number;
+    private boardHeight: number;
     constructor(props) {
         super(props);
         this.state = {
@@ -20,7 +21,7 @@ export default class InstructionView extends React.Component<any, any> {
     startGame() {
         this.setState({
             startGame: true
-        })
+        });
     }
     setLocalStorageFlag() {
         this.setState(prev => {
@@ -29,20 +30,31 @@ export default class InstructionView extends React.Component<any, any> {
     }
 
     render() {
+        if(UxUtils.renderingForMobile()){
+
+            this.boardHeight = 24;
+            this.boardWidth = 12;
+        }
+        else
+        {
+            this.boardHeight = 20;
+            this.boardWidth = 14;
+        }
+
         return (
             this.state.startGame ?
-            <Tetris boardWidth="14" boardHeight="20" /> :
-                <Flex className="body-container" column gap="gap.medium">
+                <Tetris boardWidth={this.boardWidth} boardHeight={this.boardHeight} tabIndex={0} /> :
+                <Flex className="body-container instruction" column gap="gap.medium">
                     {this.renderInstruction()}
                     {this.renderFooterSection()}
                 </Flex>
-        )
+        );
     }
 
     renderInstruction(isMobileView?: boolean): JSX.Element {
         return (
             <div>
-                <Card aria-roledescription="card avatar" fluid style={{ backgroundColor: 'rgb(250, 249, 248)' }}>
+                <Card aria-roledescription="card avatar" fluid style={{ backgroundColor: "rgb(250, 249, 248)" }}>
                     <Card.Header fitted>
                         <Flex gap="gap.small">
                             <Flex column>
@@ -77,7 +89,7 @@ export default class InstructionView extends React.Component<any, any> {
                         content={this.props.Play}
                         onClick={() => {
                             this.startGame();
-                            UxUtils.setLocaStorge(this.state.dontShowFlagSet)
+                            UxUtils.setLocaStorge(this.state.dontShowFlagSet);
                         }}>
                     </Button>
                 </FlexItem>

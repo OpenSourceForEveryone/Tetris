@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import { action } from "satcheljs";
-import { SummaryProgressStatus, ViewType } from "../store/SummaryStore";
+import { SummaryProgressStatus } from "../store/SummaryStore";
 import * as actionSDK from "@microsoft/m365-action-sdk";
 
 export enum HttpStatusCode {
@@ -20,7 +20,6 @@ export enum GameSummaryAction {
     goBack = "goBack",
     fetchUserDetails = "fetchUserDetails",
     fetchActionInstanceRows = "fetchActionInstanceRows",
-    fetchActionInstance = "fetchActionInstance",
     fetchActionInstanceSummary = "fetchActionInstanceSummary",
     fetchLocalization = "fetchLocalization",
     setActionInstance = "setActionInstance",
@@ -28,6 +27,14 @@ export enum GameSummaryAction {
     fetchLeaderBoard = "fetchLeaderBoard",
     setGameStatus = "setGameStatus",
     setLeaderboardVisibilityFlag = "setLeaderboardVisibilityFlag",
+    setIsActionDeleted = "setIsActionDeleted",
+    gameCloseAlertOpen = "surveyCloseAlertOpen",
+    gameExpiryChangeAlertOpen = "surveyExpiryChangeAlertOpen",
+    gameDeleteAlertOpen = "surveyDeleteAlertOpen",
+    updateDueDate = "updateDueDate",
+    closeGame = "closeGame",
+    deleteGame = "deleteGame",
+    updateActionInstance = "updateActionInstance"
 }
 
 export let initialize = action(GameSummaryAction.initialize);
@@ -42,7 +49,7 @@ export let setGameStatus = action(GameSummaryAction.setGameStatus, (status: acti
 
 export let setLeaderboardVisibilityFlag = action(GameSummaryAction.setLeaderboardVisibilityFlag);
 
-export let fetchActionInstanceRows = action(GameSummaryAction.fetchActionInstanceRows)
+export let fetchActionInstanceRows = action(GameSummaryAction.fetchActionInstanceRows);
 
 export let fetchMyScore = action(GameSummaryAction.fetchMyScore,  (myScore: actionSDK.ActionDataRow[]) => ({
     myScore:myScore
@@ -78,4 +85,30 @@ export let setActionInstance = action(GameSummaryAction.setActionInstance, (acti
     actionInstance: actionInstance
 }));
 
+export let gameCloseAlertOpen = action(GameSummaryAction.gameCloseAlertOpen, (open: boolean) => ({
+    open: open
+}));
 
+export let gameExpiryChangeAlertOpen = action(GameSummaryAction.gameExpiryChangeAlertOpen, (open: boolean) => ({
+    open: open
+}));
+
+export let gameDeleteAlertOpen = action(GameSummaryAction.gameDeleteAlertOpen, (open: boolean) => ({
+    open: open
+}));
+
+export let setIsActionDeleted = action(GameSummaryAction.setIsActionDeleted, (isActionDeleted: boolean) => ({
+    isActionDeleted: isActionDeleted
+}));
+
+export let updateDueDate = action(GameSummaryAction.updateDueDate, (dueDate: number) => ({
+    dueDate: dueDate
+}));
+
+export let closeSurvey = action(GameSummaryAction.closeGame);
+
+export let deleteSurvey = action(GameSummaryAction.deleteGame);
+
+export let updateActionInstance = action(GameSummaryAction.updateActionInstance, (actionInstance: actionSDK.Action) => ({
+    actionInstance: actionInstance
+}));
