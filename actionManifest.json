@@ -1,9 +1,9 @@
 {
     "schemaVersion": 1,
-    "tag": "Tetris-teams-app",
+    "tag": "tetris-teams-app",
     "id": "com.microsoft.dev.tetris.abhinandan1",
-    "name": "Tetris Tournament",
-    "description": "Host a tournament of Tetris game",
+    "name": "TetrisTournament",
+    "description": "Host a tournament of Tetrisgame",
     "showLoadingIndicator": true,
     "developer": {
         "name": "Microsoft",
@@ -13,7 +13,7 @@
     },
     "icon": "images/appIcon.png",
     "actionModel": "actionModel.json",
-    "version": "1.0.3",
+    "version": "1.0.13",
     "views": {
         "CardView": {
             "sourceLocation": "cardView.json"
@@ -22,10 +22,10 @@
             "sourceLocation": "CreateView.html",
             "header": "Create new tournament"
         },
-        "UpdateView": 
+        "ResponseView": 
         {
-            "sourceLocation": "UpdateView.html",
-            "header": "Play Tetris"
+            "sourceLocation": "ResponseView.html",
+            "header": "Play 2048"
         },
         "SummaryView": {
 			"sourceLocation": "SummaryView.html",
@@ -40,12 +40,12 @@
     },
     "msTeamsProps": {
         "name": {
-            "short": "Tetris Tournament",
-            "full": "Tetris Tournament"
+            "short": "TetrisTournament",
+            "full": "TetrisTournament"
         },
         "description": {
-            "short": "Host a tournament of Tetris game",
-            "full": "Host a tournament of Tetris in a chat or channel. Find the app in '…' under the message compose box. Provide title to your tournament and post it in your chat or channel. Have fun with your team!"
+            "short": "Host a tournament of Tetrisgame",
+            "full": "Host a tournament of Tetrisin a chat or channel. Find the app in '…' under the message compose box. Provide title to your tournament and post it in your chat or channel. Have fun with your team!"
         },
         "icons": {
             "color": "images/appIcon.png",

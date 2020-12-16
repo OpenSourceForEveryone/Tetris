@@ -56,15 +56,15 @@
 }
 
 .input-lg::-webkit-input-placeholder {
-    color: var(--app-gray-sub-text);
+    color: var(--app-gray-sub-text) !important;
 }
 
 .input-lg:-ms-input-placeholder {
-    color: var(--app-gray-sub-text);
+    color: var(--app-gray-sub-text) !important;
 }
 
 .input-lg::placeholder {
-    color: var(--app-gray-sub-text);
+    color: var(--app-gray-sub-text) !important;
 }
 
 .in-t::-webkit-input-placeholder {
@@ -72,11 +72,11 @@
 }
 
 .in-t:-ms-input-placeholder {
-    color: var(--app-gray-sub-text) !important;
+      color: var(--app-gray-sub-text) !important;
 }
 
 .in-t::placeholder {
-    color: var(--app-gray-sub-text) !important;
+      color: var(--app-gray-sub-text) !important;
 }
 
 .setting-header {
@@ -97,7 +97,7 @@
     font-weight: var(--font-regular);
 }
 
-.create-view-alert-danger {
+.create-view-alert-danger{
     color: var(--danger-color);
     font-size: var(--font-12);
     font-weight: var(--font-regular);

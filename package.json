@@ -1,7 +1,7 @@
 {
-    "name": "tetris",
+    "name": "2048",
     "version": "1.0.0",
-    "description": "Tetris Tournament",
+    "description": "2048 Tournament",
     "scripts": {
         "build": "webpack --env.mode=prod --env.watch=false",
         "start": "webpack --env.mode=dev --env.watch=true",
@@ -10,7 +10,6 @@
         "deploy-debug": "npm run build && npm run zip && upload-action-package -z ./output/ActionPackage.zip -t ./output/ -l debug --ld ./output/ --lp Tetris",
         "update-teams-app": "npm run build && npm run zip && upload-action-package -z ./output/ActionPackage.zip --ld ./output/ --lp Tetris",
         "inner-loop": "create-inner-loop -p com.microsoft.dev.tetris.abhinandan1 -d ./output --ld ./output/ --lp Tetris",
-        "delete-loop": "delete-inner-loop -p com.microsoft.dev.tetris.abhinandan1 -d ./output",
         "lint": "tslint -c tslint.json -p tsconfig.json --fix"
     },
     "dependencies": {

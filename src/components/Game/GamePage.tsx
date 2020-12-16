@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { observer } from "mobx-react";
-import getStore from "./../../store/UpdationStore";
+import getStore from "./../../store/ResponseStore";
 import "./game.scss";
 import { Localizer } from "../../utils/Localizer";
 import { ErrorView } from "../ErrorView";

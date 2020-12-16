@@ -89,7 +89,7 @@ export default class InstructionView extends React.Component<any, any> {
                         content={this.props.Play}
                         onClick={() => {
                             this.startGame();
-                            UxUtils.setLocaStorge(this.state.dontShowFlagSet);
+                            UxUtils.setLocalStorge(this.state.dontShowFlagSet);
                         }}>
                     </Button>
                 </FlexItem>

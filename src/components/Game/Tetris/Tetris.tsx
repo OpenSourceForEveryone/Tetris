@@ -2,6 +2,7 @@ import * as React from 'react'
 import TetrisBoard from './Board'
 import { UxUtils } from '../../../utils/UxUtils'
 import './scss/tetris.scss'
+
 // Define props for Tetris component
 type TetrisProps = {
     boardWidth: any,
@@ -132,8 +133,6 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
     }
 
     handleKeyDown = (ev) => {
-        console.log("Key code" + ev.keyCode);
-
         switch (ev.keyCode) {
             case KeyMap.UP:
                 this.handleBoardUpdate('rotate');
@@ -192,14 +191,14 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
             // sliding vertically
             if (diffY > 0) {
                 // swiped up
-                this.handleBoardUpdate('rotate');
+                //this.handleBoardUpdate('rotate');
 
             } else {
                 // swip down
                 this.handleBoardUpdate('down');
             }
         }
-
+        
         this.initialX = null;
         this.initialY = null;
         event.preventDefault();
@@ -221,12 +220,11 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
         this.setState({
             timerId: timerId
         })
-        window.document.getElementById("focus").scrollIntoView();
-        window.addEventListener("keydown", this.handleKeyDown, false);
-        window.addEventListener("touchstart", this.startTouch, false);
-        window.addEventListener("touchstart", this.tapMobile, false);
-        window.addEventListener("touchmove", this.moveTouch, false);
-
+        window.document.getElementById("tetrisTap").addEventListener("touchstart", this.tapMobile, false);
+        document.addEventListener("keydown", this.handleKeyDown, false);
+        document.addEventListener("touchstart", this.startTouch, false);
+        // window.addEventListener("touchstart", this.tapMobile, false);
+        document.addEventListener("touchmove", this.moveTouch, false);
     }
     componentWillMount() {
         //     window.removeEventListener("keydown", this.handleKeyDown);
@@ -240,11 +238,12 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
      * @memberof Tetris
      */
     componentWillUnmount() {
+        
         window.clearInterval(this.state.timerId);
-        window.removeEventListener("keydown", this.handleKeyDown);
-        window.removeEventListener("touchstart", this.startTouch);
-        window.removeEventListener("touchstart", this.tapMobile);
-        window.removeEventListener("touchmove", this.moveTouch);
+        document.removeEventListener("keydown", this.handleKeyDown);
+        document.removeEventListener("touchstart", this.startTouch);
+        document.removeEventListener("touchstart", this.tapMobile);
+        document.removeEventListener("touchmove", this.moveTouch);
     }
 
     /**
@@ -253,8 +252,8 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
      * @memberof Tetris
      */
     handleBoardUpdate(command: string) {
-        // Do nothing if game ends, or is paused
-        if (this.state.gameOver || this.state.isPaused) {
+        // Do nothing if game ends, or is paused or document has no focus
+        if (this.state.gameOver || this.state.isPaused || !document.hasFocus()) {
             return
         }
 

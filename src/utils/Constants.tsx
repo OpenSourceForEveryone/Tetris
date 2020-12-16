@@ -16,7 +16,7 @@ export class Constants {
 
     public static readonly GAME_LOGO_PATH: String = "images/appIcon.png";
     public static readonly GAME_CONGRATULATION_IMAGE_PATH = "images/trophy.png";
-    public static readonly INSTRUCTION_PAGE_LOCALSTORAGE = "TetrisGameInstructionPageShow";
+    public static readonly INSTRUCTION_PAGE_LOCALSTORAGE = "2048GameInstructionPageShow";
 
     public static readonly FOCUSABLE_ITEMS = {
         All: ["a[href]", "area[href]", "input:not([disabled])", "select:not([disabled])", "textarea:not([disabled])", "button:not([disabled])", '[tabindex="0"]'],

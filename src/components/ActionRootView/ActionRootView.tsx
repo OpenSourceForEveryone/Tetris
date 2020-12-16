@@ -7,7 +7,6 @@ import { Provider, teamsTheme, teamsDarkTheme, teamsHighContrastTheme, ThemePrep
 import * as actionSDK from "@microsoft/m365-action-sdk";
 import { Utils } from "./../../utils/Utils";
 import { ActionSdkHelper } from "../../helper/ActionSdkHelper";
-import { UxUtils } from "../../utils/UxUtils";
 
 interface IActionRootViewState {
     hostContext: actionSDK.ActionSdkContext;

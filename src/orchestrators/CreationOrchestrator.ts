@@ -15,8 +15,6 @@ import { ActionSdkHelper } from "../helper/ActionSdkHelper";
 /**
  * Creation view orchestrators to do API calls, perform any action on data and dispatch further actions to modify stores in case of any change
  */
-
- // Validate action Instances
 function validateActionInstance(actionInstance: actionSDK.Action): boolean {
     if (actionInstance == null) { return false; }
     return true;
@@ -25,7 +23,6 @@ function validateActionInstance(actionInstance: actionSDK.Action): boolean {
 /**
  * Initialization of createion view fetching action context and localization details
  */
-
 orchestrator(initialize, async () => {
     setProgressState(ProgressState.InProgress);
     let actionContext = await ActionSdkHelper.getActionContext();
@@ -35,12 +32,10 @@ orchestrator(initialize, async () => {
         setProgressState(response ? ProgressState.Completed : ProgressState.Failed);
     }
 });
-/**
- * Call action instance API
- */
+
 orchestrator(callActionInstanceCreationAPI, async () => {
     let actionInstance: actionSDK.Action = {
-        displayName: "TetrisTournament",
+        displayName: "Tetris Tournament",
         expiryTime: getStore().settings.dueDate,
         dataTables: [
             {
@@ -74,7 +69,9 @@ orchestrator(callActionInstanceCreationAPI, async () => {
     // Set responses visibility
     actionInstance.dataTables[0].rowsVisibility = getStore().settings.resultVisibility ?
     actionSDK.Visibility.Sender : actionSDK.Visibility.All;
+
     actionInstance.dataTables[0].canUserAddMultipleRows = getStore().settings.isMultiResponseAllowed;
+
     if (validateActionInstance(actionInstance)) {
         setSendingFlag();
         prepareActionInstance(actionInstance, toJS(getStore().context));
