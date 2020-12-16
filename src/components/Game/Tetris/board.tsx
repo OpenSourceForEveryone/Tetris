@@ -18,13 +18,12 @@ const TetrisBoard: React.FC<TetrisBoardProps> = (props) => {
 
   props.field.forEach((row, index) => {
     // Create board columns
-    const cols = row.map((column: any, index: number) => <div className={`col-${column}`} key={index} id="tetrisTap"/>)
+    const cols = row.map((column: any, index: number) => <div className={`col-${column}`} key={index} />)
     rows.push(<div className="tetris-board__row" key={index}>{cols}</div>)
   })
 
   React.useEffect(() => {
     document.getElementById("focus").tabIndex = 0;
-    document.getElementById("focus").focus();
   });
   
   return (

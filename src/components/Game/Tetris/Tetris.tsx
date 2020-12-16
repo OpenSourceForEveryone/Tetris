@@ -2,6 +2,7 @@ import * as React from 'react'
 import TetrisBoard from './Board'
 import { UxUtils } from '../../../utils/UxUtils'
 import './scss/tetris.scss'
+import {injectTapEventPlugin } from 'react-tap-event-plugin'
 
 // Define props for Tetris component
 type TetrisProps = {
@@ -155,17 +156,19 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
     private initialY = null;
 
     tapMobile = (event) => {
-        this.handleBoardUpdate("rotate");
         event.preventDefault();
+        this.handleBoardUpdate("rotate");
+       
     }
 
     startTouch = (event) => {
-
+        event.preventDefault();
         this.initialX = event.touches[0].clientX;
         this.initialY = event.touches[0].clientY;
     };
 
     moveTouch = (event) => {
+
         if (this.initialX === null) {
             return;
         }
@@ -176,6 +179,7 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
         let currentY = event.touches[0].clientY;
         let diffX = this.initialX - currentX;
         let diffY = this.initialY - currentY;
+
         if (Math.abs(diffX) > Math.abs(diffY)) {
             // sliding horizontally
             if (diffX > 0) {
@@ -190,15 +194,16 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
         } else {
             // sliding vertically
             if (diffY > 0) {
-                // swiped up
+                // swipe up
                 //this.handleBoardUpdate('rotate');
 
             } else {
                 // swip down
                 this.handleBoardUpdate('down');
+                this.handleBoardUpdate('down');
+                this.handleBoardUpdate('down');
             }
         }
-        
         this.initialX = null;
         this.initialY = null;
         event.preventDefault();
@@ -212,6 +217,7 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
      */
     componentDidMount() {
         let timerId
+
         timerId = window.setInterval(
             () => this.handleBoardUpdate('down'),
             1000 - (this.state.level * 10 > 600 ? 600 : this.state.level * 10)
@@ -220,19 +226,12 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
         this.setState({
             timerId: timerId
         })
-        window.document.getElementById("tetrisTap").addEventListener("touchstart", this.tapMobile, false);
-        document.addEventListener("keydown", this.handleKeyDown, false);
-        document.addEventListener("touchstart", this.startTouch, false);
-        // window.addEventListener("touchstart", this.tapMobile, false);
-        document.addEventListener("touchmove", this.moveTouch, false);
+        
+        window.addEventListener("keydown", this.handleKeyDown, false);
+        window.addEventListener("touchstart", this.startTouch, false);
+        window.addEventListener("touchmove", this.moveTouch, false);
     }
-    componentWillMount() {
-        //     window.removeEventListener("keydown", this.handleKeyDown);
-        //     window.removeEventListener("touchstart", this.startTouch);
-        //     window.removeEventListener("touchmove", this.moveTouch);
-
-    }
-
+    
     /**
      * @description Resets the timer when component unmounts
      * @memberof Tetris
@@ -242,7 +241,6 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
         window.clearInterval(this.state.timerId);
         document.removeEventListener("keydown", this.handleKeyDown);
         document.removeEventListener("touchstart", this.startTouch);
-        document.removeEventListener("touchstart", this.tapMobile);
         document.removeEventListener("touchmove", this.moveTouch);
     }
 
@@ -504,6 +502,7 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
      * @memberof Tetris
      */
     handleNewGameClick = () => {
+        injectTapEventPlugin();
         // Create an empty board
         let field: any[] = []
 
@@ -536,7 +535,11 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
 
     render() {
         return (
-            <div className="tetris body-container" id="focus">
+            <div className="tetris body-container" id="focus" onClick = {
+                () => {
+                    this.handleBoardUpdate("rotate");
+                }
+            } >
                 <TetrisBoard
                     field={this.state.field}
                     gameOver={this.state.gameOver}

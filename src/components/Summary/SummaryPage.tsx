@@ -167,7 +167,7 @@ export default class SummaryPage extends React.Component<any, any> {
         }
     }
 
-
+    // Helper method for setting up the menu for summary page
     private getMenu() {
         let menuItems: AdaptiveMenuItem[] = this.getMenuItems();
         if (menuItems.length == 0) {
@@ -176,7 +176,7 @@ export default class SummaryPage extends React.Component<any, any> {
         return (
             <AdaptiveMenu
                 className="triple-dot-menu"
-                key="survey_options"
+                key="game"
                 renderAs={UxUtils.renderingForMobile() ? AdaptiveMenuRenderStyle.ACTIONSHEET : AdaptiveMenuRenderStyle.MENU}
                 content={<MoreIcon title={Localizer.getString("MoreOptions")} outline aria-hidden={false} role="button" />}
                 menuItems={menuItems}
@@ -185,14 +185,17 @@ export default class SummaryPage extends React.Component<any, any> {
         );
     }
 
+    // Helper method to check if the current user is cretor or not
     private isCurrentUserCreator(): boolean {
         return getStore().actionInstance && getStore().context.userId == getStore().actionInstance.creatorId;
     }
 
+    // Helper method to check if the game is active
     private isGameActive(): boolean {
         return getStore().actionInstance && getStore().actionInstance.status == actionSDK.ActionStatus.Active;
     }
 
+    // Helper method to perpare menu items
     getMenuItems(): AdaptiveMenuItem[] {
         let menuItemList: AdaptiveMenuItem[] = [];
         if (this.isCurrentUserCreator() && this.isGameActive()) {
@@ -247,6 +250,7 @@ export default class SummaryPage extends React.Component<any, any> {
         return menuItemList;
     }
 
+    // Helper method which provides a card with close game settings 
     private setUpGameCloseCard() {
         if (getStore().isGameCloseBoxOpen) {
             return (
@@ -280,6 +284,7 @@ export default class SummaryPage extends React.Component<any, any> {
         }
     }
 
+    // Helper method which provides a card with delete game settings 
     private setUpGameDeleteCard() {
         if (getStore().isDeleteSurveyBoxOpen) {
             return (
@@ -313,6 +318,7 @@ export default class SummaryPage extends React.Component<any, any> {
         }
     }
 
+    // Helper method which provides a card with update due date settings
     private setUpChangeDueDateCard() {
         if (getStore().isChangeExpiryBoxOpen) {
             return (
