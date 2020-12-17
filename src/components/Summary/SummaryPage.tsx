@@ -86,6 +86,7 @@ export default class SummaryPage extends React.Component<any, any> {
 
     // Get title section of summary view
     private getTitleContainer(): JSX.Element {
+        const marginTop = this.isCurrentUserCreator() ? "-24px" : "0px"
         return (
             <Flex className="summary-header title-container-background-color"
                 role="group"
@@ -93,11 +94,11 @@ export default class SummaryPage extends React.Component<any, any> {
                 column gap="gap.smaller" >
                 <Card aria-roledescription="card avatar" fluid
                     className="card-container-background-color">
-                    <Flex style={{ justifyContent: "flex-end" }}>
+                    <Flex style={{ justifyContent: "flex-end" }} vAlign="center">
                         {this.getMenu()}
                     </Flex>
                     <Card.Header fitted>
-                        <Text content={this.getGameTitle()} weight="bold" style={{ marginTop: "-24px", paddingRight: "32px" }} />
+                        <Text content={this.getGameTitle()} weight="bold" style={{ marginTop: marginTop, paddingRight: "32px", marginBottom: "8px" }} />
                         {this.gameDueDateString()}
                     </Card.Header>
                 </Card>
@@ -262,9 +263,9 @@ export default class SummaryPage extends React.Component<any, any> {
                         className="card-container-background-color card-padding">
                         <Card.Header fitted >
                             <Flex column gap="gap.small" >
-                                <Text content="Close tournament" weight="bold" />
-                                <Text content="Are you sure you want to close this tournament?" error />
-                                <Flex gap="gap.small" styles={{ justifyContent: "flex-end" }}>
+                                <Text content="Close tournament" weight="bold"  style={{fontSize:"16px"}}/>
+                                <Text content="Are you sure you want to close this tournament?" error style={{padding:"6px 0px 0px 0px", fontSize:"12px"}} />
+                                <Flex gap="gap.small" styles={{ justifyContent: "flex-end", padding:"16px 0px 8px 0px" }}>
                                     <Button content="Cancel" secondary
                                         onClick={
                                             () => {
@@ -296,9 +297,9 @@ export default class SummaryPage extends React.Component<any, any> {
                         className="card-container-background-color card-padding">
                         <Card.Header fitted >
                             <Flex column gap="gap.small" >
-                                <Text content="Delete tournament" weight="bold" />
-                                <Text content="Are you sure you want to delete this tournament?" error />
-                                <Flex gap="gap.small" styles={{ justifyContent: "flex-end" }}>
+                                <Text content="Delete tournament" weight="bold"  style={{fontSize:"16px"}} />
+                                <Text content="Are you sure you want to delete this tournament?" error style={{padding:"6px 0px 0px 0px", fontSize:"12px"}}/>
+                                <Flex gap="gap.small" styles={{ justifyContent: "flex-end", padding:"16px 0px 8px 0px" }}>
                                     <Button content="Cancel" secondary
                                         onClick={
                                             () => {
@@ -331,14 +332,14 @@ export default class SummaryPage extends React.Component<any, any> {
                         className="card-container-background-color card-padding" >
                         <Card.Header fitted >
                             <Flex column gap="gap.smaller" >
-                                <Text content="Change due date" weight="bold" />
+                                <Text content="Change due date" weight="bold" style={{fontSize:"16px"}}/>
                                 <Flex gap="gap.smaller">
                                     <DateTimePickerView showTimePicker locale={getStore().context.locale} renderForMobile={UxUtils.renderingForMobile()} minDate={new Date()} value={new Date(getStore().dueDate)} placeholderDate={Localizer.getString("SelectADate")} placeholderTime={Localizer.getString("SelectATime")} onSelect={(date: Date) => {
                                         setDueDate(date.getTime());
                                     }} />
                                     {getStore().progressStatus.updateActionInstance == ProgressState.Failed ? <Text content={Localizer.getString("SomethingWentWrong")} error /> : null}
                                 </Flex>
-                                <Flex gap="gap.smaller" styles={{ justifyContent: "flex-end" }}>
+                                <Flex gap="gap.smaller" styles={{ justifyContent: "flex-end", padding:"16px 0px 8px 0px" }}>
                                     <Button content="Cancel" secondary
                                         onClick={
                                             () => {

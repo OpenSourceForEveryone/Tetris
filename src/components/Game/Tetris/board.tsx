@@ -24,6 +24,7 @@ const TetrisBoard: React.FC<TetrisBoardProps> = (props) => {
 
   React.useEffect(() => {
     document.getElementById("focus").tabIndex = 0;
+    document.getElementById("focus").focus();
   });
   
   return (

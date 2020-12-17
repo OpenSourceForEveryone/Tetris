@@ -42,13 +42,15 @@ html {
 
 .tetris-board__text {
     font-size: 16px;
-    color: #212121;
+    color: #6264a7;
     font-weight: bold;
     margin-top: 0px;
     margin-bottom: 0px;
     float: left;
 }
-
+.tetris-header-box svg {
+    fill: #6264a7;
+}
 .tetris-board__row {
     display: flex;
 }
@@ -58,7 +60,7 @@ html {
 
 [class*=col-] {
     padding: 12px;
-    border: 1px solid rgba(88, 90, 150, 0.4);
+    border: 1px solid #6264a7;
     .desktop-web & {
         @media (max-height: 578px) {
             padding: 10px;
@@ -90,7 +92,10 @@ html {
             padding: 12px;
         }
         @media screen and (max-height: 720px) {
-            padding: 11px;
+            padding: 13px;
+        }
+        @media screen and (min-height: 720px) {
+            padding: 14px;
         }
     }
     .client-ios & {
@@ -112,6 +117,9 @@ html {
         @media screen and (max-height: 720px) {
             padding: 13px;
         }
+        @media screen and (min-height: 721px) {
+            padding: 15px;
+        }   
     }
 }
 
@@ -126,31 +134,31 @@ html {
 /* Colors for tiles */
 
 .col-1 {
-    background-color: #e2e2f6;
+    background-color: #f4f4fc;
 }
 
 .col-2 {
-    background-color: #e2e2f6;
+    background-color: #f4f4fc;
 }
 
 .col-3 {
-    background-color: #e2e2f6;
+    background-color: #f4f4fc;
 }
 
 .col-4 {
-    background-color: #e2e2f6;
+    background-color: #f4f4fc;
 }
 
 .col-5 {
-    background-color: #e2e2f6;
+    background-color: #f4f4fc;
 }
 
 .col-6 {
-    background-color: #e2e2f6;
+    background-color: #f4f4fc;
 }
 
 .col-7 {
-    background-color: #e2e2f6;
+    background-color: #f4f4fc;
 }
 
 
@@ -231,7 +239,7 @@ html {
 }
 
 .tetris-header-box {
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     height: 24px;
 }
 

@@ -197,7 +197,7 @@
     font-size: 12px;
     font-weight: 600;
     color: var(--app-gray-sub-text);
-    margin-top: 8px;
+
 }
 
 .summaryview .summary-header span {
@@ -375,8 +375,13 @@
 
 .card-container-background-color {
     background: rgb(250, 249, 248) !important;
+    border-radius: 3px !important;
 }
 
 .card-padding {
     padding: 8px !important;
+}
+
+.title-and-menu-container {
+    justify-content: space-between !important;
 }
