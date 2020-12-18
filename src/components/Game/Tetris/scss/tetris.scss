@@ -20,6 +20,8 @@ html {
 .tetris-board {
     display: flex;
     justify-content: center;
+    height: 90vh;
+    align-items: center;
 }
 
 .tetris-board__info {
@@ -161,6 +163,9 @@ html {
     background-color: #f4f4fc;
 }
 
+.col-8 {
+    background-color:rgba(37, 36, 35, .5);
+}
 
 /* Styles for buttons */
 

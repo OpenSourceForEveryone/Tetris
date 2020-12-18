@@ -15,6 +15,7 @@ import { Flex } from "@fluentui/react-northstar";
 import Tetris from "./Tetris/Tetris";
 import CongratulationView from "./CongrtulationView";
 
+
 /**
  *
  * @observer decorator on the component this is what tells MobX to rerender the component whenever the data it relies on changes.
@@ -84,6 +85,7 @@ export default class GamePage extends React.Component<any, any> {
             this.boardWidth = 14;
         }
         return   <Tetris boardWidth={this.boardWidth} boardHeight={this.boardHeight} tabIndex={0} />;
+        
     }
     private getInstructionPage(): JSX.Element {
         return (<InstructionView

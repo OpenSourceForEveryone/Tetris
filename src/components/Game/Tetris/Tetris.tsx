@@ -2,7 +2,6 @@ import * as React from 'react'
 import TetrisBoard from './Board'
 import { UxUtils } from '../../../utils/UxUtils'
 import './scss/tetris.scss'
-import {injectTapEventPlugin } from 'react-tap-event-plugin'
 
 // Define props for Tetris component
 type TetrisProps = {
@@ -20,6 +19,14 @@ const KeyMap = {
     SPACE: 32
 }
 
+export interface ProjectedPiece{
+    mergeData:any[],
+    posY:number,
+    posX: number,
+    tile: number,
+    grid?: any[]
+}
+
 // Define props for Tetris component state
 type TetrisState = {
     activeTileX: number,
@@ -33,6 +40,7 @@ type TetrisState = {
     isPaused: boolean,
     field: any[],
     timerId: any,
+    piece:ProjectedPiece,
     tiles: number[][][][]
 }
 
@@ -43,6 +51,7 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
 
         // Generate board based on number of boardHeight & boardWidth props
         let field = []
+        let piece: ProjectedPiece
 
         for (let y = 0; y < props.boardHeight; y++) {
             let row = []
@@ -70,6 +79,7 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
             isPaused: false,
             field: field,
             timerId: null,
+            piece:null,
             tiles: [
                 // 7 tiles
                 // Each tile can be rotated 4 times (x/y coordinates)
@@ -399,6 +409,13 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
         field[y + tiles[tile][rotate][2][1]][x + tiles[tile][rotate][2][0]] = tile
         field[y + tiles[tile][rotate][3][1]][x + tiles[tile][rotate][3][0]] = tile
 
+        console.log("Merge Data ");
+        const a = y + tiles[tile][rotate][0][1] + "-" + (x + tiles[tile][rotate][0][0])
+        const b = y + tiles[tile][rotate][1][1] + "-" + (x + tiles[tile][rotate][1][0])
+        const c = y + tiles[tile][rotate][2][1] + "-" + (x + tiles[tile][rotate][2][0])
+        const d = y + tiles[tile][rotate][3][1] + "-" + (x + tiles[tile][rotate][3][0])
+        const mergedData = [a, b, c, d]
+        
         // If moving down is not possible, remove completed rows add score
         // and find next tile and check if game is over
         if (!yAddIsValid) {
@@ -477,13 +494,23 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
             }
         }
 
+        // prepare piece 
+        let piece: ProjectedPiece = {
+            posX: x,
+            posY: y,
+            tile: tile,
+            mergeData: mergedData
+        }
+
         // Update state - use new field, active x/y coordinates, rotation and activeTile
         this.setState({
+
             field: field,
             activeTileX: x,
             activeTileY: y,
             tileRotate: rotate,
-            activeTile: tile
+            activeTile: tile,
+            piece: piece
         })
     }
 
@@ -502,7 +529,6 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
      * @memberof Tetris
      */
     handleNewGameClick = () => {
-        injectTapEventPlugin();
         // Create an empty board
         let field: any[] = []
 
@@ -547,6 +573,12 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
                     rotate={this.state.tileRotate}
                     onClickHandler={this.handlePauseClick}
                     isPaused={this.state.isPaused}
+                    tile= {this.state.activeTile}
+                    height = {this.props.boardHeight}
+                    width = {this.props.boardWidth}
+                    xCord = {this.state.activeTileX}
+                    yCord = {this.state.activeTileY}
+                    piece = {this.state.piece}
                 />
             </div>
         )
