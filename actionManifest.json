@@ -1,7 +1,7 @@
 {
     "schemaVersion": 1,
     "tag": "tetris-teams-app",
-    "id": "com.microsoft.dev.tetris.abhinandan1",
+    "id": "<packageId>",
     "name": "TetrisTournament",
     "description": "Host a tournament of Tetrisgame",
     "showLoadingIndicator": true,
