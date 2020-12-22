@@ -152,6 +152,7 @@
     .client-mobile & {
         font-size: 13px;
         padding-bottom: 8px;
+       
     }
     .client-mobile.theme-default & {
         color: #605e5c;
@@ -318,6 +319,7 @@
     .timeline::after {
         left: 4px;
     }
+    
     /* Full-width containers */
     .container {
         width: 100%;
