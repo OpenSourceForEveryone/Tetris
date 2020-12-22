@@ -328,10 +328,11 @@ class Tetris extends React.Component<TetrisProps, TetrisState> {
         for (let row = this.props.boardHeight - 1; row >= 0; row--) {
             let isXValid = true;
             let level = 0;
+            let tileHeight = cordinateMap.size;
             for (let key of cordinateMap.keys()) {
 
                 // avoid collision
-                if((row - level - key) < 2 ) break; 
+                if((row - level - key) < tileHeight ) break; 
 
                 const xS = cordinateMap.get(key);
                 // validate the Game Level
