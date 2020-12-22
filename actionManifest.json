@@ -2,18 +2,18 @@
     "schemaVersion": 1,
     "tag": "tetris-teams-app",
     "id": "<packageId>",
-    "name": "TetrisTournament",
-    "description": "Host a tournament of Tetrisgame",
+    "name": "Tetris Tournament",
+    "description": "Host a tournament of Tetris game",
     "showLoadingIndicator": true,
     "developer": {
-        "name": "Microsoft",
-        "websiteUrl": "https://www.microsoft.com/",
-        "privacyUrl": "https://www.microsoft.com/privacy",
-        "termsOfUseUrl": "https://www.microsoft.com/app-tos"
+        "name": "<name>",
+        "websiteUrl": "<websiteUrl>",
+        "privacyUrl": "<privacyUrl>",
+        "termsOfUseUrl": "<termsOfUseUrl>"
     },
     "icon": "images/appIcon.png",
     "actionModel": "actionModel.json",
-    "version": "1.0.37",
+    "version": "1.0.0",
     "views": {
         "CardView": {
             "sourceLocation": "cardView.json"
@@ -25,7 +25,7 @@
         "ResponseView": 
         {
             "sourceLocation": "ResponseView.html",
-            "header": "Play 2048"
+            "header": "Play Tetris"
         },
         "SummaryView": {
 			"sourceLocation": "SummaryView.html",

@@ -15,7 +15,6 @@ import { Flex } from "@fluentui/react-northstar";
 import Tetris from "./Tetris/Tetris";
 import CongratulationView from "./CongrtulationView";
 
-
 /**
  *
  * @observer decorator on the component this is what tells MobX to rerender the component whenever the data it relies on changes.
@@ -69,24 +68,23 @@ export default class GamePage extends React.Component<any, any> {
         }
     }
 
-    /**
-     * Method to return the view based on the game settings
+     /**
+     * Method to return game app component
     **/
-
     private getGamePage(): JSX.Element {
-        if(UxUtils.renderingForMobile()){
+        if(UxUtils.renderingForMobile()) {
 
             this.boardHeight = 20;
             this.boardWidth = 12;
-        }
-        else
-        {
+        } else {
             this.boardHeight = 20;
             this.boardWidth = 14;
         }
         return   <Tetris boardWidth={this.boardWidth} boardHeight={this.boardHeight} tabIndex={0} />;
-        
+
     }
+
+    // Method to render game instruction
     private getInstructionPage(): JSX.Element {
         return (<InstructionView
             DontShowTheGameInstruction={Localizer.getString("DontShowTheGameInstruction")}
@@ -96,6 +94,7 @@ export default class GamePage extends React.Component<any, any> {
         />);
     }
 
+    // Method to render congratualtion view
     private getCongratulationPage(): JSX.Element {
         return (
             <Flex

@@ -62,6 +62,61 @@ export default class SummaryPage extends React.Component<any, any> {
             return this.getsSummaryView();
         }
     }
+
+    // Helper method to perpare menu items
+    getMenuItems(): AdaptiveMenuItem[] {
+        let menuItemList: AdaptiveMenuItem[] = [];
+        if (this.isCurrentUserCreator() && this.isGameActive()) {
+            let changeExpiry: AdaptiveMenuItem = {
+                key: "changeDueDate",
+                content: Localizer.getString("ChangeDueDate"),
+                icon: <CalendarIcon outline={true} />,
+                onClick: () => {
+                    if (getStore().progressStatus.updateActionInstance != ProgressState.InProgress) {
+                        setProgressStatus({ updateActionInstance: ProgressState.NotStarted });
+                    }
+                    gameExpiryChangeAlertOpen(true);
+                    gameDeleteAlertOpen(false);
+                    gameCloseAlertOpen(false);
+                }
+            };
+
+            menuItemList.push(changeExpiry);
+
+            let closeGame: AdaptiveMenuItem = {
+                key: "close",
+                content: Localizer.getString("CloseGame"),
+                icon: <BanIcon outline={true} />,
+                onClick: () => {
+                    if (getStore().progressStatus.closeActionInstance != ProgressState.InProgress) {
+                        setProgressStatus({ closeActionInstance: ProgressState.NotStarted });
+                    }
+                    gameCloseAlertOpen(true);
+                    gameExpiryChangeAlertOpen(false);
+                    gameDeleteAlertOpen(false);
+                }
+            };
+            menuItemList.push(closeGame);
+        }
+
+        if (this.isCurrentUserCreator()) {
+            let deleteGame: AdaptiveMenuItem = {
+                key: "delete",
+                content: Localizer.getString("DeleteGame"),
+                icon: <TrashCanIcon outline={true} />,
+                onClick: () => {
+                    if (getStore().progressStatus.deleteActionInstance != ProgressState.InProgress) {
+                        setProgressStatus({ deleteActionInstance: ProgressState.NotStarted });
+                    }
+                    gameDeleteAlertOpen(true);
+                    gameExpiryChangeAlertOpen(false);
+                    gameCloseAlertOpen(false);
+                }
+            };
+            menuItemList.push(deleteGame);
+        }
+        return menuItemList;
+    }
     /**
      * Method to return the view based on the user selection
      */
@@ -81,12 +136,12 @@ export default class SummaryPage extends React.Component<any, any> {
                 {this.getMyScores()}
                 {this.getLeaderBoard()}
             </Flex>
-        )
-    };
+        );
+    }
 
     // Get title section of summary view
     private getTitleContainer(): JSX.Element {
-        const marginTop = this.isCurrentUserCreator() ? "-24px" : "0px"
+        const marginTop = this.isCurrentUserCreator() ? "-24px" : "0px";
         return (
             <Flex className="summary-header title-container-background-color"
                 role="group"
@@ -98,7 +153,10 @@ export default class SummaryPage extends React.Component<any, any> {
                         {this.getMenu()}
                     </Flex>
                     <Card.Header fitted>
-                        <Text content={this.getGameTitle()} weight="bold" style={{ marginTop: marginTop, paddingRight: "32px", marginBottom: "8px" }} />
+                        <Text content={this.getGameTitle()}
+                            weight="bold"
+                            className="summary-title-card-header-text"
+                            style={{ marginTop: marginTop }} />
                         {this.gameDueDateString()}
                     </Card.Header>
                 </Card>
@@ -196,62 +254,7 @@ export default class SummaryPage extends React.Component<any, any> {
         return getStore().actionInstance && getStore().actionInstance.status == actionSDK.ActionStatus.Active;
     }
 
-    // Helper method to perpare menu items
-    getMenuItems(): AdaptiveMenuItem[] {
-        let menuItemList: AdaptiveMenuItem[] = [];
-        if (this.isCurrentUserCreator() && this.isGameActive()) {
-            let changeExpiry: AdaptiveMenuItem = {
-                key: "changeDueDate",
-                content: Localizer.getString("ChangeDueDate"),
-                icon: <CalendarIcon outline={true} />,
-                onClick: () => {
-                    if (getStore().progressStatus.updateActionInstance != ProgressState.InProgress) {
-                        setProgressStatus({ updateActionInstance: ProgressState.NotStarted });
-                    }
-                    gameExpiryChangeAlertOpen(true);
-                    gameDeleteAlertOpen(false);
-                    gameCloseAlertOpen(false);
-                }
-            };
-
-            menuItemList.push(changeExpiry);
-
-            let closeGame: AdaptiveMenuItem = {
-                key: "close",
-                content: Localizer.getString("CloseGame"),
-                icon: <BanIcon outline={true} />,
-                onClick: () => {
-                    if (getStore().progressStatus.closeActionInstance != ProgressState.InProgress) {
-                        setProgressStatus({ closeActionInstance: ProgressState.NotStarted });
-                    }
-                    gameCloseAlertOpen(true);
-                    gameExpiryChangeAlertOpen(false);
-                    gameDeleteAlertOpen(false);
-                }
-            };
-            menuItemList.push(closeGame);
-        }
-
-        if (this.isCurrentUserCreator()) {
-            let deleteGame: AdaptiveMenuItem = {
-                key: "delete",
-                content: Localizer.getString("DeleteGame"),
-                icon: <TrashCanIcon outline={true} />,
-                onClick: () => {
-                    if (getStore().progressStatus.deleteActionInstance != ProgressState.InProgress) {
-                        setProgressStatus({ deleteActionInstance: ProgressState.NotStarted });
-                    }
-                    gameDeleteAlertOpen(true);
-                    gameExpiryChangeAlertOpen(false);
-                    gameCloseAlertOpen(false);
-                }
-            };
-            menuItemList.push(deleteGame);
-        }
-        return menuItemList;
-    }
-
-    // Helper method which provides a card with close game settings 
+    // Helper method which provides a card with close game settings
     private setUpGameCloseCard() {
         if (getStore().isGameCloseBoxOpen) {
             return (
@@ -263,16 +266,16 @@ export default class SummaryPage extends React.Component<any, any> {
                         className="card-container-background-color card-padding">
                         <Card.Header fitted >
                             <Flex column gap="gap.small" >
-                                <Text content="Close tournament" weight="bold"  style={{fontSize:"16px"}}/>
-                                <Text content="Are you sure you want to close this tournament?" error style={{padding:"6px 0px 0px 0px", fontSize:"12px"}} />
-                                <Flex gap="gap.small" styles={{ justifyContent: "flex-end", padding:"16px 0px 8px 0px" }}>
-                                    <Button content="Cancel" secondary
+                                <Text content={Localizer.getString("CloseGame")} weight="bold" className="menu-messgae-font-size" />
+                                <Text content={Localizer.getString("CloseGameAlertText")} error className="menu-card-alert-text-setting" />
+                                <Flex gap="gap.small" className="menu-button-container-paddiing">
+                                    <Button content={Localizer.getString("Cancel")} secondary
                                         onClick={
                                             () => {
                                                 gameCloseAlertOpen(false);
                                             }
                                         } />
-                                    <Button content="Confirm" primary
+                                    <Button content={Localizer.getString("Confirm")} primary
                                         onClick={() => {
                                             closeGame();
                                         }} />
@@ -285,7 +288,7 @@ export default class SummaryPage extends React.Component<any, any> {
         }
     }
 
-    // Helper method which provides a card with delete game settings 
+    // Helper method which provides a card with delete game settings
     private setUpGameDeleteCard() {
         if (getStore().isDeleteSurveyBoxOpen) {
             return (
@@ -297,16 +300,16 @@ export default class SummaryPage extends React.Component<any, any> {
                         className="card-container-background-color card-padding">
                         <Card.Header fitted >
                             <Flex column gap="gap.small" >
-                                <Text content="Delete tournament" weight="bold"  style={{fontSize:"16px"}} />
-                                <Text content="Are you sure you want to delete this tournament?" error style={{padding:"6px 0px 0px 0px", fontSize:"12px"}}/>
-                                <Flex gap="gap.small" styles={{ justifyContent: "flex-end", padding:"16px 0px 8px 0px" }}>
-                                    <Button content="Cancel" secondary
+                                <Text content={Localizer.getString("DeleteGame")} weight="bold" className="menu-messgae-font-size" />
+                                <Text content={Localizer.getString("DeleteGameAlertText")} error className="menu-card-alert-text-setting" />
+                                <Flex gap="gap.small" className="menu-button-container-paddiing">
+                                    <Button content={Localizer.getString("Cancel")} secondary
                                         onClick={
                                             () => {
                                                 gameDeleteAlertOpen(false);
                                             }
                                         } />
-                                    <Button content="Confirm" primary
+                                    <Button content={Localizer.getString("Confirm")} primary
                                         onClick={() => {
                                             deleteGame();
                                         }} />
@@ -332,21 +335,28 @@ export default class SummaryPage extends React.Component<any, any> {
                         className="card-container-background-color card-padding" >
                         <Card.Header fitted >
                             <Flex column gap="gap.smaller" >
-                                <Text content="Change due date" weight="bold" style={{fontSize:"16px"}}/>
+                                <Text content={Localizer.getString("ChangeDueDate")} weight="bold" className="menu-messgae-font-size" />
                                 <Flex gap="gap.smaller">
-                                    <DateTimePickerView showTimePicker locale={getStore().context.locale} renderForMobile={UxUtils.renderingForMobile()} minDate={new Date()} value={new Date(getStore().dueDate)} placeholderDate={Localizer.getString("SelectADate")} placeholderTime={Localizer.getString("SelectATime")} onSelect={(date: Date) => {
-                                        setDueDate(date.getTime());
-                                    }} />
-                                    {getStore().progressStatus.updateActionInstance == ProgressState.Failed ? <Text content={Localizer.getString("SomethingWentWrong")} error /> : null}
+                                    <DateTimePickerView showTimePicker locale={getStore().context.locale}
+                                        renderForMobile={UxUtils.renderingForMobile()}
+                                        minDate={new Date()} value={new Date(getStore().dueDate)}
+                                        placeholderDate={Localizer.getString("SelectADate")}
+                                        placeholderTime={Localizer.getString("SelectATime")}
+                                        onSelect={(date: Date) => {
+                                            setDueDate(date.getTime());
+                                        }} />
+                                    {getStore().progressStatus.updateActionInstance == ProgressState.Failed ?
+                                        <Text content={Localizer.getString("SomethingWentWrong")} error />
+                                        : null}
                                 </Flex>
-                                <Flex gap="gap.smaller" styles={{ justifyContent: "flex-end", padding:"16px 0px 8px 0px" }}>
-                                    <Button content="Cancel" secondary
+                                <Flex gap="gap.smaller" className="menu-button-container-paddiing">
+                                    <Button content={Localizer.getString("Cancel")} secondary
                                         onClick={
                                             () => {
                                                 gameExpiryChangeAlertOpen(false);
                                             }
                                         } />
-                                    <Button content="Change" primary
+                                    <Button content={Localizer.getString("Change")} primary
                                         onClick={() => {
                                             updateDueDate(getStore().dueDate);
                                         }} />

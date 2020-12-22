@@ -174,7 +174,7 @@ export class Settings extends React.PureComponent<ISettingsComponentProps> {
     /**
     * helper method to render the multiple play setting checkbox in creation view
     */
-   
+
     private renderAllowMultiplePlaySettingSection() {
         return (
             <Flex className="adjust-checkbox checkbox-gap additional-setting-paddig">

@@ -5,7 +5,13 @@ import { setProgressState } from "./../actions/CreationActions";
 import { toJS } from "mobx";
 import { Localizer } from "../utils/Localizer";
 import { orchestrator } from "satcheljs";
-import { setContext, initialize, callActionInstanceCreationAPI, updateTitle, setSendingFlag, shouldValidateUI } from "../actions/CreationActions";
+import {
+    setContext,
+    initialize,
+    callActionInstanceCreationAPI,
+    updateTitle, setSendingFlag,
+    shouldValidateUI
+} from "../actions/CreationActions";
 import { ProgressState } from "../utils/SharedEnum";
 import getStore from "../store/CreationStore";
 import { Utils } from "../utils/Utils";
@@ -68,14 +74,14 @@ orchestrator(callActionInstanceCreationAPI, async () => {
     actionInstance.dataTables[0].dataColumns.push(gamePlayer);
     // Set responses visibility
     actionInstance.dataTables[0].rowsVisibility = getStore().settings.resultVisibility ?
-    actionSDK.Visibility.Sender : actionSDK.Visibility.All;
+        actionSDK.Visibility.Sender : actionSDK.Visibility.All;
 
     actionInstance.dataTables[0].canUserAddMultipleRows = getStore().settings.isMultiResponseAllowed;
 
     if (validateActionInstance(actionInstance)) {
         setSendingFlag();
         prepareActionInstance(actionInstance, toJS(getStore().context));
-        const res = await ActionSdkHelper.createActionInstance(actionInstance);
+        await ActionSdkHelper.createActionInstance(actionInstance);
     } else {
         shouldValidateUI(true);
     }

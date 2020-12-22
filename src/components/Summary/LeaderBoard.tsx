@@ -27,7 +27,7 @@ export class LeaderBoardView extends React.PureComponent<any, any> {
     }
     render() {
 
-        // preparing the leader baord 
+        // preparing the leader baord
         return (
             <>
                 {this.scores && this.scores.length ?
@@ -59,7 +59,7 @@ export class LeaderBoardView extends React.PureComponent<any, any> {
             return { visible: prev.visible + 3 };
         });
     }
-    
+
     // Helper method to get the list items
     private getListItems(): any[] {
         let items = [];

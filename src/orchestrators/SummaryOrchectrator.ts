@@ -28,11 +28,6 @@ import * as actionSDK from "@microsoft/m365-action-sdk";
 import { ActionSdkHelper } from "../helper/ActionSdkHelper";
 
 /**
- * Summary view orchestrators to fetch data for current action, perform any action on that data and dispatch further actions to modify stores
- */
-
-
-/**
 * initialize(): initialize instance to prepare the summary view
 */
 orchestrator(initialize, async () => {
@@ -112,15 +107,12 @@ orchestrator(updateDueDate, async (actionMessage) => {
                 gameExpiryChangeAlertOpen(false);
             } else {
                 callback(false);
-                //handleError(updateActionInstance.error, "updateDueDate");
             }
         } catch (error) {
             callback(false);
-            // handleError(error, "updateDueDate");
         }
     }
 });
-
 
 /**
 * closeGamey(): Close the game. Sbuscribers will no longer able to respond.
@@ -145,11 +137,9 @@ orchestrator(closeGame, async () => {
                 await ActionSdkHelper.closeView();
             } else {
                 failedCallback();
-                //handleError(updateActionInstance.error, "closegame");
             }
         } catch (error) {
             failedCallback();
-            //handleError(error, "closegame");
         }
     }
 });
@@ -171,14 +161,9 @@ orchestrator(deleteGame, async () => {
                 await ActionSdkHelper.closeView();
             } else {
                 failedCallback();
-                //handleError(deleteInstance.error, "deleteInstance");
             }
         } catch (error) {
             failedCallback();
-            // handleError(error, "deleteInstance");
         }
     }
 });
-
-
-

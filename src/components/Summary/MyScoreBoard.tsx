@@ -67,7 +67,7 @@ export class MyScoreBoard extends React.PureComponent<any, any> {
             </div>
         );
     }
-    
+
     // helper method to increase the row visibility count
     private showMore() {
         this.setState((prev) => {

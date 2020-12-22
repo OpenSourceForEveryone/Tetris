@@ -3,8 +3,8 @@
 
 import * as React from "react";
 import "./InputBox.scss";
-import { Input, InputProps, Text, Flex, ShorthandValue, BoxProps, ExclamationCircleIcon } from "@fluentui/react-northstar";
-import { Utils } from "../../utils/Utils"; 
+import { Input, InputProps, Text, Flex } from "@fluentui/react-northstar";
+import { Utils } from "../../utils/Utils";
 
 export interface IInputBoxProps extends InputProps {
     multiline?: boolean;

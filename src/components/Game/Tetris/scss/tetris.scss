@@ -2,7 +2,6 @@
 
 html {
     box-sizing: border-box;
-    font: 16px sans-serif;
 }
 
 *,
@@ -10,6 +9,8 @@ html {
 *::after {
     box-sizing: inherit;
 }
+
+:focus { outline: none; }
 
 .tetris {
     padding: 8px;
@@ -164,7 +165,7 @@ html {
 }
 
 .col-8 {
-    background-color:rgba(37, 36, 35, .5);
+    background-color:#7779ab;
 }
 
 /* Styles for buttons */
