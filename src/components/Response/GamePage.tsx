@@ -3,20 +3,21 @@
 
 import * as React from "react";
 import { observer } from "mobx-react";
-import getStore from "./../../store/ResponseStore";
-import "./game.scss";
+import getStore from "../../store/ResponseStore";
+import "./GamePage.scss";
 import { Localizer } from "../../utils/Localizer";
 import { ErrorView } from "../ErrorView";
-import { ProgressState } from "./../../utils/SharedEnum";
+import { ProgressState } from "../../utils/SharedEnum";
 import { ActionSdkHelper } from "../../helper/ActionSdkHelper";
 import InstructionView from "./InstructionView";
 import { UxUtils } from "../../utils/UxUtils";
 import { Flex } from "@fluentui/react-northstar";
-import Tetris from "./Tetris/Tetris";
-import CongratulationView from "./CongrtulationView";
+import TetrisGame from "./TetrisGame";
+import GameEndView from "./GameEndView";
+import { Constants } from "../../utils/Constants";
 
 /**
- *
+ * <GamePage> component for response view
  * @observer decorator on the component this is what tells MobX to rerender the component whenever the data it relies on changes.
  */
 @observer
@@ -68,19 +69,19 @@ export default class GamePage extends React.Component<any, any> {
         }
     }
 
-     /**
-     * Method to return game app component
+    /**
+     * Method to return game app component based on the device
     **/
     private getGamePage(): JSX.Element {
-        if(UxUtils.renderingForMobile()) {
 
-            this.boardHeight = 20;
-            this.boardWidth = 12;
+        if (UxUtils.renderingForMobile()) {
+            this.boardHeight = Constants.BOARD_HEIGHT_FOR_MOBILE;
+            this.boardWidth = Constants.BOARD_WIDTH_FOR_MOBILE;
         } else {
-            this.boardHeight = 20;
-            this.boardWidth = 14;
+            this.boardHeight = Constants.BOARD_HEIGHT_FOR_DESKTOP;
+            this.boardWidth = Constants.BOARD_WIDTH_FOR_DESKTOP;
         }
-        return   <Tetris boardWidth={this.boardWidth} boardHeight={this.boardHeight} tabIndex={0} />;
+        return <TetrisGame boardWidth={this.boardWidth} boardHeight={this.boardHeight} tabIndex={0} />;
 
     }
 
@@ -90,7 +91,7 @@ export default class GamePage extends React.Component<any, any> {
             DontShowTheGameInstruction={Localizer.getString("DontShowTheGameInstruction")}
             InstructionContent={this.getInstructionContent()}
             HowToPlay={Localizer.getString("HowToPlay")}
-            Play = {Localizer.getString("PlayButton")}
+            Play={Localizer.getString("PlayButton")}
         />);
     }
 
@@ -102,7 +103,7 @@ export default class GamePage extends React.Component<any, any> {
                 className="body-container"
                 id="bodyContainer"
             >
-                <CongratulationView gameScore={getStore().playerPrevScore} shouldShowAlert="true" />
+                <GameEndView gameScore={getStore().playerPrevScore} shouldShowAlert="true" />
             </Flex>
         );
     }

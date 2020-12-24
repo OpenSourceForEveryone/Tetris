@@ -4,11 +4,10 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 import getStore, { LeaderBoard } from "../../store/SummaryStore";
-import "./summary.scss";
-import {
-    List
-} from "@fluentui/react-northstar";
+import "./SummaryPage.scss";
+import { List } from "@fluentui/react-northstar";
 import { Localizer } from "../../utils/Localizer";
+import { Constants } from "../../utils/Constants";
 
 /**
  * <LeaderBoardView> component for Leaderboard on summary page
@@ -21,7 +20,7 @@ export class LeaderBoardView extends React.PureComponent<any, any> {
         super(props);
         this.scores = getStore().leaderBoard;
         this.state = {
-            visible: 3
+            visible: Constants.DEFAULT_NUMBER_OF_RECORD
         };
         this.showMore = this.showMore.bind(this);
     }
@@ -37,10 +36,10 @@ export class LeaderBoardView extends React.PureComponent<any, any> {
                             aria-label="staticHeadlessTable"
                             className="table-container" />
                         {
-                            this.scores.length > 3 && this.scores.length > this.state.visible ?
-                            <span className="link leaderboard-link" onClick={this.showMore}>+ {Localizer.getString("LoadMore")}</span>
-                            :
-                            <div> </div>
+                            this.scores.length > Constants.DEFAULT_NUMBER_OF_RECORD && this.scores.length > this.state.visible ?
+                                <span className="link leaderboard-link" onClick={this.showMore}>+ {Localizer.getString("LoadMore")}</span>
+                                :
+                                <div> </div>
                         }
                     </> :
                     <div className="content">
@@ -56,7 +55,7 @@ export class LeaderBoardView extends React.PureComponent<any, any> {
     // helper method to increase the row visibility count
     private showMore() {
         this.setState((prev) => {
-            return { visible: prev.visible + 3 };
+            return { visible: prev.visible + Constants.DEFAULT_NUMBER_OF_RECORD };
         });
     }
 

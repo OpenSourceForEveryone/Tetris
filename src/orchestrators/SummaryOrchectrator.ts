@@ -28,7 +28,7 @@ import * as actionSDK from "@microsoft/m365-action-sdk";
 import { ActionSdkHelper } from "../helper/ActionSdkHelper";
 
 /**
-* initialize(): initialize instance to prepare the summary view
+* initialize(): instance instance to prepare the summary view
 */
 orchestrator(initialize, async () => {
     let currentContext = getStore().progressStatus.currentContext;

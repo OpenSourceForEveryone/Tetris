@@ -14,10 +14,83 @@ export class Constants {
     public static readonly ACTION_RESULT_FILE_NAME_MAX_LENGTH: number = 50;
     public static readonly GAME_TITLE_MAX_LENGTH: number = 240;
 
+    // Game setting constants
     public static readonly GAME_LOGO_PATH: String = "images/appIcon.png";
     public static readonly GAME_CONGRATULATION_IMAGE_PATH = "images/trophy.png";
     public static readonly INSTRUCTION_PAGE_LOCALSTORAGE = "TetrisGameInstructionPageShow";
     public static readonly GAME_SPEED = 500;
+    public static readonly BOARD_HEIGHT_FOR_MOBILE = 20;
+    public static readonly BOARD_WIDTH_FOR_MOBILE = 12;
+    public static readonly BOARD_HEIGHT_FOR_DESKTOP =20;
+    public static readonly BOARD_WIDTH_FOR_DESKTOP = 14;
+    public static readonly DEFAULT_NUMBER_OF_RECORD = 3;
+    public static readonly RECORD_INCREMENT_FACTOR = 3;
+    public static readonly SCORE_INCREMENT_FACTOR = 100;
+    public static readonly KEY_MAP = {
+        UP: 38,
+        DOWN: 40,
+        LEFT: 37,
+        RIGHT: 39,
+        SPACE: 32
+    };
+    public static readonly TILES: any[] = [
+        [
+            // The default square
+            [[0, 0], [0, 0], [0, 0], [0, 0]],
+            [[0, 0], [0, 0], [0, 0], [0, 0]],
+            [[0, 0], [0, 0], [0, 0], [0, 0]],
+            [[0, 0], [0, 0], [0, 0], [0, 0]]
+        ],
+        [
+            // The cube tile (block 2x2)
+            [[0, 0], [1, 0], [0, 1], [1, 1]],
+            [[0, 0], [1, 0], [0, 1], [1, 1]],
+            [[0, 0], [1, 0], [0, 1], [1, 1]],
+            [[0, 0], [1, 0], [0, 1], [1, 1]]
+        ],
+        [
+            // The I tile
+            [[0, -1], [0, 0], [0, 1], [0, 2]],
+            [[-1, 0], [0, 0], [1, 0], [2, 0]],
+            [[0, -1], [0, 0], [0, 1], [0, 2]],
+            [[-1, 0], [0, 0], [1, 0], [2, 0]]
+        ],
+        [
+            // The T tile
+            [[0, 0], [-1, 0], [1, 0], [0, -1]],
+            [[0, 0], [1, 0], [0, 1], [0, -1]],
+            [[0, 0], [-1, 0], [1, 0], [0, 1]],
+            [[0, 0], [-1, 0], [0, 1], [0, -1]]
+        ],
+        [
+            // The inverse L tile
+            [[0, 0], [-1, 0], [1, 0], [-1, -1]],
+            [[0, 0], [0, 1], [0, -1], [1, -1]],
+            [[0, 0], [1, 0], [-1, 0], [1, 1]],
+            [[0, 0], [0, 1], [0, -1], [-1, 1]]
+        ],
+        [
+            // The L tile
+            [[0, 0], [1, 0], [-1, 0], [1, -1]],
+            [[0, 0], [0, 1], [0, -1], [1, 1]],
+            [[0, 0], [1, 0], [-1, 0], [-1, 1]],
+            [[0, 0], [0, 1], [0, -1], [-1, -1]]
+        ],
+        [
+            // The Z tile
+            [[0, 0], [1, 0], [0, -1], [-1, -1]],
+            [[0, 0], [1, 0], [0, 1], [1, -1]],
+            [[0, 0], [1, 0], [0, -1], [-1, -1]],
+            [[0, 0], [1, 0], [0, 1], [1, -1]]
+        ],
+        [
+            // The inverse Z tile
+            [[0, 0], [-1, 0], [0, -1], [1, -1]],
+            [[0, 0], [0, -1], [1, 0], [1, 1]],
+            [[0, 0], [-1, 0], [0, -1], [1, -1]],
+            [[0, 0], [0, -1], [1, 0], [1, 1]]
+        ]
+    ];
 
     public static readonly FOCUSABLE_ITEMS = {
         All: ["a[href]", "area[href]", "input:not([disabled])", "select:not([disabled])", "textarea:not([disabled])", "button:not([disabled])", '[tabindex="0"]'],

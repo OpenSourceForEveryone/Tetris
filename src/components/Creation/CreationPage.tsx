@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 
 import * as React from "react";
-import { callActionInstanceCreationAPI, updateSettings } from "./../../actions/CreationActions";
-import "./creation.scss";
+import {
+    callActionInstanceCreationAPI,
+    updateSettings
+} from "./../../actions/CreationActions";
+import "./Creation.scss";
 import "./CustomSettings.scss";
 import "./Settings.scss";
 import getStore from "./../../store/CreationStore";
@@ -13,7 +16,11 @@ import { Localizer } from "../../utils/Localizer";
 import { ProgressState } from "./../../utils/SharedEnum";
 import { ErrorView } from "../ErrorView";
 import { UxUtils } from "./../../utils/UxUtils";
-import { Settings, ISettingsComponentProps, ISettingsComponentStrings } from "./Settings";
+import {
+    Settings,
+    ISettingsComponentProps,
+    ISettingsComponentStrings
+} from "./Settings";
 import { Constants } from "./../../utils/Constants";
 import { ActionSdkHelper } from "../../helper/ActionSdkHelper";
 

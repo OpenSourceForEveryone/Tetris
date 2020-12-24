@@ -4,8 +4,9 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 import getStore, { MyGameScore } from "../../store/SummaryStore";
+import { Constants } from "../../utils/Constants";
 import { Localizer } from "../../utils/Localizer";
-import "./summary.scss";
+import "./SummaryPage.scss";
 
 /**
  * <MyScoreBoard> component for score board on summary page
@@ -18,7 +19,7 @@ export class MyScoreBoard extends React.PureComponent<any, any> {
         super(props);
         this.scores = getStore().scoreBoard;
         this.state = {
-            visible: 3
+            visible: Constants.DEFAULT_NUMBER_OF_RECORD
         };
         this.showMore = this.showMore.bind(this);
     }
@@ -36,17 +37,17 @@ export class MyScoreBoard extends React.PureComponent<any, any> {
                         }
                     </div>
                     {
-                        this.scores.length > 3 && this.scores.length > this.state.visible ?
-                        <span className="link my-score-link" onClick={this.showMore}>+ {Localizer.getString("LoadMore")}</span>
-                        :
-                        <div></div>
+                        this.scores.length > Constants.DEFAULT_NUMBER_OF_RECORD && this.scores.length > this.state.visible ?
+                            <span className="link my-score-link" onClick={this.showMore}>+ {Localizer.getString("LoadMore")}</span>
+                            :
+                            <div></div>
                     }
                 </>
                 :
                 <div className="content">
                     <label>
-                    {this.props.youHaveNotResponded}
-                </label>
+                        {this.props.youHaveNotResponded}
+                    </label>
                 </div>
         );
     }
@@ -71,7 +72,7 @@ export class MyScoreBoard extends React.PureComponent<any, any> {
     // helper method to increase the row visibility count
     private showMore() {
         this.setState((prev) => {
-            return { visible: prev.visible + 3 };
+            return { visible: prev.visible + Constants.RECORD_INCREMENT_FACTOR };
         });
     }
 }

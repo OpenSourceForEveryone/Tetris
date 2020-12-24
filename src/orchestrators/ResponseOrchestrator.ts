@@ -10,6 +10,9 @@ import { Localizer } from "../utils/Localizer";
 import { ProgressState } from "../utils/SharedEnum";
 import { ActionSdkHelper } from "../helper/ActionSdkHelper";
 
+/**
+ * initialize(): instance of response view fetching action context, localization and setting details
+*/
 orchestrator(initialize, async () => {
     setProgressState({ currentContext: ProgressState.InProgress });
     setProgressState({ settingInstance: ProgressState.InProgress });

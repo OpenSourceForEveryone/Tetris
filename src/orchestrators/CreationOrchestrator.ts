@@ -27,7 +27,7 @@ function validateActionInstance(actionInstance: actionSDK.Action): boolean {
 }
 
 /**
- * Initialization of createion view fetching action context and localization details
+ * initialize(): instance of createion view fetching action context and localization details
  */
 orchestrator(initialize, async () => {
     setProgressState(ProgressState.InProgress);

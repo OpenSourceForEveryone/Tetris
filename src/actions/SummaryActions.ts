@@ -23,9 +23,9 @@ export enum GameSummaryAction {
     setGameStatus = "setGameStatus",
     setLeaderboardVisibilityFlag = "setLeaderboardVisibilityFlag",
     setIsActionDeleted = "setIsActionDeleted",
-    gameCloseAlertOpen = "surveyCloseAlertOpen",
-    gameExpiryChangeAlertOpen = "surveyExpiryChangeAlertOpen",
-    gameDeleteAlertOpen = "surveyDeleteAlertOpen",
+    gameCloseAlertOpen = "gameCloseAlertOpen",
+    gameExpiryChangeAlertOpen = "gameExpiryChangeAlertOpen",
+    gameDeleteAlertOpen = "gameDeleteAlertOpen",
     updateDueDate = "updateDueDate",
     closeGame = "closeGame",
     deleteGame = "deleteGame",
@@ -39,19 +39,19 @@ export let fetchUserDetails = action(GameSummaryAction.fetchUserDetails, (userId
 }));
 
 export let setGameStatus = action(GameSummaryAction.setGameStatus, (status: actionSDK.ActionStatus) => ({
-    status:status
+    status: status
 }));
 
 export let setLeaderboardVisibilityFlag = action(GameSummaryAction.setLeaderboardVisibilityFlag);
 
 export let fetchActionInstanceRows = action(GameSummaryAction.fetchActionInstanceRows);
 
-export let fetchMyScore = action(GameSummaryAction.fetchMyScore,  (myScore: actionSDK.ActionDataRow[]) => ({
-    myScore:myScore
+export let fetchMyScore = action(GameSummaryAction.fetchMyScore, (myScore: actionSDK.ActionDataRow[]) => ({
+    myScore: myScore
 }));
 
 export let fetchLeaderBoard = action(GameSummaryAction.fetchLeaderBoard, (scores: actionSDK.ActionDataRow[]) => ({
-    scores:scores
+    scores: scores
 }));
 
 export let fetchLocalization = action(GameSummaryAction.fetchLocalization);

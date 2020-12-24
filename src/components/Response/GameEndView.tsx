@@ -4,20 +4,23 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 import { Flex, FlexItem, Button, Text } from "@fluentui/react-northstar";
-import "./game.scss";
+import "./GamePage.scss";
 import { ActionSdkHelper } from "../../helper/ActionSdkHelper";
 import { Localizer } from "../../utils/Localizer";
 import { Constants } from "../../utils/Constants";
 
 /**
- * <CongratulationView> component for congratulation view
+ * <GameEndView> component for game end view
  * @observer decorator on the component this is what tells MobX to rerender the component whenever the data it relies on changes.
  */
-
 @observer
-export default class CongratulationView extends React.Component<any, any> {
+export default class GameEndView extends React.Component<any, any> {
     constructor(props) {
         super(props);
+    }
+
+    componentDidMount() {
+        new Image().src = Constants.GAME_CONGRATULATION_IMAGE_PATH;
     }
     render() {
         return (
@@ -43,7 +46,7 @@ export default class CongratulationView extends React.Component<any, any> {
                 <FlexItem push>
                     <Button
                         primary
-                        content= {Localizer.getString("SubmitScore")}
+                        content={Localizer.getString("SubmitScore")}
                         onClick={() => {
                             ActionSdkHelper.addScore(this.props.gameScore);
                             ActionSdkHelper.closeView();

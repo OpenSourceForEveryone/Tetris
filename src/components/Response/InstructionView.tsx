@@ -4,9 +4,9 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 import { Avatar, Card, Flex, Text, Checkbox, FlexItem, Button } from "@fluentui/react-northstar";
-import "./game.scss";
+import "./GamePage.scss";
 import { UxUtils } from "../../utils/UxUtils";
-import Tetris from "./Tetris/Tetris";
+import TetrisGame from "./TetrisGame";
 import { Constants } from "../../utils/Constants";
 
 /**
@@ -22,7 +22,7 @@ export default class InstructionView extends React.Component<any, any> {
         super(props);
         this.state = {
             startGame: false,
-            dontShowFlagSet: false
+            dontShowFlag: false
         };
         this.startGame = this.startGame.bind(this);
     }
@@ -33,30 +33,30 @@ export default class InstructionView extends React.Component<any, any> {
     }
     setLocalStorageFlag() {
         this.setState(prev => {
-            return { dontShowFlagSet: !prev.dontShowFlagSet };
+            return { dontShowFlag: !prev.dontShowFlag };
         });
     }
 
     render() {
-        if(UxUtils.renderingForMobile()) {
 
-            this.boardHeight = 20;
-            this.boardWidth = 12;
+        if (UxUtils.renderingForMobile()) {
+            this.boardHeight = Constants.BOARD_HEIGHT_FOR_MOBILE;
+            this.boardWidth = Constants.BOARD_WIDTH_FOR_MOBILE;
         } else {
-            this.boardHeight = 20;
-            this.boardWidth = 14;
+            this.boardHeight = Constants.BOARD_HEIGHT_FOR_DESKTOP;
+            this.boardWidth = Constants.BOARD_WIDTH_FOR_DESKTOP;
         }
 
         return (
             this.state.startGame ?
-                <Tetris boardWidth={this.boardWidth} boardHeight={this.boardHeight} tabIndex={0} /> :
+                <TetrisGame boardWidth={this.boardWidth} boardHeight={this.boardHeight} tabIndex={0} /> :
                 <Flex className="body-container instruction" column gap="gap.medium">
                     {this.renderInstruction()}
                     {this.renderFooterSection()}
                 </Flex>
         );
     }
-     // Helper method to render the Instriuction view
+    // Helper method to render the Instriuction view
     renderInstruction(): JSX.Element {
         return (
             <div>
@@ -68,14 +68,14 @@ export default class InstructionView extends React.Component<any, any> {
                             </Flex>
                             <Flex column>
                                 <Text content={this.props.HowToPlay} weight="bold" size="large" />
-                                <Text content={this.props.InstructionContent} className="instruction-content-padding" />
+                                <Text content={UxUtils.formateStringWithLineBreak(this.props.InstructionContent)} className="instruction-content-padding" />
                             </Flex>
                         </Flex>
                     </Card.Header>
                 </Card>
                 <Checkbox className="checklist-checkbox  checkbox-top-padding"
                     label={this.props.DontShowTheGameInstruction}
-                    checked={this.state.dontShowFlagSet}
+                    checked={this.state.dontShowFlag}
                     onChange={
                         () => {
                             this.setLocalStorageFlag();
@@ -96,7 +96,7 @@ export default class InstructionView extends React.Component<any, any> {
                         content={this.props.Play}
                         onClick={() => {
                             this.startGame();
-                            UxUtils.setLocalStorge(this.state.dontShowFlagSet);
+                            UxUtils.setLocalStorge(this.state.dontShowFlag);
                         }}>
                     </Button>
                 </FlexItem>

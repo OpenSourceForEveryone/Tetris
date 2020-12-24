@@ -20,6 +20,9 @@ export class ActionSdkHelper {
         }
     }
 
+    /**
+     * API to fetch current user details
+     */
     public static async getCurrentUser() {
         const actionContext = (await this.getActionContext()).context;
         let request = new actionSDK.GetSubscriptionMembers.Request(actionContext.subscription, [actionContext.userId]);
@@ -60,22 +63,6 @@ export class ActionSdkHelper {
             return { success: true, dataRows: response.dataRows, continuationToken: response.continuationToken };
         } catch (error) {
             Logger.logError(`getActionDataRows failed, Error: ${error.category}, ${error.code}, ${error.message}`);
-            return { success: false, error: error };
-        }
-    }
-
-    /*
-    *   @desc Service API Request for getting the membercount
-    *   @param subscription - action subscription: actionSDK.ActionSdkContext.subscription
-    */
-    public static async getSubscriptionMemberCount(subscription: actionSDK.Subscription) {
-        let request = new actionSDK.GetSubscriptionMemberCount.Request(subscription);
-        try {
-            let response = await actionSDK.executeApi(request) as actionSDK.GetSubscriptionMemberCount.Response;
-            Logger.logInfo(`getSubscriptionMemberCount success - Request: ${JSON.stringify(request)} Response: ${JSON.stringify(response)}`);
-            return { success: true, memberCount: response.memberCount };
-        } catch (error) {
-            Logger.logError(`getSubscriptionMemberCount failed, Error: ${error.category}, ${error.code}, ${error.message}`);
             return { success: false, error: error };
         }
     }
@@ -131,23 +118,6 @@ export class ActionSdkHelper {
     }
 
     /**
-     * @desc Service API Request for getting the nonResponders details
-     * @param actionId actionId
-     * @param subscriptionId subscriptionId
-     */
-    public static async getNonResponders(actionId: string, subscriptionId: string) {
-        let request = new actionSDK.GetActionSubscriptionNonParticipants.Request(actionId, subscriptionId);
-        try {
-            let response = await actionSDK.executeApi(request) as actionSDK.GetActionSubscriptionNonParticipants.Response;
-            Logger.logInfo(`getNonResponders success - Request: ${JSON.stringify(request)} Response: ${JSON.stringify(response)}`);
-            return { success: true, nonParticipants: response.nonParticipants };
-        } catch (error) {
-            Logger.logError(`getNonResponders failed, Error: ${error.category}, ${error.code}, ${error.message}`);
-            return { sucess: false, error: error };
-        }
-    }
-
-    /**
      * Method to update action instance data
      * @param data object of data we want modify
      */
@@ -163,6 +133,10 @@ export class ActionSdkHelper {
         }
     }
 
+   /**
+     * Method to update the data row
+     * @param dataRow action data row
+     */
     public static async addDataRow(dataRow: actionSDK.ActionDataRow) {
         let request = new actionSDK.AddActionDataRow.Request(dataRow);
         try {
@@ -175,6 +149,10 @@ export class ActionSdkHelper {
         }
     }
 
+    /**
+     * Method to add the score
+     * @param score game score
+     */
     public static async addScore(score: string) {
         const actionContext = (await this.getActionContext()).context;
         let data = {
@@ -191,6 +169,7 @@ export class ActionSdkHelper {
         await this.addDataRow(actiondata);
     }
 
+    // Helper method to fetch the scores for the current context
     public static async getScore() {
         const actionContext = (await this.getActionContext()).context;
         let dataTableName: string = "gameScore";
@@ -208,8 +187,6 @@ export class ActionSdkHelper {
      * API to close current view
      */
     public static async closeView() {
-
-        console.log(await this.getScore());
         let closeViewRequest = new actionSDK.CloseView.Request();
         await actionSDK.executeApi(closeViewRequest);
     }
@@ -230,23 +207,6 @@ export class ActionSdkHelper {
         }
     }
 
-    /**
-     * API to download CSV for the current action instance summary
-     * @param actionId actionID
-     * @param fileName filename of csv
-     */
-    public static async downloadCSV(actionId, fileName) {
-        let request = new actionSDK.DownloadActionDataRowsResult.Request(actionId, fileName);
-        try {
-            let response = actionSDK.executeApi(request);
-            Logger.logInfo(`downloadCSV success - Request: ${JSON.stringify(request)} Response: ${JSON.stringify(response)}`);
-            return { success: true };
-        } catch (error) {
-            Logger.logError(`downloadCSV failed, Error: ${error.category}, ${error.code}, ${error.message}`);
-            return { success: false, error: error };
-        }
-    }
-
     /*
     * @desc Gets the localized strings in which the app is rendered
     */
@@ -254,7 +214,6 @@ export class ActionSdkHelper {
         let request = new actionSDK.GetLocalizedStrings.Request();
         try {
             let response = await actionSDK.executeApi(request) as actionSDK.GetLocalizedStrings.Response;
-            console.log("getLocalizedStrings");
             return { success: true, strings: response.strings };
         } catch (error) {
             Logger.logError(`fetchLocalization failed, Error: ${error.category}, ${error.code}, ${error.message}`);

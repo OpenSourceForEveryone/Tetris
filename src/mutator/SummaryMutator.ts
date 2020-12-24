@@ -18,8 +18,7 @@ import {
     gameCloseAlertOpen,
     gameExpiryChangeAlertOpen,
     gameDeleteAlertOpen,
-    updateActionInstance,
-
+    updateActionInstance
 } from "./../actions/SummaryActions";
 import * as actionSDK from "@microsoft/m365-action-sdk";
 import { UxUtils } from "../utils/UxUtils";
@@ -39,6 +38,7 @@ mutator(setProgressStatus, (msg) => {
 mutator(setContext, (msg) => {
     const store = getStore();
     store.context = msg.context;
+    store.local = msg.context.locale;
 });
 
 mutator(setActionInstance, (msg) => {
@@ -72,7 +72,6 @@ mutator(setLeaderboardVisibilityFlag, () => {
         } else {
             getStore().isLeaderBoardVisible = false;
         }
-        console.log("isLeaderBoardVisible " + getStore().isLeaderBoardVisible);
     }
 });
 
@@ -150,7 +149,7 @@ mutator(gameExpiryChangeAlertOpen, (msg) => {
 
 mutator(gameDeleteAlertOpen, (msg) => {
     const store = getStore();
-    store.isDeleteSurveyBoxOpen = msg.open;
+    store.isDeleteGameBoxOpen = msg.open;
 });
 
 mutator(setIsActionDeleted, (msg) => {

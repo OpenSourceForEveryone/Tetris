@@ -4,7 +4,7 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 import getStore from "./../../store/SummaryStore";
-import "./summary.scss";
+import "./SummaryPage.scss";
 import { Localizer } from "../../utils/Localizer";
 import { ErrorView } from "../ErrorView";
 import { ProgressState } from "./../../utils/SharedEnum";
@@ -149,7 +149,7 @@ export default class SummaryPage extends React.Component<any, any> {
                 column gap="gap.smaller" >
                 <Card aria-roledescription="card avatar" fluid
                     className="card-container-background-color">
-                    <Flex style={{ justifyContent: "flex-end" }} vAlign="center">
+                    <Flex className="title-container-menu-item" vAlign="center">
                         {this.getMenu()}
                     </Flex>
                     <Card.Header fitted>
@@ -290,7 +290,7 @@ export default class SummaryPage extends React.Component<any, any> {
 
     // Helper method which provides a card with delete game settings
     private setUpGameDeleteCard() {
-        if (getStore().isDeleteSurveyBoxOpen) {
+        if (getStore().isDeleteGameBoxOpen) {
             return (
                 <Flex
                     role="group"

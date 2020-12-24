@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import GamePage from "./components/Game/GamePage";
+import GamePage from "./components/Response/GamePage";
 import { initialize } from "./actions/ResponseAction";
 import { ActionRootView } from "./components/ActionRootView";
 

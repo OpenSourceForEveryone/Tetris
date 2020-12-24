@@ -5,15 +5,13 @@ import {
     shouldValidateUI,
     setProgressState,
     setActionInstance,
-    fetchActionInstanceRowsForCurrentUser,
-
+    fetchActionInstanceRowsForCurrentUser
 } from "../actions/ResponseAction";
 import * as actionSDK from "@microsoft/m365-action-sdk";
 
 /**
  * Update view mutators to modify store data on which update view relies
  */
-
 mutator(setProgressState, (msg) => {
     const store = getStore();
     store.progressState = {

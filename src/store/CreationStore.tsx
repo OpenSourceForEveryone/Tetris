@@ -12,8 +12,6 @@ import "./../mutator/CreationMutator";
 export enum Page {
     Main,
     Settings,
-    Preview,
-    UpdateQuestion
 }
 /**
  * Creation store containing all data required for creation view
