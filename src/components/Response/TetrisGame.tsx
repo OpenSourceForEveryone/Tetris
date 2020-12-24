@@ -109,7 +109,6 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         let currentY = event.touches[0].clientY;
         let diffX = this.initialXPosition - currentX;
         let diffY = this.initialYPosition - currentY;
-
         if (Math.abs(diffX) > Math.abs(diffY)) {
             // sliding horizontally
             if (diffX > 0) {
@@ -151,7 +150,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
         window.addEventListener("keydown", this.handleKeyDown, false);
         window.addEventListener("touchstart", this.handleTouchStart, false);
-        window.addEventListener("touchmove", this.handleTouchStart, false);
+        window.addEventListener("touchmove", this.handleTouchMove, false);
     }
 
     /**
@@ -162,7 +161,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         window.clearInterval(this.state.timerId);
         document.removeEventListener("keydown", this.handleKeyDown);
         document.removeEventListener("touchstart", this.handleTouchStart);
-        document.removeEventListener("touchmove", this.handleTouchStart);
+        document.removeEventListener("touchmove", this.handleTouchMove);
     }
 
     /**
