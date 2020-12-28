@@ -34,6 +34,8 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
     private initialXPosition = null;
     private initialYPosition = null;
+    private touchStartTime = 0;
+    private moveDown = 0;
     constructor(props: any) {
         super(props);
 
@@ -94,6 +96,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         event.preventDefault();
         this.initialXPosition = event.touches[0].clientX;
         this.initialYPosition = event.touches[0].clientY;
+        this.touchStartTime = new Date().getTime();
     }
 
     // Event handler for touch events like swipes(left, right, top and down)
@@ -109,25 +112,39 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         let currentY = event.touches[0].clientY;
         let diffX = this.initialXPosition - currentX;
         let diffY = this.initialYPosition - currentY;
+        let touchDuration = (new Date().getTime() - this.touchStartTime);
+
         if (Math.abs(diffX) > Math.abs(diffY)) {
+            this.moveDown = Math.floor(touchDuration / 70) > this.props.boardWidth ?
+                this.props.boardWidth : Math.ceil(touchDuration / 70);
             // sliding horizontally
             if (diffX > 0) {
                 // swiped left
-                this.handleBoardUpdate("left");
+                while (this.moveDown-- > 0) {
+                    this.handleBoardUpdate("left");
+                }
 
             } else {
                 // swiped right
-                this.handleBoardUpdate("right");
+                while (this.moveDown-- > 0) {
+                    this.handleBoardUpdate("right");
+                }
             }
         } else {
             // sliding vertically
+            this.moveDown = Math.ceil(touchDuration / 20) > this.props.boardHeight ?
+                this.props.boardHeight : Math.ceil(touchDuration / 20);
             if (diffY < 0) {
                 // swip down
-                this.handleBoardUpdate("down");
+                while (this.moveDown-- > 0) {
+                    this.handleBoardUpdate("down");
+                }
             }
         }
         this.initialXPosition = null;
         this.initialYPosition = null;
+        this.touchStartTime = 0;
+        this.moveDown = 0;
         event.preventDefault();
     }
 
@@ -162,6 +179,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         document.removeEventListener("keydown", this.handleKeyDown);
         document.removeEventListener("touchstart", this.handleTouchStart);
         document.removeEventListener("touchmove", this.handleTouchMove);
+        this.touchStartTime = 0;
     }
 
     /**
@@ -180,6 +198,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         let yAdd = 0;
         let rotateAdd = 0;
         let tile = this.state.activeTile;
+        const noOfBlock = 4;
 
         // If tile should move to the left
         // set xAdd to -1
@@ -254,7 +273,6 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
                 // avoid collision
                 if ((row - level - key) <= tileHeight) { break; }
-
                 const xCoordinates = cordinateMap.get(key);
                 // validate the Game Level
                 let isLevelValid = true;
@@ -287,16 +305,16 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
             }
         }
 
-        // Test if tile should move horizontally
+        // check if tile should move horizontally
         if (xAdd !== 0) {
-            for (let i = 0; i <= 3; i++) {
+            for (let block = 0; block < noOfBlock; block++) {
                 // Test if tile can be moved without getting outside the board
                 if (
-                    xCoordinateOfActiveTile + xAdd + tiles[tile][rotate][i][0] >= 0
-                    && xCoordinateOfActiveTile + xAdd + tiles[tile][rotate][i][0] < this.props.boardWidth
+                    xCoordinateOfActiveTile + xAdd + tiles[tile][rotate][block][0] >= 0
+                    && xCoordinateOfActiveTile + xAdd + tiles[tile][rotate][block][0] < this.props.boardWidth
                 ) {
-                    if (field[yCoordinateOfActiveTile + tiles[tile][rotate][i][1]][xCoordinateOfActiveTile
-                        + xAdd + tiles[tile][rotate][i][0]] !== 0) {
+                    if (field[yCoordinateOfActiveTile + tiles[tile][rotate][block][1]][xCoordinateOfActiveTile
+                        + xAdd + tiles[tile][rotate][block][0]] !== 0) {
                         // Prevent the move
                         xAddIsValid = false;
                     }
@@ -318,18 +336,21 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
         // Test if tile should rotate
         if (rotateAdd !== 0) {
-            for (let i = 0; i <= 3; i++) {
+            console.log("xCoordinateOfActiveTile " + xCoordinateOfActiveTile);
+            console.log("yCoordinateOfActiveTile " + yCoordinateOfActiveTile);
+            console.table("tiles " + tiles[tile]);
+            for (let block = 0; block < noOfBlock; block++) {
                 // Test if tile can be rotated without getting outside the board
                 if (
-                    xCoordinateOfActiveTile + tiles[tile][newRotate][i][0] >= 0 &&
-                    xCoordinateOfActiveTile + tiles[tile][newRotate][i][0] <= this.props.boardWidth &&
-                    yCoordinateOfActiveTile + tiles[tile][newRotate][i][1] >= 0 &&
-                    yCoordinateOfActiveTile + tiles[tile][newRotate][i][1] < this.props.boardHeight
+                    xCoordinateOfActiveTile + tiles[tile][newRotate][block][0] >= 0 &&
+                    xCoordinateOfActiveTile + tiles[tile][newRotate][block][0] <= this.props.boardWidth &&
+                    yCoordinateOfActiveTile + tiles[tile][newRotate][block][1] >= 0 &&
+                    yCoordinateOfActiveTile + tiles[tile][newRotate][block][1] < this.props.boardHeight
                 ) {
                     // Test of tile rotation is not blocked by other tiles
                     if (
-                        field[yCoordinateOfActiveTile + tiles[tile][newRotate][i][1]][
-                        xCoordinateOfActiveTile + tiles[tile][newRotate][i][0]
+                        field[yCoordinateOfActiveTile + tiles[tile][newRotate][block][1]][
+                        xCoordinateOfActiveTile + tiles[tile][newRotate][block][0]
                         ] !== 0
                     ) {
                         // Prevent rotation
@@ -352,7 +373,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
         // Test if tile should fall faster
         if (yAdd !== 0) {
-            for (let i = 0; i <= 3; i++) {
+            for (let i = 0; i < noOfBlock; i++) {
                 // Test if tile can fall faster without getting outside the board
                 if (
                     yCoordinateOfActiveTile + yAdd + tiles[tile][rotate][i][1] >= 0 &&

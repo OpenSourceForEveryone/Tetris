@@ -154,12 +154,14 @@ export class UxUtils {
         let length = 0;
         let data: any[] = [];
         for (let item of str) {
-            if (length != str.length - 1) {
-                data.push(<><label> {item}. </label> <br /></>);
-            } else {
-                data.push(<label> {item}. </label>);
+            if (str) {
+                if (length != str.length - 1) {
+                    data.push(<><label> {item}. </label> <br /></>);
+                } else {
+                    data.push(<label> {item}. </label>);
+                }
+                length++;
             }
-            length++;
         }
         return data;
     }
