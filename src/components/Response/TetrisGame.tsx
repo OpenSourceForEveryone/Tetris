@@ -34,10 +34,9 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
     private initialXPosition = null;
     private initialYPosition = null;
-    private touchStartTime = 0;
-    private touchDuration = 0;
     private diffX = null;
     private diffY = null;
+    private readonly numberOfTiles = 7;
     constructor(props: any) {
         super(props);
         // Generate board based on number of boardHeight & boardWidth props
@@ -55,8 +54,8 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         // Initialize state with starting conditions
         this.state = {
             activeTileX: xStart, // new tile will fall from middle of the tetris board
-            activeTileY: 1, // initial y coordinate of the tile 
-            activeTile: Math.floor(Math.random() * 7 + 1), // block will be picked on random from 1 to 7
+            activeTileY: 1, // initial y coordinate of the tile
+            activeTile: Math.floor(Math.random() * this.numberOfTiles + 1), // block will be picked on random from 1 to 7
             tileRotate: 0,
             score: 0,
             level: 1,
@@ -94,9 +93,8 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
     // Event handle for start touch
     handleTouchStart = (event) => {
         event.preventDefault();
-        this.initialXPosition = event.changedTouches[0].screenX;;
+        this.initialXPosition = event.changedTouches[0].screenX;
         this.initialYPosition = event.changedTouches[0].screenY;
-        this.touchStartTime = new Date().getTime();
     }
 
     // Event handler for touch events like swipes(left, right, top and down)
@@ -112,7 +110,6 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         let currentY = event.changedTouches[0].screenY;
         this.diffX = this.initialXPosition - currentX;
         this.diffY = this.initialYPosition - currentY;
-        this.touchDuration = (new Date().getTime() - this.touchStartTime);
         if (Math.abs(this.diffX) > Math.abs(this.diffY)) {
             // sliding horizontally
             if (this.diffX > 0) {
@@ -132,23 +129,11 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
     }
 
     handleTouchEnd(event) {
-        
+
         this.initialXPosition = null;
         this.initialYPosition = null;
         this.diffX = null;
         this.diffY = null;
-        this.touchStartTime = 0;
-        this.touchDuration = 0;
-    }
-
-    // helper method to get touch ratio
-    getTouchRatio(touchLength: number) {
-        if (touchLength < 130) {
-            return 1;
-        } else {
-            return 4;
-        }
-
     }
 
     /**
@@ -159,7 +144,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
     componentDidMount() {
 
         let timerId;
-        // here set Interval is required to update the tetris board with dropping blocks 
+        // here set Interval is required to update the tetris board with dropping blocks
         timerId = window.setInterval(
             () => this.handleBoardUpdate("down"),
             Constants.GAME_SPEED
@@ -336,7 +321,8 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         }
 
         // Try to rotate the tile
-        let newRotate = rotate + rotateAdd > 3 ? 0 : rotate + rotateAdd;
+        const maximumRotation = 3;
+        let newRotate = rotate + rotateAdd > maximumRotation ? 0 : rotate + rotateAdd;
         let rotateIsValid = true;
 
         // Test if tile should rotate
@@ -347,7 +333,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
                     xCoordinateOfActiveTile + tiles[tile][newRotate][block][0] >= 0 &&
                     xCoordinateOfActiveTile + tiles[tile][newRotate][block][0] <= this.props.boardWidth &&
                     yCoordinateOfActiveTile + tiles[tile][newRotate][block][1] >= 0 &&
-                    yCoordinateOfActiveTile + tiles[tile][newRotate][block][1] < this.props.boardHeight
+                    yCoordinateOfActiveTile + tiles[tile][newRotate][block][1] <= this.props.boardHeight
                 ) {
                     // Test of tile rotation is not blocked by other tiles
                     if (
@@ -412,18 +398,18 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         // and find next tile and check if game is over
         if (!yAddIsValid) {
             for (let row = this.props.boardHeight - 1; row >= 0; row--) {
-                let isLineComplete = true;
+                let isLineCompleted = true;
 
                 // Check if row is completed
                 for (let column = 0; column < this.props.boardWidth; column++) {
                     if (field[row][column] === 0) {
-                        isLineComplete = false;
+                        isLineCompleted = false;
                     }
                 }
 
                 // Remove completed rows
-                if (isLineComplete) {
-                    for (let yRowSrc = row; row > 0; row--) {
+                if (isLineCompleted) {
+                    for (; row > 0; row--) {
                         for (let column = 0; column < this.props.boardWidth; column++) {
                             field[row][column] = field[row - 1][column];
                         }
@@ -443,7 +429,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
             }));
 
             // Create new tile
-            tile = Math.floor(Math.random() * 7 + 1);
+            tile = Math.floor(Math.random() * this.numberOfTiles + 1);
             xCoordinateOfActiveTile = parseInt(this.props.boardWidth) / 2;
             yCoordinateOfActiveTile = 1;
             rotate = 0;
