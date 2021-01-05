@@ -58,10 +58,9 @@ html {
     display: flex;
 }
 
-
 /* Styles for tiles */
 
-[class*=col-] {
+[class*=column-] {
     padding: 12px;
     border: 1px solid #6264a7;
     .desktop-web & {
@@ -125,20 +124,29 @@ html {
         }   
     }
 }
-
-
-/* Default (empty) board column */
-
-.col-0 {
+.column-blank {
     background-color: #6264a7;
 }
-.col-1 {
+.column-block {
+    position: relative;
     background-color: #f4f4fc;
+    animation-name: drip;
+    animation-timing-function: cubic-bezier(1,0,.91,.19);
+    animation-duration: 430ms;
+    animation-iteration-count: 1;
 }
-.col-2 {
+.column-shadow {
     background-color:#7779ab;
 }
-/* Styles for buttons */
+
+@keyframes drop {
+    from {
+       top: 0px;
+    }
+    to {
+       top: 1px;
+    }
+  }
 
 .tetris__block-controls,
 .tetris__game-controls {

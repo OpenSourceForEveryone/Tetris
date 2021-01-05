@@ -32,9 +32,11 @@ const tetrisBoard: React.FC<TetrisBoardProps> = (props) => {
 
   copy.forEach((row, index) => {
     // Create board columns
-    const cols = row.map((column: any, index: number) => <div
-      className={column == 0 ? `col-0` : column == -1 ? `col-2` : `col-1`}
-      key={index} />);
+    const cols = row.map((column: any, index: number) =>
+      <div
+        className={column == 0 ? `column-blank` : column == -1 ? `column-shadow` : `column-block`}
+        key={index}
+      />);
     rows.push(<div className="tetris-board__row" key={index}>{cols}</div>);
   });
 

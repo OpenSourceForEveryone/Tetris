@@ -35,10 +35,11 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
     private initialXPosition = null;
     private initialYPosition = null;
     private touchStartTime = 0;
-    private moveDown = 0;
+    private touchDuration = 0;
+    private diffX = null;
+    private diffY = null;
     constructor(props: any) {
         super(props);
-
         // Generate board based on number of boardHeight & boardWidth props
         let field = [];
         for (let row = 0; row < props.boardHeight; row++) {
@@ -51,7 +52,6 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
         // Set starting column to center
         let xStart = Math.floor(parseInt(props.boardWidth) / 2);
-
         // Initialize state with starting conditions
         this.state = {
             activeTileX: xStart, // new tile will fall from middle of the tetris board
@@ -94,58 +94,61 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
     // Event handle for start touch
     handleTouchStart = (event) => {
         event.preventDefault();
-        this.initialXPosition = event.touches[0].clientX;
-        this.initialYPosition = event.touches[0].clientY;
+        this.initialXPosition = event.changedTouches[0].screenX;;
+        this.initialYPosition = event.changedTouches[0].screenY;
         this.touchStartTime = new Date().getTime();
     }
 
     // Event handler for touch events like swipes(left, right, top and down)
     handleTouchMove = (event) => {
-
+        event.preventDefault();
         if (this.initialXPosition === null) {
             return;
         }
         if (this.initialYPosition === null) {
             return;
         }
-        let currentX = event.touches[0].clientX;
-        let currentY = event.touches[0].clientY;
-        let diffX = this.initialXPosition - currentX;
-        let diffY = this.initialYPosition - currentY;
-        let touchDuration = (new Date().getTime() - this.touchStartTime);
-
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-            this.moveDown = Math.floor(touchDuration / 70) > this.props.boardWidth ?
-                this.props.boardWidth : Math.ceil(touchDuration / 70);
+        let currentX = event.changedTouches[0].screenX;
+        let currentY = event.changedTouches[0].screenY;
+        this.diffX = this.initialXPosition - currentX;
+        this.diffY = this.initialYPosition - currentY;
+        this.touchDuration = (new Date().getTime() - this.touchStartTime);
+        if (Math.abs(this.diffX) > Math.abs(this.diffY)) {
             // sliding horizontally
-            if (diffX > 0) {
+            if (this.diffX > 0) {
                 // swiped left
-                while (this.moveDown-- > 0) {
-                    this.handleBoardUpdate("left");
-                }
-
+                this.handleBoardUpdate("left");
             } else {
                 // swiped right
-                while (this.moveDown-- > 0) {
-                    this.handleBoardUpdate("right");
-                }
+                this.handleBoardUpdate("right");
             }
         } else {
             // sliding vertically
-            this.moveDown = Math.ceil(touchDuration / 20) > this.props.boardHeight ?
-                this.props.boardHeight : Math.ceil(touchDuration / 20);
-            if (diffY < 0) {
+            if (this.diffY < 0) {
                 // swip down
-                while (this.moveDown-- > 0) {
-                    this.handleBoardUpdate("down");
-                }
+                this.handleBoardUpdate("down");
             }
         }
+    }
+
+    handleTouchEnd(event) {
+        
         this.initialXPosition = null;
         this.initialYPosition = null;
+        this.diffX = null;
+        this.diffY = null;
         this.touchStartTime = 0;
-        this.moveDown = 0;
-        event.preventDefault();
+        this.touchDuration = 0;
+    }
+
+    // helper method to get touch ratio
+    getTouchRatio(touchLength: number) {
+        if (touchLength < 130) {
+            return 1;
+        } else {
+            return 4;
+        }
+
     }
 
     /**
@@ -156,6 +159,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
     componentDidMount() {
 
         let timerId;
+        // here set Interval is required to update the tetris board with dropping blocks 
         timerId = window.setInterval(
             () => this.handleBoardUpdate("down"),
             Constants.GAME_SPEED
@@ -168,6 +172,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         window.addEventListener("keydown", this.handleKeyDown, false);
         window.addEventListener("touchstart", this.handleTouchStart, false);
         window.addEventListener("touchmove", this.handleTouchMove, false);
+        window.addEventListener("touchend", this.handleTouchEnd, false);
     }
 
     /**
@@ -179,7 +184,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         document.removeEventListener("keydown", this.handleKeyDown);
         document.removeEventListener("touchstart", this.handleTouchStart);
         document.removeEventListener("touchmove", this.handleTouchMove);
-        this.touchStartTime = 0;
+        document.removeEventListener("touchend", this.handleTouchEnd);
     }
 
     /**
@@ -336,9 +341,6 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
         // Test if tile should rotate
         if (rotateAdd !== 0) {
-            console.log("xCoordinateOfActiveTile " + xCoordinateOfActiveTile);
-            console.log("yCoordinateOfActiveTile " + yCoordinateOfActiveTile);
-            console.table("tiles " + tiles[tile]);
             for (let block = 0; block < noOfBlock; block++) {
                 // Test if tile can be rotated without getting outside the board
                 if (
@@ -439,23 +441,6 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
                 tileCount: prev.tileCount + 1,
                 level: 1 + Math.floor(prev.tileCount / 10)
             }));
-
-            // Prepare new timer
-            let timerId;
-
-            // Reset the timer
-            clearInterval(this.state.timerId);
-
-            // Update new timer
-            timerId = setInterval(
-                () => this.handleBoardUpdate("down"),
-                Constants.GAME_SPEED
-            );
-
-            // Use new timer
-            this.setState({
-                timerId: timerId
-            });
 
             // Create new tile
             tile = Math.floor(Math.random() * 7 + 1);
