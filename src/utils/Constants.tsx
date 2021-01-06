@@ -18,6 +18,7 @@ export class Constants {
     public static readonly GAME_LOGO_PATH: String = "images/appIcon.png";
     public static readonly GAME_CONGRATULATION_IMAGE_PATH = "images/trophy.png";
     public static readonly INSTRUCTION_PAGE_LOCALSTORAGE = "TetrisGameInstructionPageShow";
+    public static readonly SLIDING_VELOCITY = 50;
     public static readonly GAME_SPEED = 500;
     public static readonly BOARD_HEIGHT_FOR_MOBILE = 20;
     public static readonly BOARD_WIDTH_FOR_MOBILE = 12;
@@ -26,6 +27,7 @@ export class Constants {
     public static readonly DEFAULT_NUMBER_OF_RECORD = 3;
     public static readonly RECORD_INCREMENT_FACTOR = 3;
     public static readonly SCORE_INCREMENT_FACTOR = 100;
+    public static readonly SWIP_DOWN_TIME_THRESHOLD = 200;
     public static readonly KEY_MAP = {
         UP: 38,
         DOWN: 40,

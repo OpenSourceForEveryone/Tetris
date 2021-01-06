@@ -36,6 +36,8 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
     private initialYPosition = null;
     private diffX = null;
     private diffY = null;
+    private timeDown = null;
+
     private readonly numberOfTiles = 7;
     constructor(props: any) {
         super(props);
@@ -92,9 +94,9 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
     // Event handle for start touch
     handleTouchStart = (event) => {
-        event.preventDefault();
         this.initialXPosition = event.changedTouches[0].screenX;
         this.initialYPosition = event.changedTouches[0].screenY;
+        this.timeDown = Date.now();
     }
 
     // Event handler for touch events like swipes(left, right, top and down)
@@ -110,30 +112,40 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         let currentY = event.changedTouches[0].screenY;
         this.diffX = this.initialXPosition - currentX;
         this.diffY = this.initialYPosition - currentY;
-        if (Math.abs(this.diffX) > Math.abs(this.diffY)) {
-            // sliding horizontally
-            if (this.diffX > 0) {
-                // swiped left
-                this.handleBoardUpdate("left");
+        const timeDiff = Date.now() - this.timeDown;
+
+        // setTime out is going to control the swip speed
+        setTimeout(() => {
+            if (Math.abs(this.diffX) > Math.abs(this.diffY)) {
+                // sliding horizontally
+                if(timeDiff < Constants.SWIP_DOWN_TIME_THRESHOLD) {
+                    if (this.diffX > 0) {
+                        // swiped left
+                        this.handleBoardUpdate("left");
+                    } else {
+                        // swiped right
+                        this.handleBoardUpdate("right");
+                    }
+                }
+
             } else {
-                // swiped right
-                this.handleBoardUpdate("right");
+                // sliding vertically
+                if (timeDiff < Constants.SWIP_DOWN_TIME_THRESHOLD) {
+                    if (this.diffY < 0) {
+                        // swip down
+                        this.handleBoardUpdate("down");
+                    }
+                }
             }
-        } else {
-            // sliding vertically
-            if (this.diffY < 0) {
-                // swip down
-                this.handleBoardUpdate("down");
-            }
-        }
+        }, Constants.SLIDING_VELOCITY);
     }
 
-    handleTouchEnd(event) {
-
-        this.initialXPosition = null;
+    handleTouchEnd = (event) => {
         this.initialYPosition = null;
-        this.diffX = null;
         this.diffY = null;
+        this.initialXPosition = null;
+        this.diffX = null;
+        this.timeDown = 0;
     }
 
     /**
@@ -142,7 +154,6 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
      * @memberof TetrisGame
      */
     componentDidMount() {
-
         let timerId;
         // here set Interval is required to update the tetris board with dropping blocks
         timerId = window.setInterval(
@@ -182,7 +193,6 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         if (this.state.gameOver || this.state.isPaused || !document.hasFocus()) {
             return;
         }
-
         // Prepare variables for additions to x/y coordinates, current active tile and new rotation
         let xAdd = 0;
         let yAdd = 0;
@@ -409,7 +419,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
                 // Remove completed rows
                 if (isLineCompleted) {
-                    for (; row > 0; row--) {
+                    for ( ; row > 0; row--) {
                         for (let column = 0; column < this.props.boardWidth; column++) {
                             field[row][column] = field[row - 1][column];
                         }

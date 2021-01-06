@@ -133,10 +133,10 @@ export class ActionSdkHelper {
         }
     }
 
-   /**
-     * Method to update the data row
-     * @param dataRow action data row
-     */
+    /**
+      * Method to update the data row
+      * @param dataRow action data row
+      */
     public static async addDataRow(dataRow: actionSDK.ActionDataRow) {
         let request = new actionSDK.AddActionDataRow.Request(dataRow);
         try {
@@ -166,7 +166,17 @@ export class ActionSdkHelper {
             columnValues: data,
             createTime: Date.now()
         };
-        await this.addDataRow(actiondata);
+
+        try {
+            let response = await this.addDataRow(actiondata);
+            Logger.logInfo(`addScore success - Request: ${JSON.stringify(actiondata)} Response: ${JSON.stringify(response)}`);
+            return { success: true, response: response.success };
+
+        } catch (error) {
+            Logger.logInfo(`addScore failed - Request: ${error.category}, ${error.code}, ${error.message}`);
+            return { success: true, error: error };
+        }
+
     }
 
     // Helper method to fetch the scores for the current context
