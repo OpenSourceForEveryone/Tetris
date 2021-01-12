@@ -4,6 +4,7 @@ import { UxUtils } from "../../utils/UxUtils";
 import "./TetrisGame.scss";
 import { Constants } from "../../utils/Constants";
 import GameEndView from "./GameEndView";
+import { LeaveIcon } from "@fluentui/react-northstar";
 
 // props for Tetris component
 type TetrisProps = {
@@ -157,9 +158,11 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
         let timerId;
         // here set Interval is required to update the tetris board with dropping blocks
         timerId = window.setInterval(
-            () => this.handleBoardUpdate("down"),
-            Constants.GAME_SPEED
+            () => this.handleBoardUpdate('down'),
+            510 - ( this.state.level > 20 ? 300 : this.state.level * 10 )
         );
+
+        console.log("componentDidMount " + (this.state.level > 20 ? 300 : this.state.level * 10));
 
         this.setState({
             timerId: timerId
@@ -406,6 +409,7 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
         // If moving down is not possible, remove completed rows add score
         // and find next tile and check if game is over
+        let numberOfClearedRow = 0;
         if (!yAddIsValid) {
             for (let row = this.props.boardHeight - 1; row >= 0; row--) {
                 let isLineCompleted = true;
@@ -419,24 +423,42 @@ class TetrisGame extends React.Component<TetrisProps, TetrisState> {
 
                 // Remove completed rows
                 if (isLineCompleted) {
-                    for ( ; row > 0; row--) {
+                    numberOfClearedRow++;
+                    for (; row > 0; row--) {
                         for (let column = 0; column < this.props.boardWidth; column++) {
                             field[row][column] = field[row - 1][column];
                         }
                     }
                     // Check if the row is the last
                     row = this.props.boardHeight;
+
+                     // Update state - update score,  change level
                     this.setState(prev => ({
-                        score: prev.score + Constants.SCORE_INCREMENT_FACTOR
+                        score: prev.score + Constants.SCORE_INCREMENT_FACTOR * prev.level,
+                        level: 1 + prev.level
                     }));
                 }
             }
+           
+            // Prepare new timer
+            let timerId
 
-            // Update state - update number of tiles, change level
-            this.setState(prev => ({
-                tileCount: prev.tileCount + 1,
-                level: 1 + Math.floor(prev.tileCount / 10)
-            }));
+            // Reset the timer
+            clearInterval(this.state.timerId)
+            // Update new timer
+            timerId = setInterval(
+                () => this.handleBoardUpdate('down'),
+                Constants.GAME_LOWEST_SPEED - ( this.state.level > Constants.MAX_LEVEL ?
+                     Constants.GAME_HIGHEST_SPEED : this.state.level * 10 )
+            )
+
+            console.log("Speed " + ( 510 - ( this.state.level > 20 ? 300 : this.state.level * 10 )) );
+            
+
+            // Use new timer
+            this.setState({
+                timerId: timerId
+            })
 
             // Create new tile
             tile = Math.floor(Math.random() * this.numberOfTiles + 1);

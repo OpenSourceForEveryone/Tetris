@@ -19,7 +19,9 @@ export class Constants {
     public static readonly GAME_CONGRATULATION_IMAGE_PATH = "images/trophy.png";
     public static readonly INSTRUCTION_PAGE_LOCALSTORAGE = "TetrisGameInstructionPageShow";
     public static readonly SLIDING_VELOCITY = 50;
-    public static readonly GAME_SPEED = 500;
+    public static readonly GAME_LOWEST_SPEED = 510;
+    public static readonly GAME_HIGHEST_SPEED = 300;
+    public static readonly MAX_LEVEL = 20;
     public static readonly BOARD_HEIGHT_FOR_MOBILE = 20;
     public static readonly BOARD_WIDTH_FOR_MOBILE = 12;
     public static readonly BOARD_HEIGHT_FOR_DESKTOP =20;
