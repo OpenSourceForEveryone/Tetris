@@ -17,6 +17,7 @@ import getStore from "../store/CreationStore";
 import { Utils } from "../utils/Utils";
 import * as actionSDK from "@microsoft/m365-action-sdk";
 import { ActionSdkHelper } from "../helper/ActionSdkHelper";
+import { Constants } from "../utils/Constants";
 
 /**
  * Creation view orchestrators to do API calls, perform any action on data and dispatch further actions to modify stores in case of any change
@@ -40,22 +41,24 @@ orchestrator(initialize, async () => {
 });
 
 orchestrator(callActionInstanceCreationAPI, async () => {
+
+    updateTitle(getStore().title.trim());
     let actionInstance: actionSDK.Action = {
-        displayName: "Tetris Tournament",
+        displayName: getStore().title,
         expiryTime: getStore().settings.dueDate,
         dataTables: [
             {
-                name: "TetrisTournamentDataTable",
+                name: Constants.GAME_DATA_TABLE_NAME,
                 dataColumns: [],
                 attachments: [],
             },
         ],
     };
-    updateTitle(getStore().title.trim());
-    let gameSetting: actionSDK.ActionDataColumn = {
+
+    let gamePlayTimeStamp: actionSDK.ActionDataColumn = {
         name: "0",
-        valueType: actionSDK.ActionDataColumnValueType.Text,
-        displayName: getStore().title,
+        valueType: actionSDK.ActionDataColumnValueType.DateTime,
+        displayName: "gamePlayTimeStamp",
     };
 
     let gameScore: actionSDK.ActionDataColumn = {
@@ -63,15 +66,17 @@ orchestrator(callActionInstanceCreationAPI, async () => {
         valueType: actionSDK.ActionDataColumnValueType.Text,
         displayName: "gameScore",
     };
+
     let gamePlayer: actionSDK.ActionDataColumn = {
         name: "2",
         valueType: actionSDK.ActionDataColumnValueType.Text,
         displayName: "gamePlayer",
     };
 
-    actionInstance.dataTables[0].dataColumns.push(gameSetting);
+    actionInstance.dataTables[0].dataColumns.push(gamePlayTimeStamp);
     actionInstance.dataTables[0].dataColumns.push(gameScore);
     actionInstance.dataTables[0].dataColumns.push(gamePlayer);
+
     // Set responses visibility
     actionInstance.dataTables[0].rowsVisibility = getStore().settings.resultVisibility ?
         actionSDK.Visibility.Sender : actionSDK.Visibility.All;

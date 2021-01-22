@@ -8,17 +8,25 @@ import "./GamePage.scss";
 import { Localizer } from "../../utils/Localizer";
 import { Constants } from "../../utils/Constants";
 import { addScore } from "../../actions/ResponseAction";
+import getStore, { GameStatus } from "../../store/TetrisGameStore";
+import { setGameProgress } from "../../actions/TetrisGameAction";
+
+interface IGameEndProps {
+    onlyOneAttempt:boolean
+    score: number
+}
+
 /**
  * <GameEndView> component for game end view
  * @observer decorator on the component this is what tells MobX to rerender the component whenever the data it relies on changes.
  */
 @observer
-export default class GameEndView extends React.Component<any, any> {
+export default class GameEndView extends React.Component<IGameEndProps> {
 
     constructor(props) {
         super(props);
-        this.state = { isImageLoaded: false };
     }
+    state = { isImageLoaded: false };
     render() {
         return (
             <>
@@ -34,17 +42,17 @@ export default class GameEndView extends React.Component<any, any> {
                             this.state.isImageLoaded &&
                             <>
                                 <h4>
-                                    {Localizer.getString("YourScoreOnCongratulationPage") + this.props.gameScore}
+                                    {Localizer.getString("YourScoreOnCongratulationPage") + this.props.score}
                                 </h4>
 
-                                {this.props.shouldShowAlert === "true" && <Text content={Localizer.getString("OnlyOneAttemptError")}
+                                { this.props.onlyOneAttempt && <Text content={Localizer.getString("OnlyOneAttemptError")}
                                     className="alert-danger" />
                                 }
                             </>
                         }
                     </div>
                 </div>
-                {this.props.shouldShowAlert != "true" && this.renderFooterSection()}
+                { !this.props.onlyOneAttempt && this.renderFooterSection()}
             </>
         );
     }
@@ -59,7 +67,8 @@ export default class GameEndView extends React.Component<any, any> {
                         primary
                         content={Localizer.getString("SubmitScore")}
                         onClick={() => {
-                            addScore(this.props.gameScore);
+                            addScore(getStore().gameScore.toString());
+                            setGameProgress(GameStatus.End);
                         }}>
                     </Button>
                 </FlexItem>

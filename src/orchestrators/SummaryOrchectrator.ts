@@ -51,7 +51,7 @@ orchestrator(initialize, async () => {
                 setProgressStatus({ actionInstance: ProgressState.Completed });
 
                 setProgressStatus({ settingInstance: ProgressState.InProgress });
-                setGameTitle(actionInstance.action.dataTables[0].dataColumns[0].displayName);
+                setGameTitle(actionInstance.action.displayName);
                 setDueDate(actionInstance.action.expiryTime);
                 setGameStatus(actionInstance.action.status);
                 fetchUserDetails([context.userId]);
@@ -89,6 +89,7 @@ orchestrator(initialize, async () => {
 /**
 * updateDueDate(): Change the due date of game
 */
+
 orchestrator(updateDueDate, async (actionMessage) => {
     if (getStore().progressStatus.updateActionInstance != ProgressState.InProgress) {
         let callback = (success: boolean) => {

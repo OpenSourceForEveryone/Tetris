@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 import * as actionSDK from "@microsoft/m365-action-sdk";
+import { Constants } from "../utils/Constants";
 import { Logger } from "./../utils/Logger";
 export class ActionSdkHelper {
 
@@ -157,11 +158,11 @@ export class ActionSdkHelper {
         const actionContext = (await this.getActionContext()).context;
         let data = {
             0: Date.now().toString(),
-            1: (await this.getCurrentUser()).userName,
-            2: score,
+            1: score,
+            2: (await this.getCurrentUser()).userName,
         };
         let actiondata: actionSDK.ActionDataRow = {
-            dataTableName: "gameScore",
+            dataTableName: Constants.GAME_DATA_TABLE_NAME,
             actionId: actionContext.actionId,
             columnValues: data,
             createTime: Date.now()
@@ -182,8 +183,7 @@ export class ActionSdkHelper {
     // Helper method to fetch the scores for the current context
     public static async getScore() {
         const actionContext = (await this.getActionContext()).context;
-        let dataTableName: string = "gameScore";
-        let request = new actionSDK.GetActionDataRows.Request(actionContext.actionId, null, null, 100, dataTableName);
+        let request = new actionSDK.GetActionDataRows.Request(actionContext.actionId, null, null, 100, Constants.GAME_DATA_TABLE_NAME);
         try {
             let response = await actionSDK.executeApi(request) as actionSDK.GetActionDataRows.Response;
             Logger.logInfo(`getScore success - Request: ${JSON.stringify(request)} Response: ${JSON.stringify(response)}`);

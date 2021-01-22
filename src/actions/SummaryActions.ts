@@ -29,7 +29,9 @@ export enum GameSummaryAction {
     updateDueDate = "updateDueDate",
     closeGame = "closeGame",
     deleteGame = "deleteGame",
-    updateActionInstance = "updateActionInstance"
+    updateActionInstance = "updateActionInstance",
+    updateScoreBoardRowCount = "updateScoreBoardRowCount",
+    updateLeaderBoardRowCount = "updateLeaderBoardRowCount"
 }
 
 export let initialize = action(GameSummaryAction.initialize);
@@ -107,3 +109,12 @@ export let deleteGame = action(GameSummaryAction.deleteGame);
 export let updateActionInstance = action(GameSummaryAction.updateActionInstance, (actionInstance: actionSDK.Action) => ({
     actionInstance: actionInstance
 }));
+
+export let updateScoreBoardRowCount = action(GameSummaryAction.updateScoreBoardRowCount, (count: number) => ({
+    count: count
+}));
+
+export let updateLeaderBoardRowCount = action(GameSummaryAction.updateLeaderBoardRowCount, (count: number) => ({
+    count: count
+}));
+

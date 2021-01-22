@@ -14,13 +14,13 @@
         "canAddMore": false,
         "values": [
             {
-                "name": "TetrisTournament",
+                "name": "TetrisTournamentDataTable",
                 "dataColumns": {
                     "canAddMore": true,
                     "values": [
                         {
                             "name": "0",
-                            "valueType": "Text"
+                            "valueType": "DateTime"
                         }
                     ]
                 }

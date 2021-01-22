@@ -14,7 +14,6 @@ import { UxUtils } from "../../utils/UxUtils";
 import { Flex } from "@fluentui/react-northstar";
 import TetrisGame from "./TetrisGame";
 import GameEndView from "./GameEndView";
-import { Constants } from "../../utils/Constants";
 
 /**
  * <GamePage> component for response view
@@ -22,13 +21,9 @@ import { Constants } from "../../utils/Constants";
  */
 @observer
 export default class GamePage extends React.Component<any, any> {
-    private boardWidth: number;
-    private boardHeight: number;
 
     render() {
-
         let progressStatus = getStore().progressState;
-
         if (progressStatus.actionInstance == ProgressState.InProgress ||
             progressStatus.currentContext == ProgressState.InProgress ||
             progressStatus.currentUserDataInstance == ProgressState.InProgress ||
@@ -73,26 +68,12 @@ export default class GamePage extends React.Component<any, any> {
      * Method to return game app component based on the device
     **/
     private getGamePage(): JSX.Element {
-
-        if (UxUtils.renderingForMobile()) {
-            this.boardHeight = Constants.BOARD_HEIGHT_FOR_MOBILE;
-            this.boardWidth = Constants.BOARD_WIDTH_FOR_MOBILE;
-        } else {
-            this.boardHeight = Constants.BOARD_HEIGHT_FOR_DESKTOP;
-            this.boardWidth = Constants.BOARD_WIDTH_FOR_DESKTOP;
-        }
-        return <TetrisGame boardWidth={this.boardWidth} boardHeight={this.boardHeight} tabIndex={0} />;
-
+        return <TetrisGame  />;
     }
 
     // Method to render game instruction
     private getInstructionPage(): JSX.Element {
-        return (<InstructionView
-            DontShowTheGameInstruction={Localizer.getString("DontShowTheGameInstruction")}
-            InstructionContent={this.getInstructionContent()}
-            HowToPlay={Localizer.getString("HowToPlay")}
-            Play={Localizer.getString("PlayButton")}
-        />);
+        return (<InstructionView />);
     }
 
     // Method to render congratualtion view
@@ -103,7 +84,7 @@ export default class GamePage extends React.Component<any, any> {
                 className="body-container"
                 id="bodyContainer"
             >
-                <GameEndView gameScore={getStore().playerPrevScore} shouldShowAlert="true" />
+                <GameEndView score={Number(getStore().playerPrevScore)} onlyOneAttempt={true} />
             </Flex>
         );
     }

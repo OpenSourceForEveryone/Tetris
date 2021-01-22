@@ -15,21 +15,22 @@ export class Constants {
     public static readonly GAME_TITLE_MAX_LENGTH: number = 240;
 
     // Game setting constants
-    public static readonly GAME_LOGO_PATH: String = "images/appIcon.png";
+    public static readonly GAME_DATA_TABLE_NAME = "TetrisTournamentDataTable";
+    public static readonly GAME_LOGO_PATH = "images/appIcon.png";
     public static readonly GAME_CONGRATULATION_IMAGE_PATH = "images/trophy.png";
     public static readonly INSTRUCTION_PAGE_LOCALSTORAGE = "TetrisGameInstructionPageShow";
-    public static readonly SLIDING_VELOCITY = 50;
+    public static readonly SLIDING_VELOCITY = 40;
     public static readonly GAME_LOWEST_SPEED = 510;
     public static readonly GAME_HIGHEST_SPEED = 300;
     public static readonly MAX_LEVEL = 20;
-    public static readonly BOARD_HEIGHT_FOR_MOBILE = 20;
-    public static readonly BOARD_WIDTH_FOR_MOBILE = 12;
-    public static readonly BOARD_HEIGHT_FOR_DESKTOP =20;
-    public static readonly BOARD_WIDTH_FOR_DESKTOP = 14;
+    public static readonly BOARD_HEIGHT = 20;
+    public static readonly BOARD_WIDTH = 12;
     public static readonly DEFAULT_NUMBER_OF_RECORD = 3;
     public static readonly RECORD_INCREMENT_FACTOR = 3;
     public static readonly SCORE_INCREMENT_FACTOR = 100;
     public static readonly SWIP_DOWN_TIME_THRESHOLD = 200;
+    public static readonly SWIP_HORIZONTAL_THRESHOLD = 100;
+    public static readonly NUMBER_OF_BLOCK = 7;
     public static readonly KEY_MAP = {
         UP: 38,
         DOWN: 40,
@@ -37,7 +38,9 @@ export class Constants {
         RIGHT: 39,
         SPACE: 32
     };
-    public static readonly TILES: any[] = [
+
+    // Data structure for storing the blocks types are refered from https://blog.alexdevero.com/tetris-game-react-typescript/
+    public static readonly BLOCKS: any[] = [
         [
             // The default square
             [[0, 0], [0, 0], [0, 0], [0, 0]],

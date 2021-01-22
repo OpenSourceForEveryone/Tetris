@@ -9,7 +9,8 @@ import {
     updateTitle,
     updateSettings,
     shouldValidateUI,
-    setProgressState
+    setProgressState,
+    validateGameTitle
 } from "./../actions/CreationActions";
 import * as actionSDK from "@microsoft/m365-action-sdk";
 import { Utils } from "../utils/Utils";
@@ -25,7 +26,7 @@ mutator(setContext, (msg) => {
     if (!Utils.isEmpty(store.context.lastSessionData)) {
         const lastSessionData = store.context.lastSessionData;
         const actionInstance: actionSDK.Action = lastSessionData.action;
-        getStore().title = actionInstance.dataTables[0].dataColumns[0].displayName;
+        getStore().title = actionInstance.displayName;
         getStore().settings.resultVisibility = (actionInstance.dataTables[0].rowsVisibility === actionSDK.Visibility.Sender) ?
             true : false;
         getStore().settings.isMultiResponseAllowed = actionInstance.dataTables[0].canUserAddMultipleRows;
@@ -63,3 +64,13 @@ mutator(setProgressState, (msg) => {
     const store = getStore();
     store.progressState = msg.state;
 });
+
+mutator(validateGameTitle, (msg) => {
+    const store = getStore();
+    if(msg.title.length > 0){
+        store.isValidGameTitle = true;
+    }else{
+        store.isValidGameTitle = false;
+    }
+});
+
