@@ -41,7 +41,7 @@ export default class InstructionView extends React.Component {
                                 <Avatar image={Constants.GAME_LOGO_PATH} label="Tetris" name="Tetris" size="larger" />
                             </Flex>
                             <Flex column>
-                                <Text content={Localizer.getString("DontShowTheGameInstruction")} weight="bold" size="large" />
+                                <Text content={Localizer.getString("HowToPlay")} weight="bold" size="large" />
                                 <Text content={UxUtils.formateStringWithLineBreak(this.getInstructionContent())}
                                     className="instruction-content-padding" />
                             </Flex>
