@@ -5,7 +5,6 @@ import { mutator } from "satcheljs";
 import {
     setContext,
     setSendingFlag,
-    goToPage,
     updateTitle,
     updateSettings,
     shouldValidateUI,
@@ -40,10 +39,6 @@ mutator(setSendingFlag, () => {
     store.sendingAction = true;
 });
 
-mutator(goToPage, (msg) => {
-    const store = getStore();
-    store.currentPage = msg.page;
-});
 
 mutator(shouldValidateUI, (msg) => {
     const store = getStore();

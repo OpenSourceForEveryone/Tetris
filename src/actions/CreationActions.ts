@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 import { action } from "satcheljs";
-import { Page } from "../store/CreationStore";
 import * as actionSDK from "@microsoft/m365-action-sdk";
 import { IGameCreationComponentProps } from "../components/Creation/GameCreationView";
 import { ProgressState } from "./../utils/SharedEnum";
@@ -16,7 +15,6 @@ export enum GameCreationAction {
     shouldValidateUI = "shouldValidateUI",
     setSendingFlag = "setSendingFlag",
     setProgressState = "setProgressState",
-    goToPage = "goToPage",
     callActionInstanceCreationAPI = "callActionInstanceCreationAPI",
     validateGameTitle = "validateGameTitle",
 }
@@ -30,10 +28,6 @@ export let setContext = action(GameCreationAction.setContext, (context: actionSD
 }));
 
 export let setSendingFlag = action(GameCreationAction.setSendingFlag);
-
-export let goToPage = action(GameCreationAction.goToPage, (page: Page) => ({
-    page: page
-}));
 
 export let updateTitle = action(GameCreationAction.updateTitle, (title: string) => ({
     title: title

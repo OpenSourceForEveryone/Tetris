@@ -133,9 +133,10 @@ class TetrisGame extends React.Component<any> {
     componentDidMount() {
         let timerId;
         // here set Interval is required to update the tetris board with dropping blocks
-        timerId = window.setInterval(
+        timerId = setInterval(
             () => this.updateTetrisGameBoard("down"),
-            510 - (this.store.gameLevel > 20 ? 300 : this.store.gameLevel * 10)
+            Constants.GAME_LOWEST_SPEED - (this.store.gameLevel > Constants.MAX_LEVEL ?
+                Constants.GAME_HIGHEST_SPEED : this.store.gameLevel * 10)
         );
         updateTimerId(timerId);
         window.addEventListener("keydown", this.handleKeyDown, false);

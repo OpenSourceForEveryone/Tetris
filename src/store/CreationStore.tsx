@@ -9,10 +9,6 @@ import { ProgressState } from "./../utils/SharedEnum";
 import "./../orchestrators/CreationOrchestrator";
 import "./../mutator/CreationMutator";
 
-export enum Page {
-    Main,
-    Settings,
-}
 /**
  * Creation store containing all data required for creation view
  */
@@ -23,7 +19,6 @@ interface IGameCreationStore {
     settings: IGameCreationComponentProps;
     shouldValidate: boolean;
     sendingAction: boolean;
-    currentPage: Page;
     isValidGameTitle: boolean; 
 }
 
@@ -38,7 +33,6 @@ const store: IGameCreationStore = {
     },
     shouldValidate: false,
     sendingAction: false,
-    currentPage: Page.Settings,  // change currentPage value to switch b/w diff components
     progressState: ProgressState.NotStarted,
     isValidGameTitle: true
 };
