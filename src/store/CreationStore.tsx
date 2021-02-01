@@ -19,7 +19,7 @@ interface IGameCreationStore {
     settings: IGameCreationComponentProps;
     shouldValidate: boolean;
     sendingAction: boolean;
-    isValidGameTitle: boolean; 
+    isValidGameTitle: boolean;
 }
 
 const store: IGameCreationStore = {

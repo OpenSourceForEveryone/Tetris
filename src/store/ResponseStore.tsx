@@ -3,7 +3,6 @@ import "../mutator/ResponseMutator";
 import "../orchestrators/ResponseOrchestrator";
 import * as actionSDK from "@microsoft/m365-action-sdk";
 import { ProgressState } from "../utils/SharedEnum";
-import { GameStatus } from "./TetrisGameStore";
 
 /**
  * Response store containing all data required when user play the game.
@@ -28,10 +27,6 @@ interface IGameResponseStore {
     shouldPlayerPlay: boolean;
     playerPrevScore: string;
     playerCurrentScore: number;
-    isTrophyImageLoaded: boolean;
-    isGameLogoLoaded: boolean;
-    isGameInstructionPageVisible: boolean;
-    gameStatus: GameStatus;
 }
 
 const store: IGameResponseStore = {
@@ -51,10 +46,6 @@ const store: IGameResponseStore = {
     shouldPlayerPlay: true,
     playerPrevScore: null,
     playerCurrentScore: 0,
-    isTrophyImageLoaded : false,
-    isGameLogoLoaded : false,
-    isGameInstructionPageVisible: false,
-    gameStatus: GameStatus.NotStarted
 };
 
 export default createStore<IGameResponseStore>("ResponseStore", store);

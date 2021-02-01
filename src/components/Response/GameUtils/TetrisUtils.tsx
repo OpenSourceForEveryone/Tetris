@@ -5,12 +5,10 @@ import getStore from "../../../store/TetrisGameStore";
 import { Constants } from "../../../utils/Constants";
 
 // Helper method to get the coordinates for Shadow blocks
-export function getShadowBlock(tetrisGameBoard: any[])
-{
+export function getShadowBlock(tetrisGameBoard: number[][]) {
     const store = getStore();
-
      // Find Projection or shadow block
-     let currentBlock = [
+    let currentBlock = [
         { xCord: store.xCoordinateOfActiveBlock + store.blocks[store.activeBlockNumber][store.blockRotationNumber][0][0],
              yCord: store.yCoordinateOfActiveBlock + store.blocks[store.activeBlockNumber][store.blockRotationNumber][0][1] },
         { xCord: store.xCoordinateOfActiveBlock + store.blocks[store.activeBlockNumber][store.blockRotationNumber][1][0],
@@ -20,7 +18,7 @@ export function getShadowBlock(tetrisGameBoard: any[])
         { xCord: store.xCoordinateOfActiveBlock + store.blocks[store.activeBlockNumber][store.blockRotationNumber][3][0],
              yCord: store.yCoordinateOfActiveBlock + store.blocks[store.activeBlockNumber][store.blockRotationNumber][3][1] },
     ];
-    
+
     // sort the block with y coordinate
     const movingBlock = currentBlock.sort((first, second) => {
         return Number(second.yCord) - Number(first.yCord);
@@ -78,4 +76,18 @@ export function getShadowBlock(tetrisGameBoard: any[])
         }
     }
     return shadowMap;
+}
+
+// Helper method to initialized tetris Game board
+export function initializeGameBoard() {
+    let gameBoardGrid = [];
+    // to generate rows and columns for the game board.
+    for (let row = 0; row < Constants.BOARD_HEIGHT; row++) {
+        let rowData = [];
+        for (let column = 0; column < Constants.BOARD_WIDTH; column++) {
+            rowData.push(0);
+        }
+        gameBoardGrid.push(rowData);
+    }
+    return gameBoardGrid;
 }

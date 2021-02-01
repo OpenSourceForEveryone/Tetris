@@ -6,8 +6,6 @@ import {
     setProgressState,
     setActionInstance,
     fetchActionInstanceRowsForCurrentUser,
-    setGameStatus,
-    updatedInstructionPageView
 } from "../actions/ResponseAction";
 import * as actionSDK from "@microsoft/m365-action-sdk";
 
@@ -53,14 +51,3 @@ mutator(shouldValidateUI, (msg) => {
     const store = getStore();
     store.shouldValidate = msg.shouldValidate;
 });
-
-mutator(setGameStatus, (msg) => {
-    const store = getStore();
-    store.gameStatus = msg.status;
-});
-
-mutator(updatedInstructionPageView, () => {
-    const store = getStore();
-    store.isGameInstructionPageVisible = !store.isGameInstructionPageVisible
-});
-

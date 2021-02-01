@@ -8,7 +8,7 @@ import "./TetrisGame.scss";
 import { Constants } from "../../utils/Constants";
 import GameEndView from "./GameEndView";
 import {
-    setGameProgress,
+    setGameStatus,
     updateTetrisGameBoard,
     updateTimerId,
     updateGameScore,
@@ -19,7 +19,7 @@ import {
     updateActiveBlockNumber
 } from "../../actions/TetrisGameAction";
 import getStore, { GameStatus } from "../../store/TetrisGameStore";
-import cloneDeep from "lodash.clonedeep";
+import {Utils} from "../../utils/Utils";
 import { getShadowBlock } from "./GameUtils/TetrisUtils";
 import { UxUtils } from "../../utils/UxUtils";
 
@@ -38,7 +38,7 @@ class TetrisGame extends React.Component<any> {
     private store = getStore();
     constructor(props: any) {
         super(props);
-        setGameProgress(GameStatus.InProgress);
+        setGameStatus(GameStatus.InProgress);
     }
 
     // Key Press Handler
@@ -60,10 +60,9 @@ class TetrisGame extends React.Component<any> {
             case key.SPACE:
 
                 if (this.store.gameStatus == GameStatus.Paused) {
-                    setGameProgress(GameStatus.InProgress);
-                }
-                else {
-                    setGameProgress(GameStatus.Paused);
+                    setGameStatus(GameStatus.InProgress);
+                } else {
+                    setGameStatus(GameStatus.Paused);
                 }
         }
     }
@@ -193,17 +192,17 @@ class TetrisGame extends React.Component<any> {
         }
 
         // Get current x/y coordinates, active block, rotate and all blocks
-        let tetrisGameGrid = cloneDeep(this.store.tetrisGameBoard);
+        let tetrisGameGrid = Utils.cloneDeep(this.store.tetrisGameBoard);
         let xCoordinateOfActiveBlock = this.store.xCoordinateOfActiveBlock;
-        let yCoordinateOfActiveTile = this.store.yCoordinateOfActiveBlock;
+        let yCoordinateOfActiveBlock = this.store.yCoordinateOfActiveBlock;
         let rotate = this.store.blockRotationNumber;
         const blocks = this.store.blocks;
 
         // Remove actual block from field to test for new insert position
-        tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][0][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][0]] = 0;
-        tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][1][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][0]] = 0;
-        tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][2][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][0]] = 0;
-        tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][3][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][0]] = 0;
+        tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][0]] = 0;
+        tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][0]] = 0;
+        tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][0]] = 0;
+        tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][0]] = 0;
 
         // Test if the move can be executed on actual field
         let xAddIsValid = true;
@@ -216,7 +215,7 @@ class TetrisGame extends React.Component<any> {
                     xCoordinateOfActiveBlock + xAdd + blocks[activeBlockNumber][rotate][block][0] >= 0
                     && xCoordinateOfActiveBlock + xAdd + blocks[activeBlockNumber][rotate][block][0] < Constants.BOARD_WIDTH
                 ) {
-                    if (tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][block][1]][xCoordinateOfActiveBlock
+                    if (tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][block][1]][xCoordinateOfActiveBlock
                         + xAdd + blocks[activeBlockNumber][rotate][block][0]] !== 0) {
                         // Prevent the move
                         xAddIsValid = false;
@@ -250,7 +249,7 @@ class TetrisGame extends React.Component<any> {
                 ) {
                     // Test of block rotation is not blocked by other blocks
                     if (
-                        tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][newRotate][block][1]]
+                        tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][1]]
                         [xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][0]
                         ] !== 0
                     ) {
@@ -277,12 +276,12 @@ class TetrisGame extends React.Component<any> {
             for (let i = 0; i < noOfBlock; i++) {
                 // Test if block can fall faster without getting outside the board
                 if (
-                    yCoordinateOfActiveTile + yAdd + blocks[activeBlockNumber][rotate][i][1] >= 0 &&
-                    yCoordinateOfActiveTile + yAdd + blocks[activeBlockNumber][rotate][i][1] < Constants.BOARD_HEIGHT
+                    yCoordinateOfActiveBlock + yAdd + blocks[activeBlockNumber][rotate][i][1] >= 0 &&
+                    yCoordinateOfActiveBlock + yAdd + blocks[activeBlockNumber][rotate][i][1] < Constants.BOARD_HEIGHT
                 ) {
                     // Test if faster fall is not blocked by other blocks
                     if (
-                        tetrisGameGrid[yCoordinateOfActiveTile + yAdd + blocks[activeBlockNumber][rotate][i][1]][
+                        tetrisGameGrid[yCoordinateOfActiveBlock + yAdd + blocks[activeBlockNumber][rotate][i][1]][
                             xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][i][0]
                         ] !== 0
                     ) {
@@ -298,14 +297,41 @@ class TetrisGame extends React.Component<any> {
 
         // If speeding up the fall is valid (move the block down faster)
         if (yAddIsValid) {
-            yCoordinateOfActiveTile += yAdd;
+            yCoordinateOfActiveBlock += yAdd;
         }
 
-        // Render the block at new position
-        tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][0][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][0]] = activeBlockNumber;
-        tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][1][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][0]] = activeBlockNumber;
-        tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][2][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][0]] = activeBlockNumber;
-        tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][3][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][0]] = activeBlockNumber;
+        /*
+            Logic reference : https://blog.alexdevero.com/tetris-game-react-typescript/
+            Render the block at new position
+            tetrisGameGrid is n*n matrix and the algorithm is to place the current active block number at perfect place
+            to achieve this we are using below variables-
+            yCoordinateOfActiveBlock =
+            xCoordinateOfActiveBlock =
+            rotate = it's a number which which indicates that how my times the current block has been rotated.
+            activeBlockNumber = it's a number which represent the current block number which should be rendered on the tetris game board
+            blocks = blocks are basically array of block, current block is being randomly by
+            Math.random from 1 - 7, Please check the utils/constant.tsx file for exact  data structure used for the block
+            Step:1  Get the collection for active block number - blocks[activeBlockNumber],
+            eg- if activeBlockNumber = 4, you will get the below collection
+                [[0, 0], [-1, 0], [1, 0], [-1, -1]], => rotation = 0
+                [[0, 0], [0, 1], [0, -1], [1, -1]],=> rotation = 1
+                [[0, 0], [1, 0], [-1, 0], [1, 1]], => rotation = 2
+                [[0, 0], [0, 1], [0, -1], [-1, 1]] =>  rotation = 3
+
+            Step:2 Get the row for the perticular rotation
+            eg. for rotate = 0, you will get the below row
+            [0, 0], [-1, 0], [1, 0], [-1, -1]
+            Step:3 now get the cell positions for the active block number by adding above cell coordinates with xCoordinateOfActiveBlock, yCoordinateOfActiveBlock
+            eg. if xCoordinateOfActiveBlock = 5 and yCoordinateOfActiveBlock = 3, you will get the below mappings
+            [5,3] [4,3] [6,3] [4,2]
+            Step: 4 Assign the above coordinates with the active block number, active block number will be use to render the UI on response view
+            eg. tetrisGameGrid[3,5] =  tetrisGameGrid[3,4] = tetrisGameGrid[3,6] = tetrisGameGrid[2,4] = 4
+       */
+
+        tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][0]] = activeBlockNumber;
+        tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][0]] = activeBlockNumber;
+        tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][0]] = activeBlockNumber;
+        tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][0]] = activeBlockNumber;
 
         // If moving down is not possible, remove completed rows add score
         // and find next block and check if game is over
@@ -339,7 +365,7 @@ class TetrisGame extends React.Component<any> {
             let timerId;
             // Reset the timer
             clearInterval(this.store.timerId);
-            // Update new timer
+            // Update new timer, now level will decide the timer
             timerId = setInterval(
                 () => this.updateTetrisGameBoard("down"),
                 Constants.GAME_LOWEST_SPEED - (this.store.gameLevel > Constants.MAX_LEVEL ?
@@ -349,29 +375,30 @@ class TetrisGame extends React.Component<any> {
             updateTimerId(timerId);
             // Create new Block
             activeBlockNumber = Math.floor(Math.random() * Constants.NUMBER_OF_BLOCK + 1);
-            xCoordinateOfActiveBlock = Constants.BOARD_WIDTH / 2;
-            yCoordinateOfActiveTile = 1;
+            xCoordinateOfActiveBlock =Math.floor(Constants.BOARD_WIDTH / 2) - 1;
+            yCoordinateOfActiveBlock = 1;
             rotate = 0;
 
             // Test if game is over - test if new block can't be placed in field
             if (
-                tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][0][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][0]] !== 0 ||
-                tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][1][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][0]] !== 0 ||
-                tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][2][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][0]] !== 0 ||
-                tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][3][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][0]] !== 0
+                tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][0]] !== 0 ||
+                tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][0]] !== 0 ||
+                tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][0]] !== 0 ||
+                tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][0]] !== 0
             ) {
-                setGameProgress(GameStatus.End);
+                setGameStatus(GameStatus.End);
             } else {
                 // Otherwise, render new block and continue
-                tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][0][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][0]] = activeBlockNumber;
-                tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][1][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][0]] = activeBlockNumber;
-                tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][2][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][0]] = activeBlockNumber;
-                tetrisGameGrid[yCoordinateOfActiveTile + blocks[activeBlockNumber][rotate][3][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][0]] = activeBlockNumber;
+                // Logic is already explained
+                tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][0]] = activeBlockNumber;
+                tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][0]] = activeBlockNumber;
+                tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][0]] = activeBlockNumber;
+                tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][0]] = activeBlockNumber;
             }
         }
-        // Update GameBoard, Active X and Y coordinates, rotation and active Block 
+        // Update GameBoard, Active X and Y coordinates, rotation and active Block
         updateTetrisGameBoard(tetrisGameGrid);
-        updateXYCoordinateOfActiveBlock(xCoordinateOfActiveBlock, yCoordinateOfActiveTile);
+        updateXYCoordinateOfActiveBlock(xCoordinateOfActiveBlock, yCoordinateOfActiveBlock);
         updateRotation(rotate);
         updateActiveBlockNumber(activeBlockNumber);
         updateShadowPiece(shadowMap);

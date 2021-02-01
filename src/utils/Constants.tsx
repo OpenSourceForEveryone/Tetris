@@ -40,6 +40,7 @@ export class Constants {
     };
 
     // Data structure for storing the blocks types are refered from https://blog.alexdevero.com/tetris-game-react-typescript/
+    // Here row in each block represents the rotation number, since a block can have maximum 4, it has only 4 rows (0, 1, 2, 3)
     public static readonly BLOCKS: any[] = [
         [
             // The default square

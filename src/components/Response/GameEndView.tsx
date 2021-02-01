@@ -9,11 +9,11 @@ import { Localizer } from "../../utils/Localizer";
 import { Constants } from "../../utils/Constants";
 import { addScore } from "../../actions/ResponseAction";
 import getStore, { GameStatus } from "../../store/TetrisGameStore";
-import { setGameProgress } from "../../actions/TetrisGameAction";
+import { setGameStatus } from "../../actions/TetrisGameAction";
 
 interface IGameEndProps {
-    onlyOneAttempt:boolean
-    score: number
+    onlyOneAttempt:boolean;
+    score: number;
 }
 
 /**
@@ -22,11 +22,10 @@ interface IGameEndProps {
  */
 @observer
 export default class GameEndView extends React.Component<IGameEndProps> {
-
+    state = { isImageLoaded: false };
     constructor(props) {
         super(props);
     }
-    state = { isImageLoaded: false };
     render() {
         return (
             <>
@@ -68,7 +67,7 @@ export default class GameEndView extends React.Component<IGameEndProps> {
                         content={Localizer.getString("SubmitScore")}
                         onClick={() => {
                             addScore(getStore().gameScore.toString());
-                            setGameProgress(GameStatus.End);
+                            setGameStatus(GameStatus.End);
                         }}>
                     </Button>
                 </FlexItem>

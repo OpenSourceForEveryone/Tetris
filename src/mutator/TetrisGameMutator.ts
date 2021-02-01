@@ -1,6 +1,6 @@
 import { mutator } from "satcheljs";
 import getStore from "../store/TetrisGameStore";
-import {setGameProgress,
+import {
     updateTimerId,
     updateTetrisGameBoard,
     updateShadowPiece,
@@ -8,10 +8,12 @@ import {setGameProgress,
     updateRotation,
     updateXYCoordinateOfActiveBlock,
     updateGameLevel,
-    updateActiveBlockNumber
+    updateActiveBlockNumber,
+    updatedInstructionPageView,
+    setGameStatus
 } from "../actions/TetrisGameAction";
 
-mutator(setGameProgress, (msg) => {
+mutator(setGameStatus, (msg) => {
     const store = getStore();
     store.gameStatus = msg.status;
 });
@@ -55,4 +57,9 @@ mutator(updateGameLevel, (msg) => {
 mutator(updateActiveBlockNumber, (msg) => {
     const store = getStore();
     store.activeBlockNumber = msg.blockNumber;
+});
+
+mutator(updatedInstructionPageView, () => {
+    const store = getStore();
+    store.isGameInstructionPageVisible = !store.isGameInstructionPageVisible;
 });

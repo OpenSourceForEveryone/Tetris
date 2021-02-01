@@ -4,25 +4,22 @@
 import { action } from "satcheljs";
 import { GameStatus } from "../store/TetrisGameStore";
 
-
 export enum TetrisGameAction {
     initialize = "initialize",
     updateGameScore = "updateGameScore",
     updateShadowPiece = "updateShadowPiece",
-    setGameProgress = "setGameProgress",
     updateTimerId = "updateGameStatus",
     updateTetrisGameBoard = "updateTetrisGameBoard",
     updateRotation = "updateRotation",
     updateActiveBlockNumber = "updateActiveBlockNumber",
     updateXYCoordinateOfActiveBlock = "updateXYCoordinateOfActiveBlock",
-    updateGameLevel = "updateGameLevel"
+    updateGameLevel = "updateGameLevel",
+    updatedInstructionPageView = "updatedInstructionPageView",
+    setGameStatus = "setGameStatus"
+
 }
 
 export let initialize = action(TetrisGameAction.initialize);
-
-export let setGameProgress = action(TetrisGameAction.setGameProgress, (status: Partial<GameStatus>) => ({
-    status: status
-}));
 
 export let updateTimerId = action(TetrisGameAction.updateTimerId, (id: any) => ({
     id: id
@@ -56,4 +53,10 @@ export let updateXYCoordinateOfActiveBlock = action(TetrisGameAction.updateXYCoo
 
 export let updateGameLevel = action(TetrisGameAction.updateGameLevel, (level: number) => ({
     level: level
+}));
+
+export let updatedInstructionPageView = action(TetrisGameAction.updatedInstructionPageView);
+
+export let setGameStatus = action(TetrisGameAction.setGameStatus, (status: Partial<GameStatus>) => ({
+    status: status
 }));

@@ -114,4 +114,11 @@ export namespace Utils {
         }
     }
 
+    /**
+     * Method to copy the reference type
+     * @param object of any type
+     */
+    export function cloneDeep(object: any) {
+        return (JSON.parse(JSON.stringify(object)));
+    }
 }
