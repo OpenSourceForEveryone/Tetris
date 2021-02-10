@@ -5,8 +5,8 @@ import * as React from "react";
 import { observer } from "mobx-react";
 import { PauseIcon, PlayIcon, Reaction } from "@fluentui/react-northstar";
 import { Localizer } from "../../utils/Localizer";
-import { setGameStatus } from "../../actions/TetrisGameAction";
-import getStore, { GameStatus } from "../../store/TetrisGameStore";
+import { setGameStatus } from "../../actions/ResponseAction";
+import getStore, { GameStatus } from "../../store/ResponseStore";
 import {Utils} from "../../utils/Utils";
 
 /**
@@ -39,7 +39,7 @@ export default class TetrisGameBoard extends React.Component {
           className={column == 0 ? `column-blank` : column == -1 ? `column-shadow` : `column-block`}
           key={index}
         />);
-      tetrisGamerows.push(<div className="tetris-board__row" key={index}>{cols}</div>);
+      tetrisGamerows.push(<div className="tetris-board-row" key={index}>{cols}</div>);
     });
 
     return (

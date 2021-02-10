@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import getStore from "../../../store/TetrisGameStore";
+import getStore from "../../../store/ResponseStore";
 import { Constants } from "../../../utils/Constants";
 
 // Helper method to get the coordinates for Shadow blocks

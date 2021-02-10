@@ -3,7 +3,7 @@
 
 import { action } from "satcheljs";
 import * as actionSDK from "@microsoft/m365-action-sdk";
-import { ResponseProgressStatus } from "../store/ResponseStore";
+import { GameStatus, ResponseProgressStatus } from "../store/ResponseStore";
 
 export enum GameResponseAction {
     initialize = "initialize",
@@ -17,7 +17,18 @@ export enum GameResponseAction {
     setIsActionDeleted = "setIsActionDeleted",
     setPreviousScore = "setPreviousScore",
     addScore = "addScore",
+    addScoreForSinglePlay = "addScoreForSinglePlay",
     setShouldPlayerPlay = "setShouldPlayerPlay",
+    updateGameScore = "updateGameScore",
+    updateShadowPiece = "updateShadowPiece",
+    updateTimerId = "updateGameStatus",
+    updateTetrisGameBoard = "updateTetrisGameBoard",
+    updateRotation = "updateRotation",
+    updateActiveBlockNumber = "updateActiveBlockNumber",
+    updateXYCoordinateOfActiveBlock = "updateXYCoordinateOfActiveBlock",
+    updateGameLevel = "updateGameLevel",
+    updatedInstructionPageView = "updatedInstructionPageView",
+    setGameStatus = "setGameStatus"
 }
 
 export let initialize = action(GameResponseAction.initialize);
@@ -55,4 +66,48 @@ export let setIsActionDeleted = action(GameResponseAction.setIsActionDeleted, (v
 
 export let addScore = action(GameResponseAction.addScore, (score: string) => ({
     score: score
+}));
+
+export let addScoreForSinglePlay = action(GameResponseAction.addScoreForSinglePlay, (score: string) => ({
+    score: score
+}));
+
+export let updateTimerId = action(GameResponseAction.updateTimerId, (id: any) => ({
+    id: id
+}));
+
+export let updateTetrisGameBoard = action(GameResponseAction.updateTetrisGameBoard, (board: any[]) => ({
+    board: board
+}));
+
+export let updateShadowPiece = action(GameResponseAction.updateShadowPiece, (piece: any[]) => ({
+    piece: piece
+}));
+
+export let updateGameScore = action(GameResponseAction.updateGameScore, (score: number) => ({
+    score: score
+}));
+
+export let updateRotation = action(GameResponseAction.updateRotation, (rotation: number) => ({
+    rotation: rotation
+}));
+
+export let updateActiveBlockNumber = action(GameResponseAction.updateActiveBlockNumber, (blockNumber: number) => ({
+    blockNumber: blockNumber
+}));
+
+export let updateXYCoordinateOfActiveBlock = action(GameResponseAction.updateXYCoordinateOfActiveBlock,
+    (xCoordinate: number, yCoordinate: number) => ({
+        xCoordinate: xCoordinate,
+        yCoordinate: yCoordinate
+    }));
+
+export let updateGameLevel = action(GameResponseAction.updateGameLevel, (level: number) => ({
+    level: level
+}));
+
+export let updatedInstructionPageView = action(GameResponseAction.updatedInstructionPageView);
+
+export let setGameStatus = action(GameResponseAction.setGameStatus, (status: Partial<GameStatus>) => ({
+    status: status
 }));

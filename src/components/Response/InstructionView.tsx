@@ -8,10 +8,9 @@ import "./GamePage.scss";
 import { UxUtils } from "../../utils/UxUtils";
 import TetrisGame from "./TetrisGame";
 import { Constants } from "../../utils/Constants";
-import getStore from "../../store/TetrisGameStore";
+import getStore, { GameStatus } from "../../store/ResponseStore";
 import { Localizer } from "../../utils/Localizer";
-import { GameStatus } from "../../store/TetrisGameStore";
-import { updatedInstructionPageView, setGameStatus } from "../../actions/TetrisGameAction";
+import { updatedInstructionPageView, setGameStatus } from "../../actions/ResponseAction";
 /**
  * <InstructionView> component for game instruction view
  * @observer decorator on the component this is what tells MobX to rerender the component whenever the data it relies on changes.

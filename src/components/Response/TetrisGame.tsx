@@ -17,8 +17,8 @@ import {
     updateShadowPiece,
     updateGameLevel,
     updateActiveBlockNumber
-} from "../../actions/TetrisGameAction";
-import getStore, { GameStatus } from "../../store/TetrisGameStore";
+} from "../../actions/ResponseAction";
+import getStore, { GameStatus } from "../../store/ResponseStore";
 import {Utils} from "../../utils/Utils";
 import { getShadowBlock } from "./GameUtils/TetrisUtils";
 import { UxUtils } from "../../utils/UxUtils";
@@ -166,29 +166,27 @@ class TetrisGame extends React.Component<any> {
             return;
         }
 
-        // Prepare variables for additions to x/y coordinates, current active block and new rotation
-        // Logic Credit: https://blog.alexdevero.com/tetris-game-react-typescript/
-        let xAdd = 0;
-        let yAdd = 0;
-        let rotateAdd = 0;
+        let horizontalMoveCount= 0; // to manage the Left/Right movement block
+        let verticalMoveCount = 0; // to manage the down movement of block
+        let rotationCount = 0; // to manage the rotation of block
         let activeBlockNumber = this.store.activeBlockNumber;
         const noOfBlock = 4;
 
-        // If block should move to the left, set xAdd to -1
+        // for left movement, set horizontalMoveCount to -1
         if (direction === "left") {
-            xAdd = -1;
+            horizontalMoveCount = -1;
         }
-        // If block should move to the right, set xAdd to 1
+        // for right movement, set horizontalMoveCount to 1
         if (direction === "right") {
-            xAdd = 1;
+            horizontalMoveCount = 1;
         }
-        // If block should be rotated, set rotateAdd to 1
+        // for rotation, set rotateAdd to 1
         if (direction === "rotate") {
-            rotateAdd = 1;
+            rotationCount = 1;
         }
-        // If block should fall faster, set yAdd to 1
+        // If block should fall faster, set verticalMoveCount to 1
         if (direction === "down") {
-            yAdd = 1;
+            verticalMoveCount = 1;
         }
 
         // Get current x/y coordinates, active block, rotate and all blocks
@@ -204,50 +202,50 @@ class TetrisGame extends React.Component<any> {
         tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][0]] = 0;
         tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][0]] = 0;
 
-        // Test if the move can be executed on actual field
-        let xAddIsValid = true;
+        // Check if the move can be executed on actual field
+        let horizontalMoveCountIsValid = true;
         const shadowMap = getShadowBlock(tetrisGameGrid);
         // check if block should move horizontally
-        if (xAdd !== 0) {
+        if (horizontalMoveCount !== 0) {
             for (let block = 0; block < noOfBlock; block++) {
-                // Test if block can be moved without getting outside the board
+                // check if block can be moved without getting outside the board
                 if (
-                    xCoordinateOfActiveBlock + xAdd + blocks[activeBlockNumber][rotate][block][0] >= 0
-                    && xCoordinateOfActiveBlock + xAdd + blocks[activeBlockNumber][rotate][block][0] < Constants.BOARD_WIDTH
+                    xCoordinateOfActiveBlock + horizontalMoveCount + blocks[activeBlockNumber][rotate][block][0] >= 0
+                    && xCoordinateOfActiveBlock + horizontalMoveCount + blocks[activeBlockNumber][rotate][block][0] < Constants.BOARD_WIDTH
                 ) {
                     if (tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][block][1]][xCoordinateOfActiveBlock
-                        + xAdd + blocks[activeBlockNumber][rotate][block][0]] !== 0) {
+                        + horizontalMoveCount + blocks[activeBlockNumber][rotate][block][0]] !== 0) {
                         // Prevent the move
-                        xAddIsValid = false;
+                        horizontalMoveCountIsValid = false;
                     }
                 } else {
                     // Prevent the move
-                    xAddIsValid = false;
+                    horizontalMoveCountIsValid = false;
                 }
             }
         }
 
         // If horizontal move is valid update x variable (move the block)
-        if (xAddIsValid) {
-            xCoordinateOfActiveBlock += xAdd;
+        if (horizontalMoveCountIsValid) {
+            xCoordinateOfActiveBlock += horizontalMoveCount;
         }
 
         // Try to rotate the block
         const maximumRotation = 3;
-        let newRotate = rotate + rotateAdd > maximumRotation ? 0 : rotate + rotateAdd;
+        let newRotate = rotate + rotationCount > maximumRotation ? 0 : rotate + rotationCount;
         let rotateIsValid = true;
 
-        // Test if block should rotate
-        if (rotateAdd !== 0) {
+        // Check if block should rotate
+        if (rotationCount !== 0) {
             for (let block = 0; block < noOfBlock; block++) {
-                // Test if block can be rotated without getting outside the board
+                // Check if block can be rotated without getting outside the board
                 if (
                     xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][0] >= 0 &&
                     xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][0] <= Constants.BOARD_HEIGHT &&
                     xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][1] >= 0 &&
                     xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][1] <= Constants.BOARD_HEIGHT
                 ) {
-                    // Test of block rotation is not blocked by other blocks
+                    // check if block rotation is not blocked by other blocks
                     if (
                         tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][1]]
                         [xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][0]
@@ -269,44 +267,44 @@ class TetrisGame extends React.Component<any> {
         }
 
         // Try to speed up the fall of the block
-        let yAddIsValid = true;
+        let verticalMoveCountIsValid = true;
 
-        // Test if block should fall faster
-        if (yAdd !== 0) {
+        // check if block should fall faster
+        if (verticalMoveCount !== 0) {
             for (let i = 0; i < noOfBlock; i++) {
-                // Test if block can fall faster without getting outside the board
+                // check if block can fall faster without getting outside the board
                 if (
-                    yCoordinateOfActiveBlock + yAdd + blocks[activeBlockNumber][rotate][i][1] >= 0 &&
-                    yCoordinateOfActiveBlock + yAdd + blocks[activeBlockNumber][rotate][i][1] < Constants.BOARD_HEIGHT
+                    yCoordinateOfActiveBlock + verticalMoveCount + blocks[activeBlockNumber][rotate][i][1] >= 0 &&
+                    yCoordinateOfActiveBlock + verticalMoveCount + blocks[activeBlockNumber][rotate][i][1] < Constants.BOARD_HEIGHT
                 ) {
-                    // Test if faster fall is not blocked by other blocks
+                    // Check if faster fall is not blocked by other blocks
                     if (
-                        tetrisGameGrid[yCoordinateOfActiveBlock + yAdd + blocks[activeBlockNumber][rotate][i][1]][
+                        tetrisGameGrid[yCoordinateOfActiveBlock + verticalMoveCount + blocks[activeBlockNumber][rotate][i][1]][
                             xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][i][0]
                         ] !== 0
                     ) {
                         // Prevent faster fall
-                        yAddIsValid = false;
+                        verticalMoveCountIsValid = false;
                     }
                 } else {
                     // Prevent faster fall
-                    yAddIsValid = false;
+                    verticalMoveCountIsValid = false;
                 }
             }
         }
 
         // If speeding up the fall is valid (move the block down faster)
-        if (yAddIsValid) {
-            yCoordinateOfActiveBlock += yAdd;
+        if (verticalMoveCountIsValid) {
+            yCoordinateOfActiveBlock += verticalMoveCount;
         }
 
         /*
-            Logic reference : https://blog.alexdevero.com/tetris-game-react-typescript/
+
             Render the block at new position
             tetrisGameGrid is n*n matrix and the algorithm is to place the current active block number at perfect place
             to achieve this we are using below variables-
-            yCoordinateOfActiveBlock =
-            xCoordinateOfActiveBlock =
+            yCoordinateOfActiveBlock = 5
+            xCoordinateOfActiveBlock = 3
             rotate = it's a number which which indicates that how my times the current block has been rotated.
             activeBlockNumber = it's a number which represent the current block number which should be rendered on the tetris game board
             blocks = blocks are basically array of block, current block is being randomly by
@@ -335,7 +333,7 @@ class TetrisGame extends React.Component<any> {
 
         // If moving down is not possible, remove completed rows add score
         // and find next block and check if game is over
-        if (!yAddIsValid) {
+        if (!verticalMoveCountIsValid) {
             for (let row = Constants.BOARD_HEIGHT - 1; row >= 0; row--) {
                 let isLineCompleted = true;
 

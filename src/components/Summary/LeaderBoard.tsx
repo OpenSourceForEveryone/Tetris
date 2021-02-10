@@ -58,7 +58,7 @@ export class LeaderBoardView extends React.Component<any> {
             this.scores.forEach(element => {
                 items.push({
                     key: element.playerId,
-                    header: element.playerName === null ? "Unknown" : element.playerName,
+                    header: element.playerName === null ? Localizer.getString("Unknown") : element.playerName,
                     headerMedia: <strong>{element.score}</strong>
                 });
             });

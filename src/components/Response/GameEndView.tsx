@@ -8,8 +8,8 @@ import "./GamePage.scss";
 import { Localizer } from "../../utils/Localizer";
 import { Constants } from "../../utils/Constants";
 import { addScore } from "../../actions/ResponseAction";
-import getStore, { GameStatus } from "../../store/TetrisGameStore";
-import { setGameStatus } from "../../actions/TetrisGameAction";
+import getStore, { GameStatus } from "../../store/ResponseStore";
+import { setGameStatus, addScoreForSinglePlay } from "../../actions/ResponseAction";
 
 interface IGameEndProps {
     onlyOneAttempt:boolean;
@@ -25,6 +25,9 @@ export default class GameEndView extends React.Component<IGameEndProps> {
     state = { isImageLoaded: false };
     constructor(props) {
         super(props);
+        if(this.isSinglePlay()) {
+            addScoreForSinglePlay(getStore().gameScore.toString());
+        }
     }
     render() {
         return (
@@ -51,7 +54,7 @@ export default class GameEndView extends React.Component<IGameEndProps> {
                         }
                     </div>
                 </div>
-                { !this.props.onlyOneAttempt && this.renderFooterSection()}
+                { !this.isSinglePlay()  && this.renderFooterSection()}
             </>
         );
     }
@@ -73,5 +76,15 @@ export default class GameEndView extends React.Component<IGameEndProps> {
                 </FlexItem>
             </Flex>
         );
+    }
+
+    // Helper method to check, if the user is playing in single play mode
+    isSinglePlay(): boolean {
+        const store = getStore();
+        if (store.actionInstance.dataTables[0].canUserAddMultipleRows) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
