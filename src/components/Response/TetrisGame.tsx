@@ -19,8 +19,9 @@ import {
     updateActiveBlockNumber
 } from "../../actions/ResponseAction";
 import getStore, { GameStatus } from "../../store/ResponseStore";
-import {Utils} from "../../utils/Utils";
+import { Utils } from "../../utils/Utils";
 import { getShadowBlock } from "./GameUtils/TetrisUtils";
+import { Swipe } from "react-swipe-component"
 import { UxUtils } from "../../utils/UxUtils";
 
 /**
@@ -30,16 +31,17 @@ import { UxUtils } from "../../utils/UxUtils";
 
 @observer
 class TetrisGame extends React.Component<any> {
-    private initialXPosition = null;
-    private initialYPosition = null;
-    private diffX = null;
-    private diffY = null;
-    private timeDown = null;
     private store = getStore();
     constructor(props: any) {
         super(props);
         setGameStatus(GameStatus.InProgress);
     }
+
+    private initialXPosition = null;
+    private initialYPosition = null;
+    private diffX = null;
+    private diffY = null;
+    private timeDown = null;
 
     // Key Press Handler
     handleKeyDown = (event) => {
@@ -58,18 +60,12 @@ class TetrisGame extends React.Component<any> {
                 this.updateTetrisGameBoard("right");
                 break;
             case key.SPACE:
-
                 if (this.store.gameStatus == GameStatus.Paused) {
                     setGameStatus(GameStatus.InProgress);
                 } else {
                     setGameStatus(GameStatus.Paused);
                 }
         }
-    }
-
-    // Handle tap for Mobile Devices
-    handleTap = () => {
-       if(UxUtils.renderingForMobile()) { this.updateTetrisGameBoard("rotate");}
     }
 
     // Event handle for start touch
@@ -94,34 +90,28 @@ class TetrisGame extends React.Component<any> {
         this.diffY = this.initialYPosition - currentY;
         const timeDiff = Date.now() - this.timeDown;
 
-        // setTime out is going to control the swip speed
-        setTimeout(() => {
-            if (Math.abs(this.diffX) > Math.abs(this.diffY)) {
-                // sliding horizontally
-                if (timeDiff < Constants.SWIP_DOWN_TIME_THRESHOLD) {
-                    if (this.diffX > 0) {
-                        // swiped left
-                        this.updateTetrisGameBoard("left");
-                    } else {
-                        // swiped right
-                        this.updateTetrisGameBoard("right");
-                    }
-                }
-
-            } else if(Math.abs(this.diffX) < Math.abs(this.diffY)) {
-                // sliding vertically
-                if (timeDiff < Constants.SWIP_DOWN_TIME_THRESHOLD) {
-                    if (this.diffY < 0) {
-                        // swip down
-                        this.updateTetrisGameBoard("down");
-                    }
+        if (Math.abs(this.diffX) > Math.abs(this.diffY)) {
+            // Sliding horizontally
+            if (Math.abs(this.diffX) < Constants.DELTA) {
+                if (this.diffX > 0) {
+                    // swiped left
+                    this.updateTetrisGameBoard("left");
+                } else {
+                    // swiped right
+                    this.updateTetrisGameBoard("right");
                 }
             }
-        }, Constants.SLIDING_VELOCITY);
-    }
 
-    // Event Handler for touch end
-    handleTouchEnd = (event) => {
+        } else if (Math.abs(this.diffX) < Math.abs(this.diffY)) {
+            // Sliding vertically
+            if (timeDiff < Constants.SWIP_DOWN_TIME_THRESHOLD) {
+                if (this.diffY < 0) {
+                    // swip down
+                    this.updateTetrisGameBoard("down");
+                }
+            }
+        }
+
         this.initialYPosition = null;
         this.diffY = null;
         this.initialXPosition = null;
@@ -138,18 +128,18 @@ class TetrisGame extends React.Component<any> {
                 Constants.GAME_HIGHEST_SPEED : this.store.gameLevel * 10)
         );
         updateTimerId(timerId);
+        const tetrisElement = document.getElementById("tetrisBoard");
         window.addEventListener("keydown", this.handleKeyDown, false);
-        window.addEventListener("touchstart", this.handleTouchStart, false);
-        window.addEventListener("touchmove", this.handleTouchMove, false);
-        window.addEventListener("touchend", this.handleTouchEnd, false);
+        tetrisElement.addEventListener("touchstart", this.handleTouchStart, false);
+        tetrisElement.addEventListener("touchmove", this.handleTouchMove, false);
     }
 
     componentWillUnmount() {
         window.clearInterval(this.store.timerId);
+        const tetrisElement = document.getElementById("tetrisBoard");
         window.removeEventListener("keydown", this.handleKeyDown);
-        document.removeEventListener("touchstart", this.handleTouchStart);
-        document.removeEventListener("touchmove", this.handleTouchMove);
-        document.removeEventListener("touchend", this.handleTouchEnd);
+        tetrisElement.removeEventListener("touchstart", this.handleTouchStart);
+        tetrisElement.removeEventListener("touchmove", this.handleTouchMove);
     }
 
     /**
@@ -166,7 +156,7 @@ class TetrisGame extends React.Component<any> {
             return;
         }
 
-        let horizontalMoveCount= 0; // to manage the Left/Right movement block
+        let horizontalMoveCount = 0; // to manage the Left/Right movement block
         let verticalMoveCount = 0; // to manage the down movement of block
         let rotationCount = 0; // to manage the rotation of block
         let activeBlockNumber = this.store.activeBlockNumber;
@@ -280,7 +270,7 @@ class TetrisGame extends React.Component<any> {
                     // Check if faster fall is not blocked by other blocks
                     if (
                         tetrisGameGrid[yCoordinateOfActiveBlock + verticalMoveCount + blocks[activeBlockNumber][rotate][i][1]][
-                            xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][i][0]
+                        xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][i][0]
                         ] !== 0
                     ) {
                         // Prevent faster fall
@@ -299,7 +289,6 @@ class TetrisGame extends React.Component<any> {
         }
 
         /*
-
             Render the block at new position
             tetrisGameGrid is n*n matrix and the algorithm is to place the current active block number at perfect place
             to achieve this we are using below variables-
@@ -355,7 +344,8 @@ class TetrisGame extends React.Component<any> {
                     // Check if the row is the last
                     row = Constants.BOARD_HEIGHT;
                     // update score,  change level
-                    updateGameScore(this.store.gameScore + Constants.SCORE_INCREMENT_FACTOR * this.store.gameLevel);
+                    // score : current score + increment fector * bonus factore(being decided with game speed/timerId)
+                    updateGameScore(this.store.gameScore + Constants.SCORE_INCREMENT_FACTOR * Number(this.store.timerId) / 100);
                     updateGameLevel(this.store.gameLevel + 1);
                 }
             }
@@ -373,7 +363,7 @@ class TetrisGame extends React.Component<any> {
             updateTimerId(timerId);
             // Create new Block
             activeBlockNumber = Math.floor(Math.random() * Constants.NUMBER_OF_BLOCK + 1);
-            xCoordinateOfActiveBlock =Math.floor(Constants.BOARD_WIDTH / 2) - 1;
+            xCoordinateOfActiveBlock = Math.floor(Constants.BOARD_WIDTH / 2) - 1;
             yCoordinateOfActiveBlock = 1;
             rotate = 0;
 
@@ -394,7 +384,8 @@ class TetrisGame extends React.Component<any> {
                 tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][3][0]] = activeBlockNumber;
             }
         }
-        // Update GameBoard, Active X and Y coordinates, rotation and active Block
+
+        // update gameboard, active X and Y coordinates, rotation and active block
         updateTetrisGameBoard(tetrisGameGrid);
         updateXYCoordinateOfActiveBlock(xCoordinateOfActiveBlock, yCoordinateOfActiveBlock);
         updateRotation(rotate);
@@ -404,10 +395,26 @@ class TetrisGame extends React.Component<any> {
 
     render() {
         return (
-            <div className="tetris body-container" id="focus">
+            <div className="tetris body-container">
                 { this.store.gameStatus === GameStatus.End ?
                     <GameEndView score={this.store.gameScore} onlyOneAttempt={false} /> :
-                    <TetrisBoard />
+                    <Swipe
+                        nodeName="tetris"
+                        onSwipingLeft={() => { this.updateTetrisGameBoard("left") }}
+                        onSwipingRight={() => { this.updateTetrisGameBoard("right") }}
+                        onSwipingDown={() => { this.updateTetrisGameBoard("down") }}
+                        detectTouch={true}
+                        detectMouse={false}
+                        delta={Constants.DELTA}
+                    >
+                        <div id="tetrisBoard" onClick={() => {
+                            if (UxUtils.renderingForMobile()) {
+                                this.updateTetrisGameBoard("rotate")
+                            }
+                        }}>
+                            <TetrisBoard />
+                        </div>
+                    </Swipe>
                 }
             </div>
         );

@@ -19,7 +19,7 @@ export class Constants {
     public static readonly GAME_LOGO_PATH = "images/appIcon.png";
     public static readonly GAME_CONGRATULATION_IMAGE_PATH = "images/trophy.png";
     public static readonly INSTRUCTION_PAGE_LOCALSTORAGE = "TetrisGameInstructionPageShow";
-    public static readonly SLIDING_VELOCITY = 40;
+    public static readonly SLIDING_VELOCITY = 60;
     public static readonly GAME_LOWEST_SPEED = 510;
     public static readonly GAME_HIGHEST_SPEED = 300;
     public static readonly MAX_LEVEL = 20;
@@ -28,9 +28,10 @@ export class Constants {
     public static readonly DEFAULT_NUMBER_OF_RECORD = 3;
     public static readonly RECORD_INCREMENT_FACTOR = 3;
     public static readonly SCORE_INCREMENT_FACTOR = 100;
-    public static readonly SWIP_DOWN_TIME_THRESHOLD = 200;
-    public static readonly SWIP_HORIZONTAL_THRESHOLD = 100;
+    public static readonly SWIP_DOWN_TIME_THRESHOLD = 150;
+    public static readonly SWIP_HORIZONTAL_THRESHOLD = 130;
     public static readonly NUMBER_OF_BLOCK = 7;
+    public static readonly DELTA = 80;
     public static readonly KEY_MAP = {
         UP: 38,
         DOWN: 40,
@@ -39,7 +40,6 @@ export class Constants {
         SPACE: 32
     };
 
-    // Data structure for storing the blocks types are refered from https://blog.alexdevero.com/tetris-game-react-typescript/
     // Here row in each block represents the rotation number, since a block can have maximum 4, it has only 4 rows (0, 1, 2, 3)
     // Here row secquence important, if you change the seq. rotation map will change/rotation will be unexpected
     public static readonly BLOCKS: any[] = [

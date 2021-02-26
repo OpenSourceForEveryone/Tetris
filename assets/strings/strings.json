@@ -59,8 +59,6 @@
    "_LoadMore.comment": "label to indicate the string for load more record",
    "LoadLess": "Show less",
    "_LoadLess.comment": "label to indicate the string for show less record",
-   "Unknown": "unknown",
-   "_UnKnown.comment": "label to indicate the user name, if the user display is not provided in summary view",
   "DueInYears": "Due in {0} years",
   "_DueInYears.comment": "label to explain time remaining in years (plural)",
   "DueInYear": "Due in {0} year",

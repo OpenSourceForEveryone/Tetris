@@ -11,6 +11,7 @@ import { Constants } from "../../utils/Constants";
 import getStore, { GameStatus } from "../../store/ResponseStore";
 import { Localizer } from "../../utils/Localizer";
 import { updatedInstructionPageView, setGameStatus } from "../../actions/ResponseAction";
+
 /**
  * <InstructionView> component for game instruction view
  * @observer decorator on the component this is what tells MobX to rerender the component whenever the data it relies on changes.
