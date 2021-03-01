@@ -231,9 +231,9 @@ class TetrisGame extends React.Component<any> {
                 // Check if block can be rotated without getting outside the board
                 if (
                     xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][0] >= 0 &&
-                    xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][0] <= Constants.BOARD_HEIGHT &&
-                    xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][1] >= 0 &&
-                    xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][1] <= Constants.BOARD_HEIGHT
+                    xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][0] <= Constants.BOARD_WIDTH &&
+                    yCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][1] >= 0 &&
+                    yCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][1] <= Constants.BOARD_HEIGHT
                 ) {
                     // check if block rotation is not blocked by other blocks
                     if (
