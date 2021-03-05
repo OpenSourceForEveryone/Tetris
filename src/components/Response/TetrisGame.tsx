@@ -20,9 +20,11 @@ import {
 } from "../../actions/ResponseAction";
 import getStore, { GameStatus } from "../../store/ResponseStore";
 import { Utils } from "../../utils/Utils";
-import { getShadowBlock } from "./GameUtils/TetrisUtils";
-import { Swipe } from "react-swipe-component"
+import { getHeightOfBlock, getShadowBlock, getWidthOfBlock } from "./GameUtils/TetrisUtils";
+import { Swipe } from "react-swipe-component";
 import { UxUtils } from "../../utils/UxUtils";
+import { PauseIcon, PlayIcon, Reaction } from "@fluentui/react-northstar";
+import { Localizer } from "../../utils/Localizer";
 
 /**
  * <TetrisGame> component for tetris game logic
@@ -32,16 +34,15 @@ import { UxUtils } from "../../utils/UxUtils";
 @observer
 class TetrisGame extends React.Component<any> {
     private store = getStore();
-    constructor(props: any) {
-        super(props);
-        setGameStatus(GameStatus.InProgress);
-    }
-
     private initialXPosition = null;
     private initialYPosition = null;
     private diffX = null;
     private diffY = null;
     private timeDown = null;
+    constructor(props: any) {
+        super(props);
+        setGameStatus(GameStatus.InProgress);
+    }
 
     // Key Press Handler
     handleKeyDown = (event) => {
@@ -116,7 +117,6 @@ class TetrisGame extends React.Component<any> {
         this.diffY = null;
         this.initialXPosition = null;
         this.diffX = null;
-        this.timeDown = 0;
     }
 
     componentDidMount() {
@@ -224,9 +224,28 @@ class TetrisGame extends React.Component<any> {
         const maximumRotation = 3;
         let newRotate = rotate + rotationCount > maximumRotation ? 0 : rotate + rotationCount;
         let rotateIsValid = true;
+        let isLeftTouched = false;
+        let isRightTouched = false;
+
 
         // Check if block should rotate
         if (rotationCount !== 0) {
+            // Check if the Block is touching the left side of the board
+            for (let block = 0; block < noOfBlock; block++) {
+                if (xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][0] == 0) {
+                    isLeftTouched = true;
+                    break;
+                }
+            }
+
+            // Check if the Block is touching the right side of the board
+            for (let block = 0; block < noOfBlock; block++) {
+                if (xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][0] == Constants.BOARD_WIDTH) {
+                    isRightTouched = true;
+                    break;
+                }
+            }
+
             for (let block = 0; block < noOfBlock; block++) {
                 // Check if block can be rotated without getting outside the board
                 if (
@@ -238,8 +257,7 @@ class TetrisGame extends React.Component<any> {
                     // check if block rotation is not blocked by other blocks
                     if (
                         tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][1]]
-                        [xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][0]
-                        ] !== 0
+                        [xCoordinateOfActiveBlock + blocks[activeBlockNumber][newRotate][block][0]] !== 0
                     ) {
                         // Prevent rotation
                         rotateIsValid = false;
@@ -249,13 +267,28 @@ class TetrisGame extends React.Component<any> {
                     rotateIsValid = false;
                 }
             }
-        }
 
+            if (isLeftTouched) {
+                if (getHeightOfBlock() > getWidthOfBlock()) {
+                    rotateIsValid = true;
+                    xCoordinateOfActiveBlock += getWidthOfBlock();
+                }
+            }
+
+            if (isRightTouched) {
+                if (getHeightOfBlock() > getWidthOfBlock()) {
+                    rotateIsValid = true;
+                    xCoordinateOfActiveBlock -= getWidthOfBlock();
+                    if (activeBlockNumber == 2) {
+                        xCoordinateOfActiveBlock -= 1;
+                    }
+                }
+            }
+        }
         // If rotation is valid update rotate variable (rotate the block)
         if (rotateIsValid) {
             rotate = newRotate;
         }
-
         // Try to speed up the fall of the block
         let verticalMoveCountIsValid = true;
 
@@ -314,7 +347,6 @@ class TetrisGame extends React.Component<any> {
             Step: 4 Assign the above coordinates with the active block number, active block number will be use to render the UI on response view
             eg. tetrisGameGrid[3,5] =  tetrisGameGrid[3,4] = tetrisGameGrid[3,6] = tetrisGameGrid[2,4] = 4
        */
-
         tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][0][0]] = activeBlockNumber;
         tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][1][0]] = activeBlockNumber;
         tetrisGameGrid[yCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][1]][xCoordinateOfActiveBlock + blocks[activeBlockNumber][rotate][2][0]] = activeBlockNumber;
@@ -393,28 +425,62 @@ class TetrisGame extends React.Component<any> {
         updateShadowPiece(shadowMap);
     }
 
+    // Render Tetris Header with Play Pause action
+    rederPlayPause() {
+        return (
+            <>
+                <div className="tetris-header-box">
+                    <p className="tetris-board-text">{Localizer.getString("Score")} {this.store.gameScore}</p>
+                    <Reaction tabIndex={1}
+                        onClick={
+                            () => {
+                                if (this.store.gameStatus == GameStatus.Paused) {
+                                    setGameStatus(GameStatus.InProgress);
+                                } else {
+                                    setGameStatus(GameStatus.Paused);
+                                }
+                            }
+                        }
+                        icon={this.store.gameStatus === GameStatus.Paused ?
+                            <PlayIcon size="large" className="action-button-color" /> :
+                            <PauseIcon size="large" className="action-button-color" />
+                        }
+                    />
+                </div>
+                <div className="game-clear-both">
+                </div>
+            </>
+        );
+    }
+
     render() {
         return (
             <div className="tetris body-container">
                 { this.store.gameStatus === GameStatus.End ?
                     <GameEndView score={this.store.gameScore} onlyOneAttempt={false} /> :
-                    <Swipe
-                        nodeName="tetris"
-                        onSwipingLeft={() => { this.updateTetrisGameBoard("left") }}
-                        onSwipingRight={() => { this.updateTetrisGameBoard("right") }}
-                        onSwipingDown={() => { this.updateTetrisGameBoard("down") }}
-                        detectTouch={true}
-                        detectMouse={false}
-                        delta={Constants.DELTA}
-                    >
-                        <div id="tetrisBoard" onClick={() => {
-                            if (UxUtils.renderingForMobile()) {
-                                this.updateTetrisGameBoard("rotate")
-                            }
-                        }}>
-                            <TetrisBoard />
-                        </div>
-                    </Swipe>
+                    <>
+                        {this.rederPlayPause()}
+
+                        <Swipe
+                            nodeName="tetris"
+                            onSwipingLeft={() => { this.updateTetrisGameBoard("left"); }}
+                            onSwipingRight={() => { this.updateTetrisGameBoard("right"); }}
+                            onSwipingDown={() => { this.updateTetrisGameBoard("down"); }}
+                            detectTouch={true}
+                            detectMouse={false}
+                            delta={Constants.DELTA}
+                        >
+                            <div id="tetrisBoard" onClick={
+                                () => {
+                                    if (UxUtils.renderingForMobile()) {
+                                        this.updateTetrisGameBoard("rotate");
+                                    }
+                                }
+                            }>
+                                <TetrisBoard />
+                            </div>
+                        </Swipe>
+                    </>
                 }
             </div>
         );

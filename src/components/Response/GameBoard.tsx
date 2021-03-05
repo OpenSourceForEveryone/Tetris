@@ -3,10 +3,7 @@
 
 import * as React from "react";
 import { observer } from "mobx-react";
-import { PauseIcon, PlayIcon, Reaction } from "@fluentui/react-northstar";
-import { Localizer } from "../../utils/Localizer";
-import { setGameStatus } from "../../actions/ResponseAction";
-import getStore, { GameStatus } from "../../store/ResponseStore";
+import getStore from "../../store/ResponseStore";
 import {Utils} from "../../utils/Utils";
 
 /**
@@ -16,7 +13,6 @@ import {Utils} from "../../utils/Utils";
 @observer
 export default class TetrisGameBoard extends React.Component {
   render() {
-    const store = getStore();
     let tetrisGamerows: any[] = [];
     // Copy the reference type
     // Get the clone of the current tetris board
@@ -47,26 +43,6 @@ export default class TetrisGameBoard extends React.Component {
         <div className="game-clear-both"></div>
         <div className="tetris-board" id="focus">
           <div className="tetris-board-board" >
-            <div className="tetris-header-box">
-              <p className="tetris-board-text">{Localizer.getString("Score")} {store.gameScore}</p>
-              <Reaction tabIndex={1}
-                onClick={
-                  () => {
-                    if (store.gameStatus == GameStatus.Paused) {
-                      setGameStatus(GameStatus.InProgress);
-                    } else {
-                      setGameStatus(GameStatus.Paused);
-                    }
-                  }
-                }
-                icon={store.gameStatus === GameStatus.Paused ?
-                  <PlayIcon size="large" className="action-button-color" /> :
-                  <PauseIcon size="large" className="action-button-color" />
-                }
-              />
-            </div>
-            <div className="game-clear-both">
-            </div>
             {tetrisGamerows}
           </div>
         </div>

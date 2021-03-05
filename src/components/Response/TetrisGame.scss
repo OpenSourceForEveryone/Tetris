@@ -71,6 +71,9 @@ html {
     .desktop-web & {
         @media (max-height: 578px) {
             padding: 10px;
+            .tetris-header-box {
+                width: 206px;
+            }
         }
         @media (max-height: 498px) {
             padding: 8px;
@@ -229,9 +232,9 @@ html {
 }
 
 .tetris-header-box {
-    margin-bottom: 8px;
+    margin: 0px auto;
     height: 24px;
-    margin-top: 8px;
+    width: 300px;
 }
 
 .tetris-header-box span {
