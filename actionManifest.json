@@ -1,46 +1,108 @@
 {
-    "name": "tetris",
-    "version": "1.0.0",
-    "description": "Tetris Tournament",
-    "scripts": {
-        "build": "webpack --env.mode=prod --env.watch=false",
-        "start": "webpack --env.mode=dev --env.watch=true",
-        "zip": "cd ./output && bestzip ./ActionPackage.zip *",
-        "deploy": "npm run build && npm run zip && upload-action-package -z ./output/ActionPackage.zip -t ./output/ --ld ./output/ --lp Tetris",
-        "deploy-debug": "npm run build && npm run zip && upload-action-package -z ./output/ActionPackage.zip -t ./output/ -l debug --ld ./output/ --lp Tetris",
-        "update-teams-app": "npm run build && npm run zip && upload-action-package -z ./output/ActionPackage.zip --ld ./output/ --lp Tetris",
-        "inner-loop": "create-inner-loop -p <packageId> -d ./output --lp Tetris",
-        "lint": "tslint -c tslint.json -p tsconfig.json --fix"
+    "schemaVersion": 1,
+    "tag": "tetris-teams-app",
+    "id": "<packageId>",
+    "name": "Tetris Tournament",
+    "description": "Host a tournament of Tetris game",
+    "showLoadingIndicator": true,
+    "developer": {
+        "name": "<name>",
+        "websiteUrl": "<websiteUrl>",
+        "privacyUrl": "<privacyUrl>",
+        "termsOfUseUrl": "<termsOfUseUrl>"
     },
-    "dependencies": {
-        "@fluentui/react-northstar": "0.51.0",
-        "@microsoft/m365-action-sdk": "https://static.actions.office365.com/sdk/v1.0.8/microsoft-m365-action-sdk.tgz",
-        "css-loader": "2.1.1",
-        "mobx": "5.9.4",
-        "mobx-react": "5.1.2",
-        "office-ui-fabric-react": "7.22.0",
-        "react": "16.8.0",
-        "react-dom": "16.8.0",
-        "react-swipe-component": "3.0.0",
-        "satcheljs": "4.0.1",
-        "style-loader": "0.21.0",
-        "uuid": "8.1.0"
+    "icon": "images/appIcon.png",
+    "actionModel": "actionModel.json",
+    "version": "2.0.69",
+    "views": {
+        "CardView": {
+            "sourceLocation": "cardView.json"
+        },
+        "LaunchView": {
+            "sourceLocation": "CreateView.html",
+            "header": "Create new tournament"
+        },
+        "ResponseView": {
+            "sourceLocation": "ResponseView.html",
+            "header": "Play Tetris"
+        },
+        "SummaryView": {
+            "sourceLocation": "SummaryView.html",
+            "header": "Summary View"
+        }
     },
-    "devDependencies": {
-        "@types/react": "16.8.0",
-        "@types/react-dom": "16.8.0",
-        "action-package-deploy": "1.0.22",
-        "bestzip": "2.1.7",
-        "clean-webpack-plugin": "3.0.0",
-        "copy-webpack-plugin": "6.1.0",
-        "html-webpack-plugin": "3.2.0",
-        "node-sass": "4.14.1",
-        "sass-loader": "7.1.0",
-        "ts-loader": "5.4.5",
-        "tslint": "6.1.3",
-        "tslint-microsoft-contrib": "6.2.0",
-        "typescript": "3.5.3",
-        "webpack": "4.37.0",
-        "webpack-cli": "3.3.12"
+    "localizationInfo": {
+        "defaultLocale": "en-us",
+        "localeFiles": {
+            "en-us": "strings/strings.json",
+            "ar-sa": "strings/ar-sa/strings.json",
+            "bg-bg": "strings/bg-bg/strings.json",
+            "bn-in": "strings/bn-in/strings.json",
+            "ca-es": "strings/ca-es/strings.json",
+            "cs-cz": "strings/cs-cz/strings.json",
+            "cy-gb": "strings/cy-gb/strings.json",
+            "da-dk": "strings/da-dk/strings.json",
+            "de-de": "strings/de-de/strings.json",
+            "el-gr": "strings/el-gr/strings.json",
+            "en-gb": "strings/en-gb/strings.json",
+            "es-es": "strings/es-es/strings.json",
+            "es-mx": "strings/es-mx/strings.json",
+            "et-ee": "strings/et-ee/strings.json",
+            "fi-fi": "strings/fi-fi/strings.json",
+            "fil-ph": "strings/fil-ph/strings.json",
+            "fr-ca": "strings/fr-ca/strings.json",
+            "fr-fr": "strings/fr-fr/strings.json",
+            "gu-in": "strings/gu-in/strings.json",
+            "he-il": "strings/he-il/strings.json",
+            "hi-in": "strings/hi-in/strings.json",
+            "hr-hr": "strings/hr-hr/strings.json",
+            "hu-hu": "strings/hu-hu/strings.json",
+            "id-id": "strings/id-id/strings.json",
+            "is-is": "strings/is-is/strings.json",
+            "it-it": "strings/it-it/strings.json",
+            "ja-jp": "strings/ja-jp/strings.json",
+            "ka-GE": "strings/ka-GE/strings.json",
+            "kn-in": "strings/kn-in/strings.json",
+            "ko-kr": "strings/ko-kr/strings.json",
+            "lt-lt": "strings/lt-lt/strings.json",
+            "lv-lv": "strings/lv-lv/strings.json",
+            "ml-in": "strings/ml-in/strings.json",
+            "mr-in": "strings/mr-in/strings.json",
+            "nb-no": "strings/nb-no/strings.json",
+            "nl-nl": "strings/nl-nl/strings.json",
+            "nn-no": "strings/nn-no/strings.json",
+            "pl-pl": "strings/pl-pl/strings.json",
+            "pt-br": "strings/pt-br/strings.json",
+            "pt-pt": "strings/pt-pt/strings.json",
+            "ro-ro": "strings/ro-ro/strings.json",
+            "ru-ru": "strings/ru-ru/strings.json",
+            "sk-sk": "strings/sk-sk/strings.json",
+            "sl-si": "strings/sl-si/strings.json",
+            "sr-latn-rs": "strings/sr-latn-rs/strings.json",
+            "sv-se": "strings/sv-se/strings.json",
+            "ta-in": "strings/ta-in/strings.json",
+            "te-in": "strings/te-in/strings.json",
+            "th-th": "strings/th-th/strings.json",
+            "tr-tr": "strings/tr-tr/strings.json",
+            "uk-ua": "strings/uk-ua/strings.json",
+            "vi-vn": "strings/vi-vn/strings.json",
+            "zh-cn": "strings/zh-cn/strings.json",
+            "zh-tw": "strings/zh-tw/strings.json"
+        }
+    },
+    "msTeamsProps": {
+        "name": {
+            "short": "Tetris Tournament",
+            "full": "Tetris Tournament"
+        },
+        "description": {
+            "short": "Host a tournament of Tetris game",
+            "full": "Host a tournament of Tetris in a chat or channel. Find the app in '…' under the message compose box. Provide title to your tournament and post it in your chat or channel. Have fun with your team!"
+        },
+        "icons": {
+            "color": "images/appIcon.png",
+            "outline": "images/outline.png"
+        },
+        "accentColor": "#4464ee"
     }
 }
