@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 import { createStore } from "satcheljs";
 import "../mutator/ResponseMutator";
 import "../orchestrators/ResponseOrchestrator";
@@ -5,6 +8,7 @@ import * as actionSDK from "@microsoft/m365-action-sdk";
 import { ProgressState } from "../utils/SharedEnum";
 import { Constants } from "../utils/Constants";
 import { initializeGameBoard } from "../components/Response/GameUtils/TetrisUtils";
+
 /**
  * Response store containing all data required when user play the game.
  */

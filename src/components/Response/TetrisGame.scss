@@ -23,6 +23,14 @@ html {
     justify-content: center;
     height: 90vh;
     align-items: center;
+    .desktop-web & {
+        @media (max-height: 578px) {
+            height: 88vh;
+        }
+        @media (max-height: 498px) {
+            height: 86vh;
+        }
+    }
 }
 
 .tetris-board__info {
@@ -71,9 +79,6 @@ html {
     .desktop-web & {
         @media (max-height: 578px) {
             padding: 10px;
-            .tetris-header-box {
-                width: 206px;
-            }
         }
         @media (max-height: 498px) {
             padding: 8px;
@@ -202,8 +207,36 @@ html {
 }
 
 .tetris-header-box {
-    margin-bottom: 4px;
-    height: 24px;
+    .desktop-web & {
+        @media (max-height: 578px) {
+            width: 252px;
+        }
+        @media (max-height: 498px) {
+            width: 204px;
+        }
+    }
+    .client-android & {
+        @media (max-height: 680px) {
+            width: 320px;
+        }
+        @media (max-height: 578px) {
+            width: 280px;
+        }
+        @media (max-height: 498px) {
+            width: 220px;
+        }
+    }
+    .client-ios & {
+        @media (max-height: 680px) {
+            width: 320px;
+        }
+        @media (max-height: 578px) {
+            width: 280px;
+        }
+        @media (max-height: 498px) {
+            width: 220px;
+        }
+    }
 }
 
 .tetris-header-box span {
