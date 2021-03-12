@@ -35,7 +35,7 @@ fun playing the classic Tetris game!
     Tournament, click **Leaderboard** on the card. You can view scores of all
     your attempts as well as leaderboard of scores of all participating members.
 
-![](./wiki/images/TetrisTemplateSummary.png)
+![](./wiki/images/TetrisTemplateLeaderBoard.png)
 
 ## Get started
 
