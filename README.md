@@ -43,7 +43,7 @@ Begin with the [Solution overview ](/wiki/Solution-overview.md)to read about wh
 app does and how it works.
 
 When you're ready to try out Tetris Tournament, or to use it in your own
-organization, follow the steps in the [Deployment guide](/wiki/Deployment_Guide.md).
+organization, follow the steps in the [Deployment guide](/wiki/Deployment-guide.md).
 
 ## Feedback 
 
