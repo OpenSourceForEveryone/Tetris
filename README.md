@@ -1,6 +1,6 @@
 # Tetris Template
 
-| [Documentation](./wiki/Home.md) | [Deployment guide](./wiki/Deployment-guide.md) | [Architecture](./wiki/Solution-overview.md) | [Costing](./wiki/Costing.md) |
+| [Documentation](Home: https://github.com/WebCraft-Teams/Tetris/wiki/Home) | [Deployment guide](https://github.com/WebCraft-Teams/Tetris/wiki/Deployment-guide) | [Architecture](https://github.com/WebCraft-Teams/Tetris/wiki/Solution-overview) | [Costing](https://github.com/WebCraft-Teams/Tetris/wiki/Costing) |
 | ----- | ---- | ---- | ---- |
 
 
@@ -12,7 +12,7 @@ a ranked tournament. Tetris Tournament app is supported across all platforms –
 Teams desktop, browser, iOS, and Android clients. It is ready for deployment as
 part of your existing Microsoft 365 subscription.
 
-![](./wiki/images/TetrisCompose.gif)
+![](https://github.com/WebCraft-Teams/Tetris/wiki/images/TetrisCompose.gif)
 
 ### Key features
 
@@ -21,15 +21,15 @@ part of your existing Microsoft 365 subscription.
     Tournament app. Name your tournament, choose right settings for it and when
     you are done, click **Send** to publish your Tetris Tournament.
 
-![](./wiki/images/TetrisTemplateCreation.png)
+![](https://github.com/WebCraft-Teams/Tetris/wiki/images/TetrisTemplateCreation.png)
 
 * **Tetris Tournament participation:** To participate in Tetris Tournament, click
 **Play** on the card. Read instruction on how to play and start your game. Have
 fun playing the classic Tetris game!
 
-![](./wiki/images/TetrisTemplateParticipation1.png)
+![](https://github.com/WebCraft-Teams/Tetris/wiki/images/TetrisTemplateParticipation1.png)
 
-![](./wiki/images/TetrisTemplateParticipation2.png)
+![](https://github.com/WebCraft-Teams/Tetris/wiki/images/TetrisTemplateParticipation2.png)
 
 * **Tetris Tournament Leaderboard:** To see your scores and Leaderboard of Tetris
     Tournament, click **Leaderboard** on the card. You can view scores of all
@@ -39,11 +39,11 @@ fun playing the classic Tetris game!
 
 ## Get started
 
-Begin with the [Solution overview ](/wiki/Solution-overview.md)to read about what the
+Begin with the [Solution overview ](https://github.com/WebCraft-Teams/Tetris/wiki/Solution-overview)to read about what the
 app does and how it works.
 
 When you're ready to try out Tetris Tournament, or to use it in your own
-organization, follow the steps in the [Deployment guide](/wiki/Deployment-guide.md).
+organization, follow the steps in the [Deployment guide](https://github.com/WebCraft-Teams/Tetris/wiki/Deployment-guide).
 
 ## Feedback 
 
