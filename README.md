@@ -1,6 +1,6 @@
 # Tetris Template
 
-| [Documentation](Home: https://github.com/WebCraft-Teams/Tetris/wiki/Home) | [Deployment guide](https://github.com/WebCraft-Teams/Tetris/wiki/Deployment-guide) | [Architecture](https://github.com/WebCraft-Teams/Tetris/wiki/Solution-overview) | [Costing](https://github.com/WebCraft-Teams/Tetris/wiki/Costing) |
+| [Documentation](https://github.com/WebCraft-Teams/Tetris/wiki/Home) | [Deployment guide](https://github.com/WebCraft-Teams/Tetris/wiki/Deployment-guide) | [Architecture](https://github.com/WebCraft-Teams/Tetris/wiki/Solution-overview) | [Costing](https://github.com/WebCraft-Teams/Tetris/wiki/Costing) |
 | ----- | ---- | ---- | ---- |
 
 
